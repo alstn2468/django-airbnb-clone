@@ -1,6 +1,7 @@
 ## Airbnb Clone
 
-[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
+[![Python Version](https://img.shields.io/github/pipenv/locked/python-version/alstn2468/Django_Airbnb_Clone)](https://shields.io/)
+[![Django Version](https://img.shields.io/github/pipenv/locked/dependency-version/alstn2468/Django_Airbnb_Clone/django)](https://shields.io/)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Generic badge](https://img.shields.io/github/languages/top/alstn2468/Django_Airbnb_Clone)](https://shields.io/)
 
