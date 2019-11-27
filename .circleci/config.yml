@@ -8,7 +8,7 @@ jobs:
         docker:
             # specify the version you desire here
             # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
-            - image: circleci/python:3.6.1
+            - image: circleci/python:3.7
 
             # Specify service dependencies here if necessary
             # CircleCI maintains a library of pre-built images
@@ -29,7 +29,6 @@ jobs:
             - run:
                   command: |
                       sudo pip install pipenv
-                      pipenv install pylint==2.3.1
                       pipenv install coverage==4.5.4
                       pipenv install codecov
             - save_cache:
