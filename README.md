@@ -1,5 +1,7 @@
 ## Airbnb Clone
 
+![Build Badge](https://img.shields.io/circleci/build/github/alstn2468/Django_Airbnb_Clone)
+![Codecov Badge]()
 [![Python Version](https://img.shields.io/github/pipenv/locked/python-version/alstn2468/Django_Airbnb_Clone)](https://shields.io/)
 [![Django Version](https://img.shields.io/github/pipenv/locked/dependency-version/alstn2468/Django_Airbnb_Clone/django)](https://shields.io/)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
