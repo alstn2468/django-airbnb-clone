@@ -19,5 +19,6 @@ This Repository quoted by [Nomad Coder](https://academy.nomadcoders.co)'s member
 - Python
 - Django
 - coverage
+- codecov
 
 ### To Do
