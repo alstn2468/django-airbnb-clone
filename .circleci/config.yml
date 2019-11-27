@@ -18,8 +18,6 @@ jobs:
                       pipenv install
                       echo "--- Check Pipenv Installed Packages ---"
                       pipenv graph
-                      echo "--- Start Pipenv Virtual Env ---"
-                      pipenv shell
             - save_cache:
                   key: deps10-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
                   paths:
