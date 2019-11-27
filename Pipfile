@@ -9,6 +9,7 @@ black = "*"
 
 [packages]
 django = "==2.2.5"
+coverage = "*"
 
 [requires]
 python_version = "3.7"
