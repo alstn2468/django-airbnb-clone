@@ -48,7 +48,8 @@ jobs:
                   name: run tests
                   command: |
                       pipenv shell
-                      python manage.py test
+                      coverage run ./manage.py test
+                      codecov
 
             - store_artifacts:
                   path: test-reports
