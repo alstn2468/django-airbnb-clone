@@ -1,6 +1,6 @@
 ## Airbnb Clone
 
-![Build Badge](https://img.shields.io/circleci/build/github/alstn2468/Django_Airbnb_Clone)
+[![CircleCI](https://circleci.com/gh/alstn2468/Django_Airbnb_Clone.svg?style=svg)](https://circleci.com/gh/alstn2468/Django_Airbnb_Clone)
 ![Codecov Badge]()
 [![Python Version](https://img.shields.io/github/pipenv/locked/python-version/alstn2468/Django_Airbnb_Clone)](https://shields.io/)
 [![Django Version](https://img.shields.io/github/pipenv/locked/dependency-version/alstn2468/Django_Airbnb_Clone/django)](https://shields.io/)
