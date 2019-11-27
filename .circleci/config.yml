@@ -1,34 +1,31 @@
 version: 2
 jobs:
     build:
+        working_directory: ~/circleci-demo-python-django
         docker:
             - image: circleci/python:3.7
-
-        working_directory: ~/repo
-
         steps:
-          - checkout
-          - run: sudo chown -R circleci:circleci /usr/local/bin
-          - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6/site-packages
-          - restore_cache:
-              key: deps10-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
-          - run:
-              command: |
-                sudo pip install pipenv
-                pipenv install
-          - save_cache:
-              key: deps10-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
-              paths:
-                - '.venv'
-                - '/usr/local/bin'
-                - '/usr/local/lib/python3.6/site-packages'
-
+            - checkout
+            - run: sudo chown -R circleci:circleci /usr/local/bin
+            - run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
+            - restore_cache:
+                  key: deps10-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
             - run:
-                  name: run tests
                   command: |
-                      coverage run ./manage.py test
+                      sudo pip install pipenv
+                      pipenv install
+            - save_cache:
+                  key: deps10-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+                  paths:
+                      - '.venv'
+                      - '/usr/local/bin'
+                      - '/usr/local/lib/python3.6/site-packages'
+            - run:
+                  command: |
+                      coverage manage.py test
                       codecov
-
+            - store_test_results:
+                  path: test-results
             - store_artifacts:
-                  path: test-reports
-                  destination: test-reports
+                  path: test-results
+                  destination: tr1
