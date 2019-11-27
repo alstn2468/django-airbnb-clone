@@ -12,9 +12,9 @@ jobs:
                   key: deps10-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
             - run:
                   command: |
-                      echo "--- Start Install pipenv ---"
+                      echo "--- Start Install Pipenv ---"
                       sudo pip install pipenv
-                      echo "--- Start Install pipenv dependencies ---"
+                      echo "--- Start Install Pipenv dependencies ---"
                       pipenv install
                       pipenv graph
             - save_cache:
@@ -25,6 +25,8 @@ jobs:
                       - '/usr/local/lib/python3.6/site-packages'
             - run:
                   command: |
+                      echo "--- Start Pipenv Virtual Env ---"
+                      pipenv run
                       echo "--- Start Test Using Coverage ---"
                       coverage manage.py test
                       echo "--- Start Save Using Codecov ---"
