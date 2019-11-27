@@ -27,6 +27,6 @@ jobs:
             - run:
                   command: |
                       echo "--- Start Test Using Coverage ---"
-                      coverage run manage.py test
+                      pipenv run coverage run manage.py test
                       echo "--- Start Save Using Codecov ---"
-                      codecov
+                      pipenv run codecov
