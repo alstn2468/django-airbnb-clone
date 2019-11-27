@@ -16,6 +16,7 @@ jobs:
                       sudo pip install pipenv
                       echo "--- Start Install pipenv dependencies ---"
                       pipenv install
+                      pipenv graph
             - save_cache:
                   key: deps10-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
                   paths:
@@ -28,8 +29,3 @@ jobs:
                       coverage manage.py test
                       echo "--- Start Save Using Codecov ---"
                       codecov
-            - store_test_results:
-                  path: test-results
-            - store_artifacts:
-                  path: test-results
-                  destination: tr1
