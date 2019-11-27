@@ -16,7 +16,10 @@ jobs:
                       sudo pip install pipenv
                       echo "--- Start Install Pipenv dependencies ---"
                       pipenv install
+                      echo "--- Check Pipenv Installed Packages ---"
                       pipenv graph
+                      echo "--- Start Pipenv Virtual Env ---"
+                      pipenv shell
             - save_cache:
                   key: deps10-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
                   paths:
@@ -25,8 +28,6 @@ jobs:
                       - '/usr/local/lib/python3.6/site-packages'
             - run:
                   command: |
-                      echo "--- Start Pipenv Virtual Env ---"
-                      pipenv shell
                       echo "--- Start Test Using Coverage ---"
                       coverage run manage.py test
                       echo "--- Start Save Using Codecov ---"
