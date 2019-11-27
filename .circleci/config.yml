@@ -30,3 +30,7 @@ jobs:
                       pipenv run coverage run manage.py test
                       echo "--- Start Save Using Codecov ---"
                       pipenv run codecov
+
+            - store_artifacts:
+                  path: test-reports
+                  destination: test-reports
