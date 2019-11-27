@@ -47,7 +47,7 @@ jobs:
             - run:
                   name: run tests
                   command: |
-                      pipenv shell
+                      pipenv run
                       coverage run ./manage.py test
                       codecov
 
