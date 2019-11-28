@@ -10,20 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
-from django.core.exceptions import ImproperlyConfigured
+from config.utils import get_secret
 import os
-import json
-
-with open("secrets.json") as f:
-    secrets = json.loads(f.read())
-
-
-def get_secret(setting, secrets=secrets):
-    try:
-        return secrets[setting]
-    except KeyError:
-        error_msg = "Set the {0} environment variable".format(setting)
-        raise ImproperlyConfigured(error_msg)
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
