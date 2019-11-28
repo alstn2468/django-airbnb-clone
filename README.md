@@ -18,6 +18,7 @@ This Repository quoted by [Nomad Coder](https://academy.nomadcoders.co)'s member
 
 - Python
 - Django
+- Pillow
 - coverage
 - codecov
 

@@ -11,6 +11,7 @@ black = "*"
 django = "==2.2.5"
 coverage = "*"
 codecov = "*"
+pillow = "*"
 
 [requires]
 python_version = "3.7"
