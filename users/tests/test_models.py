@@ -17,3 +17,11 @@ class UserModelTest(TestCase):
         with self.assertRaises(IntegrityError):
             User.objects.create_user("test_user_1")
 
+    def test_user_bio_default_text(self):
+        user = User.objects.get(id=1)
+        self.assertEqual("", user.bio)
+
+    def test_user_bio_set_text(self):
+        user = User(username="test_user_3", bio="test bio")
+        self.assertEqual("test bio", user.bio)
+
