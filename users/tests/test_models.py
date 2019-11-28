@@ -3,13 +3,12 @@ from users.models import User
 
 
 class UserModelTest(TestCase):
-    def setUp(self):
-        """각각의 테스트 케이스 함수가 실행될 때 실행
-        테스트 중 객체의 내용이 변경될 가능성이 있는 경우 사용
-        """
-        pass
+    @classmethod
+    def setUpTestData(cls):
+        user = User.objects.create_user("test")
 
     def test_user_create(self):
-        user = User.objects.create_user("test")
+        user = User.objects.get(id=1)
         self.assertEqual("test", user.username)
+        self.assertEqual("User", user.__class__.__name__)
 
