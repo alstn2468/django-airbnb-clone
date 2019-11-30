@@ -222,7 +222,7 @@ class RoomModelTest(TestCase):
         room.house_rules.add(house_rule)
         room.save()
 
-        self.assertTrue(house_rule, room.house_rules.all())
+        self.assertEqual(house_rule, room.house_rules.all()[0])
 
     def test_room_many_house_rules_set(self):
         """Room model house_rules field set more than one amenities data
