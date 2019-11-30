@@ -1,10 +1,11 @@
 from django.test import TestCase
 from django.db import IntegrityError
 from datetime import datetime
-from rooms.models import Room, RoomType, Amenity, Facility, HouseRule
+from rooms.models import Room, RoomType, Amenity, Facility, HouseRule, Photo
 from users.models import User
 from unittest import mock
 import pytz
+import tempfile
 
 
 class RoomModelTest(TestCase):
@@ -243,6 +244,64 @@ class RoomModelTest(TestCase):
             HouseRule.objects.all(), map(repr, room.house_rules.all()), ordered=False
         )
 
+    def test_photo_model_create_success(self):
+        """Photo model create success test
+        CHeck photo model's caption and class name
+        """
+        room = Room.objects.get(id=1)
+        photo = Photo(
+            caption="Test Caption",
+            file=tempfile.NamedTemporaryFile(suffix=".jpg").name,
+            room=room,
+        )
+
+        self.assertEqual("Test Caption", photo.caption)
+        self.assertEqual("Photo", photo.__class__.__name__)
+
+    def test_photo_model_create_fail(self):
+        """Photo model create fail test
+        Check raise IntegrityError when create photo instance with all fields none
+        """
+        with self.assertRaises(IntegrityError):
+            photo = Photo()
+            photo.save()
+
+    def test_photo_model_file_set(self):
+        """Photo model ImageField test
+        Check Photo model file field equal created temp jpg file
+        """
+        room = Room.objects.get(id=1)
+        file = tempfile.NamedTemporaryFile(suffix=".jpg").name
+        photo = Photo(caption="Test Caption", file=file, room=room)
+
+        self.assertEqual(photo.file, file)
+
+    def test_photo_model_room_fk(self):
+        """Photo model room field FK test
+        Check Photo model's room fields equal Room instance
+        """
+        room = Room.objects.get(id=1)
+        photo = Photo(
+            caption="Test Caption",
+            file=tempfile.NamedTemporaryFile(suffix=".jpg").name,
+            room=room,
+        )
+
+        self.assertEqual(room, photo.room)
+
+    def test_photo_model_str_method(self):
+        """Photo moddel str method test
+        Check photo model's caption equal str method photo model
+        """
+        room = Room.objects.get(id=1)
+        photo = Photo(
+            caption="Test Caption",
+            file=tempfile.NamedTemporaryFile(suffix=".jpg").name,
+            room=room,
+        )
+
+        self.assertEqual(str(photo), photo.caption)
+
 
 class RoomTypeModelTest(TestCase):
     @classmethod
@@ -251,16 +310,16 @@ class RoomTypeModelTest(TestCase):
 
         Fields :
             id           : 1
-            name         : Single room
+            name         : Test Room Type
         """
-        RoomType.objects.create(name="Single room")
+        RoomType.objects.create(name="Test Room Type")
 
     def test_room_type_create_success(self):
         """RoomType model create success test
         Check class name and room_type name field
         """
         room_type = RoomType.objects.get(id=1)
-        self.assertEqual(room_type.name, "Single room")
+        self.assertEqual(room_type.name, "Test Room Type")
         self.assertEqual(room_type.__class__.__name__, "RoomType")
 
     def test_room_type_str_method(self):
@@ -278,16 +337,16 @@ class AmenityModelTest(TestCase):
 
         Fields :
             id           : 1
-            name         : Single room
+            name         : Test Amenity
         """
-        Amenity.objects.create(name="Single room")
+        Amenity.objects.create(name="Test Amenity")
 
     def test_amenity_create_success(self):
         """Amenity model create success test
         Check class name and amenity name field
         """
         amenity = Amenity.objects.get(id=1)
-        self.assertEqual(amenity.name, "Single room")
+        self.assertEqual(amenity.name, "Test Amenity")
         self.assertEqual(amenity.__class__.__name__, "Amenity")
 
     def test_amenity_str_method(self):
@@ -305,16 +364,16 @@ class FacilityModelTest(TestCase):
 
         Fields :
             id           : 1
-            name         : Single room
+            name         : Facility Test
         """
-        Facility.objects.create(name="Single room")
+        Facility.objects.create(name="Facility Test")
 
     def test_facility_create_success(self):
         """Facility model create success test
         Check class name and facility name field
         """
         facility = Facility.objects.get(id=1)
-        self.assertEqual(facility.name, "Single room")
+        self.assertEqual(facility.name, "Facility Test")
         self.assertEqual(facility.__class__.__name__, "Facility")
 
     def test_facility_str_method(self):
@@ -332,16 +391,16 @@ class HouseRuleModelTest(TestCase):
 
         Fields :
             id           : 1
-            name         : Single room
+            name         : House Rule Test
         """
-        HouseRule.objects.create(name="Single room")
+        HouseRule.objects.create(name="House Rule Test")
 
     def test_house_rule_create_success(self):
         """HouseRule model create success test
         Check class name and house_rule name field
         """
         house_rule = HouseRule.objects.get(id=1)
-        self.assertEqual(house_rule.name, "Single room")
+        self.assertEqual(house_rule.name, "House Rule Test")
         self.assertEqual(house_rule.__class__.__name__, "HouseRule")
 
     def test_house_rule_str_method(self):
