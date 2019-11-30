@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class TimeStamp(models.Model):
+class AbstractTimeStamp(models.Model):
     """Abstract TimeStamp Model
 
     Inherit:
