@@ -1,7 +1,6 @@
 from django.db import models
 from django_countries.fields import CountryField
 from core.models import AbstractTimeStamp
-from users.models import User
 
 
 class AbstractItem(AbstractTimeStamp):
@@ -67,6 +66,26 @@ class HouseRule(AbstractItem):
         verbose_name = "House Rule"
 
 
+class Photo(AbstractTimeStamp):
+    """Photo Model
+
+    Inherit:
+        AbstractTimeStamp
+
+    Fields:
+        caption : CharField
+        file    : ImageField
+        room    : Room Model (1:N)
+    """
+
+    caption = models.CharField(max_length=80)
+    file = models.ImageField()
+    room = models.ForeignKey("Room", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.caption
+
+
 class Room(AbstractTimeStamp):
     """Room Model
 
@@ -107,11 +126,11 @@ class Room(AbstractTimeStamp):
     check_in = models.TimeField()
     check_out = models.TimeField()
     instant_book = models.BooleanField(default=False)
-    host = models.ForeignKey(User, on_delete=models.CASCADE)
-    room_type = models.ForeignKey(RoomType, on_delete=models.SET_NULL, null=True)
-    amenities = models.ManyToManyField(Amenity, blank=True)
-    facilities = models.ManyToManyField(Facility, blank=True)
-    house_rules = models.ManyToManyField(HouseRule, blank=True)
+    host = models.ForeignKey("users.User", on_delete=models.CASCADE)
+    room_type = models.ForeignKey("RoomType", on_delete=models.SET_NULL, null=True)
+    amenities = models.ManyToManyField("Amenity", blank=True)
+    facilities = models.ManyToManyField("Facility", blank=True)
+    house_rules = models.ManyToManyField("HouseRule", blank=True)
 
     def __str__(self):
         return self.name
