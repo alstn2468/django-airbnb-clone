@@ -6,7 +6,7 @@ from .models import Room
 class RoomAdmin(admin.ModelAdmin):
     """Register Room model at admin panel
     
-    inherit:
+    Inherit:
         ModelAdmin
     """
 

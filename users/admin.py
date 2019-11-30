@@ -8,7 +8,7 @@ class UserAdmin(BaseUserAdmin):
     """Register User model at admin panel
     Set fieldsets BaseUserAdmin's fieldsets + user_fieldsets
     
-    inherit:
+    Inherit:
         UserAdmin as BaseUserAdmin
 
     user_fieldsets : Custom User model's fieldsets
