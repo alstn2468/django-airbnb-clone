@@ -105,10 +105,10 @@ class UserModelTest(TestCase):
 
     def test_user_birth_date_blank(self):
         """User model birth_date field blank test
-        Check test_user_1's birth_date is None
+        Check test_user_1's birth_date is ""
         """
         user = User.objects.get(username="test_user_1")
-        self.assertIsNone(user.birth_date)
+        self.assetEqual("", user.birth_date)
 
     def test_user_birth_date_set(self):
         """User model birth_date field set value test
@@ -120,10 +120,10 @@ class UserModelTest(TestCase):
 
     def test_user_language_blank(self):
         """User model language field blank test
-        Check test_user_1's language is None
+        Check test_user_1's language is ""
         """
         user = User.objects.get(username="test_user_1")
-        self.assertIsNone(user.language)
+        self.assertEqual("", user.language)
 
     def test_user_language_set(self):
         """User model language field set value test
@@ -134,10 +134,10 @@ class UserModelTest(TestCase):
 
     def test_user_currency_blank(self):
         """User model currency field blank test
-        Check test_user_1's currency is None
+        Check test_user_1's currency is ""
         """
         user = User.objects.get(username="test_user_1")
-        self.assertIsNone(user.currency)
+        self.assertEqual("", user.currency)
 
     def test_user_currency_set(self):
         """User model currency field set value test
