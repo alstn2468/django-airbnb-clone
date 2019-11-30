@@ -85,6 +85,13 @@ class RoomModelTest(TestCase):
         self.assertEqual(datetime(2019, 1, 1, 10, 30).time(), room.check_out)
         self.assertTrue(room.instant_book)
 
+    def test_room_str_method(self):
+        """Room model str method test
+        Check str method to Room model is return Room model's name
+        """
+        room = Room.objects.get(id=1)
+        self.assertEqual("Test Room 1", str(room))
+
     def test_time_stamp_created_at(self):
         """TimeStamp model created_at test
         Check Test Room 1's created_at field is datetime (2019.11.30)
