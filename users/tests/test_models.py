@@ -34,7 +34,7 @@ class UserModelTest(TestCase):
             username="test_user_2",
             gender=User.GENDER_MALE,
             bio="test bio",
-            birth_date=now(),
+            birth_date=now().date(),
             language=User.LANGUAGE_ENGLISH,
             currency=User.CURRENCY_USD,
             is_superhost=True,
