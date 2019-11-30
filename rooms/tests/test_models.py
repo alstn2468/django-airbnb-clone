@@ -113,6 +113,136 @@ class RoomModelTest(TestCase):
             room.save()
             self.assertEqual(room.updated_at, mocked)
 
+    def test_room_room_type_set(self):
+        """Room model room_type field test
+        Check Room model's room_type equal room_type
+        """
+        room_type = RoomType(name="Room Type Test")
+        room_type.save()
+
+        room = Room.objects.get(id=1)
+        room.room_type = room_type
+        room.save()
+
+        self.assertEqual(room_type, room.room_type)
+
+    def test_room_amenity_blank(self):
+        """Room model amenity field blank test
+        Check Room model's amenity field exists equal False
+        """
+        room = Room.objects.get(id=1)
+        self.assertFalse(room.amenities.exists())
+
+    def test_room_one_amenity_set(self):
+        """Room model amenity field set one amenity data
+        Check Room model's amenity query set equal amenity
+        """
+        amenity = Amenity.objects.create(name="Test Amenity")
+        amenity.save()
+
+        room = Room.objects.get(id=1)
+        room.amenities.add(amenity)
+        room.save()
+
+        self.assertEqual(amenity, room.amenities.all()[0])
+
+    def test_room_many_amenity_set(self):
+        """Room model amenity field set more than one amenities data
+        Check Room model's amenity query set equal Amenity model query set
+        """
+        amenity_1 = Amenity.objects.create(name="Test Amenity 1")
+        amenity_1.save()
+
+        amenity_2 = Amenity.objects.create(name="Test Amenity 2")
+        amenity_2.save()
+
+        room = Room.objects.get(id=1)
+        room.amenities.add(amenity_1)
+        room.amenities.add(amenity_2)
+        room.save()
+
+        self.assertQuerysetEqual(
+            Amenity.objects.all(), map(repr, room.amenities.all()), ordered=False
+        )
+
+    def test_room_facilities_blank(self):
+        """Room model facilities field blank test
+        Check Room model's facilities field exists equal False
+        """
+        room = Room.objects.get(id=1)
+        self.assertFalse(room.facilities.exists())
+
+    def test_room_one_facilities_set(self):
+        """Room model facilities field set one facilities data
+        Check Room model's facilities query set equal facilities
+        """
+        facilities = Facility.objects.create(name="Test Facilities")
+        facilities.save()
+
+        room = Room.objects.get(id=1)
+        room.facilities.add(facilities)
+        room.save()
+
+        self.assertEqual(facilities, room.facilities.all()[0])
+
+    def test_room_many_facilities_set(self):
+        """Room model facilities field set more than one amenities data
+        Check Room model's facilities query set equal facilities model query set
+        """
+        facilities_1 = Facility.objects.create(name="Test Facilities 1")
+        facilities_1.save()
+
+        facilities_2 = Facility.objects.create(name="Test Facilities 2")
+        facilities_2.save()
+
+        room = Room.objects.get(id=1)
+        room.facilities.add(facilities_1)
+        room.facilities.add(facilities_2)
+        room.save()
+
+        self.assertQuerysetEqual(
+            Facility.objects.all(), map(repr, room.facilities.all()), ordered=False
+        )
+
+    def test_room_house_rule_blank(self):
+        """Room model house_rules field blank test
+        Check Room model's house_rules field exists equal False
+        """
+        room = Room.objects.get(id=1)
+        self.assertFalse(room.house_rules.exists())
+
+    def test_room_one_house_rules_set(self):
+        """Room model house_rules field set one house_rules data
+        Check Room model's house_rules query set equal house_rules
+        """
+        house_rule = HouseRule.objects.create(name="Test House Rule")
+        house_rule.save()
+
+        room = Room.objects.get(id=1)
+        room.house_rules.add(house_rule)
+        room.save()
+
+        self.assertTrue(house_rule, room.house_rules.all())
+
+    def test_room_many_house_rules_set(self):
+        """Room model house_rules field set more than one amenities data
+        Check Room model's house_rules query set equal house_rules model query set
+        """
+        house_rule_1 = HouseRule.objects.create(name="Test House Rule 1")
+        house_rule_1.save()
+
+        house_rule_2 = HouseRule.objects.create(name="Test House Rule 2")
+        house_rule_2.save()
+
+        room = Room.objects.get(id=1)
+        room.house_rules.add(house_rule_1)
+        room.house_rules.add(house_rule_2)
+        room.save()
+
+        self.assertQuerysetEqual(
+            HouseRule.objects.all(), map(repr, room.house_rules.all()), ordered=False
+        )
+
 
 class RoomTypeModelTest(TestCase):
     @classmethod
