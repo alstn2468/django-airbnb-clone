@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.db import IntegrityError
 from datetime import datetime
-from rooms.models import Room
+from rooms.models import Room, RoomType
 from users.models import User
 from unittest import mock
 import pytz
@@ -87,10 +87,10 @@ class RoomModelTest(TestCase):
 
     def test_room_str_method(self):
         """Room model str method test
-        Check str method to Room model is return Room model's name
+        Check str method equal room instance name field
         """
         room = Room.objects.get(id=1)
-        self.assertEqual("Test Room 1", str(room))
+        self.assertEqual(str(room), room.name)
 
     def test_time_stamp_created_at(self):
         """TimeStamp model created_at test
@@ -113,3 +113,29 @@ class RoomModelTest(TestCase):
             room.save()
             self.assertEqual(room.updated_at, mocked)
 
+
+class RoomTypeModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        """Run only once when running RoomTypeModelTest
+
+        Fields :
+            id           : 1
+            name         : Single room
+        """
+        RoomType.objects.create(name="Single room")
+
+    def test_room_type_create_success(self):
+        """RoomType model create success test
+        Check class name and room_type name field
+        """
+        room_type = RoomType.objects.get(id=1)
+        self.assertEqual(room_type.name, "Single room")
+        self.assertEqual(room_type.__class__.__name__, "RoomType")
+
+    def test_room_type_str_method(self):
+        """RoomType model str method test
+        Check str method equal room_type instance name field
+        """
+        room_type = RoomType.objects.get(id=1)
+        self.assertEqual(str(room_type), room_type.name)

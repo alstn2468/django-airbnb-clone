@@ -1,14 +1,43 @@
 from django.db import models
 from django_countries.fields import CountryField
-from core.models import TimeStamp
+from core.models import AbstractTimeStamp
 from users.models import User
 
 
-class Room(TimeStamp):
+class AbstractItem(AbstractTimeStamp):
+    """Abstract Item Model
+
+    Inherit:
+        AbstractTimeStamp
+
+    Fields:
+        name : CharField
+    """
+
+    name = models.CharField(max_length=80)
+
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        return self.name
+
+
+class RoomType(AbstractItem):
+    """RoomType Model
+    
+    Inherit:
+        AbstractItem
+    """
+
+    pass
+
+
+class Room(AbstractTimeStamp):
     """Room Model
 
     Inherit:
-        TimeStamp
+        AbstractTimeStamp
 
     Fields:
         name         : CharField
@@ -24,7 +53,8 @@ class Room(TimeStamp):
         check_in     : TimeField
         check_out    : TimeField
         instant_book : BooleanField
-        host         : users app User model
+        host         : users app User model (1:N)
+        room_type    : RoomType model (N:N)
     """
 
     name = models.CharField(max_length=140)
@@ -41,6 +71,7 @@ class Room(TimeStamp):
     check_out = models.TimeField()
     instant_book = models.BooleanField(default=False)
     host = models.ForeignKey(User, on_delete=models.CASCADE)
+    room_type = models.ManyToManyField(RoomType, blank=True)
 
     def __str__(self):
         return self.name
