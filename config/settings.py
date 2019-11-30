@@ -41,7 +41,11 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-PROJECT_APPS = ["users.apps.UsersConfig", "rooms.apps.RoomsConfig"]
+PROJECT_APPS = [
+    "users.apps.UsersConfig",
+    "rooms.apps.RoomsConfig",
+    "core.apps.CoreConfig",
+]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS
 
