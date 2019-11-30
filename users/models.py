@@ -9,13 +9,13 @@ class User(AbstractUser):
         AbstractUser
 
     Fields:
-        avatar       : File
-        gender       : Str (choice)
-        bio          : Str
-        birth_date   : Date
-        language     : Str (choice)
-        currency     : Str (choice)
-        is_superhost : Bool
+        avatar       : ImageField
+        gender       : CharField
+        bio          : TextField
+        birth_date   : DateField
+        language     : CharField
+        currency     : CharField
+        is_superhost : BooleanField
     """
 
     GENDER_MALE = "male"
