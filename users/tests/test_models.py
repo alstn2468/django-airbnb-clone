@@ -91,10 +91,10 @@ class UserModelTest(TestCase):
 
     def test_user_gender_blank(self):
         """User model gender field blank test
-        Check test_user_1's gender is None
+        Check test_user_1's gender is ""
         """
         user = User.objects.get(username="test_user_1")
-        self.assertIsNone(user.gender)
+        self.assertEqual("", user.gender)
 
     def test_user_gender_set(self):
         """User model gender field set value test
@@ -108,7 +108,7 @@ class UserModelTest(TestCase):
         Check test_user_1's birth_date is ""
         """
         user = User.objects.get(username="test_user_1")
-        self.assetEqual("", user.birth_date)
+        self.assertEqual("", user.birth_date)
 
     def test_user_birth_date_set(self):
         """User model birth_date field set value test
