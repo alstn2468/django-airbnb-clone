@@ -16,7 +16,7 @@ class RoomModelTest(TestCase):
             id           : 1
             name         : Test Room 1
             description  : Test Description 1
-            country      : 대한민국
+            country      : KR -> 대한민국
             city         : Seoul
             price        : 100
             address      : Test Address
