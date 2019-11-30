@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.db import IntegrityError
 from datetime import datetime
-from rooms.models import Room, RoomType
+from rooms.models import Room, RoomType, Amenity, Facility, HouseRule
 from users.models import User
 from unittest import mock
 import pytz
@@ -139,3 +139,84 @@ class RoomTypeModelTest(TestCase):
         """
         room_type = RoomType.objects.get(id=1)
         self.assertEqual(str(room_type), room_type.name)
+
+
+class AmenityModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        """Run only once when running AmenityModelTest
+
+        Fields :
+            id           : 1
+            name         : Single room
+        """
+        Amenity.objects.create(name="Single room")
+
+    def test_amenity_create_success(self):
+        """Amenity model create success test
+        Check class name and amenity name field
+        """
+        amenity = Amenity.objects.get(id=1)
+        self.assertEqual(amenity.name, "Single room")
+        self.assertEqual(amenity.__class__.__name__, "Amenity")
+
+    def test_amenity_str_method(self):
+        """Amenity model str method test
+        Check str method equal amenity instance name field
+        """
+        amenity = Amenity.objects.get(id=1)
+        self.assertEqual(str(amenity), amenity.name)
+
+
+class FacilityModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        """Run only once when running FacilityModelTest
+
+        Fields :
+            id           : 1
+            name         : Single room
+        """
+        Facility.objects.create(name="Single room")
+
+    def test_facility_create_success(self):
+        """Facility model create success test
+        Check class name and facility name field
+        """
+        facility = Facility.objects.get(id=1)
+        self.assertEqual(facility.name, "Single room")
+        self.assertEqual(facility.__class__.__name__, "Facility")
+
+    def test_facility_str_method(self):
+        """Facility model str method test
+        Check str method equal facility instance name field
+        """
+        facility = Facility.objects.get(id=1)
+        self.assertEqual(str(facility), facility.name)
+
+
+class HouseRuleModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        """Run only once when running HouseRuleModelTest
+
+        Fields :
+            id           : 1
+            name         : Single room
+        """
+        HouseRule.objects.create(name="Single room")
+
+    def test_house_rule_create_success(self):
+        """HouseRule model create success test
+        Check class name and house_rule name field
+        """
+        house_rule = HouseRule.objects.get(id=1)
+        self.assertEqual(house_rule.name, "Single room")
+        self.assertEqual(house_rule.__class__.__name__, "HouseRule")
+
+    def test_house_rule_str_method(self):
+        """HouseRule model str method test
+        Check str method equal house_rule instance name field
+        """
+        house_rule = HouseRule.objects.get(id=1)
+        self.assertEqual(str(house_rule), house_rule.name)

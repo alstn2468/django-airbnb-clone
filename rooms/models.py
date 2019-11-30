@@ -30,7 +30,41 @@ class RoomType(AbstractItem):
         AbstractItem
     """
 
-    pass
+    class Meta:
+        verbose_name = "Room Type"
+
+
+class Amenity(AbstractItem):
+    """Amenity Model
+
+    Inherit:
+        AbstractItem
+    """
+
+    class Meta:
+        verbose_name_plural = "Amenities"
+
+
+class Facility(AbstractItem):
+    """Facility Model
+
+    Inherit:
+        AbstractItem
+    """
+
+    class Meta:
+        verbose_name_plural = "Facilities"
+
+
+class HouseRule(AbstractItem):
+    """HouseRule Model
+
+    Inherit:
+        AbstractItem
+    """
+
+    class Meta:
+        verbose_name = "House Rule"
 
 
 class Room(AbstractTimeStamp):
@@ -54,7 +88,10 @@ class Room(AbstractTimeStamp):
         check_out    : TimeField
         instant_book : BooleanField
         host         : users app User model (1:N)
-        room_type    : RoomType model (N:N)
+        room_type    : RoomType model (1:N)
+        amenities    : Amenity model (N:N)
+        facilities   : Facility model (N:N)
+        house_rules  : HouseRule model(N:N)
     """
 
     name = models.CharField(max_length=140)
@@ -71,7 +108,10 @@ class Room(AbstractTimeStamp):
     check_out = models.TimeField()
     instant_book = models.BooleanField(default=False)
     host = models.ForeignKey(User, on_delete=models.CASCADE)
-    room_type = models.ManyToManyField(RoomType, blank=True)
+    room_type = models.ForeignKey(RoomType, on_delete=models.SET_NULL, null=True)
+    amenities = models.ManyToManyField(Amenity)
+    facilities = models.ManyToManyField(Facility)
+    house_rules = models.ManyToManyField(HouseRule)
 
     def __str__(self):
         return self.name
