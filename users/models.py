@@ -4,6 +4,7 @@ from django.db import models
 
 class User(AbstractUser):
     """Custom User Model
+    
     Inherit:
         AbstractUser
 
