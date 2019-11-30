@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.db import IntegrityError
+from unittest import mock
 from rooms.models import Room
 
 
