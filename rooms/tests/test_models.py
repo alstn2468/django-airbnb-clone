@@ -69,7 +69,7 @@ class RoomModelTest(TestCase):
 
     def test_room_get_fields(self):
         """Room model get fields data test
-        Check room's all fields except when testing model create success test
+        Check room's all fields except when testing create success test
         """
         room = Room.objects.get(id=1)
         self.assertEqual("Test Description 1", room.description)
@@ -87,7 +87,7 @@ class RoomModelTest(TestCase):
 
     def test_time_stamp_created_at(self):
         """TimeStamp model created_at test
-        Check Test Room 1's created_at filed is datetime (2019.11.30)
+        Check Test Room 1's created_at field is datetime (2019.11.30)
         """
         room = Room.objects.get(id=1)
         mocked = datetime(2019, 11, 30, 0, 0, 0, tzinfo=pytz.utc)
@@ -96,7 +96,7 @@ class RoomModelTest(TestCase):
     def test_time_stamp_updated_at(self):
         """TimeStamp model updated_at test
         Get Test Room 1 objects and update Test Room 1 object
-        Check Test Room 1's updated_at filed is datetime (2019.12.01)
+        Check Test Room 1's updated_at field is datetime (2019.12.01)
         """
         room = Room.objects.get(id=1)
         mocked = datetime(2019, 12, 1, 0, 0, 0, tzinfo=pytz.utc)
