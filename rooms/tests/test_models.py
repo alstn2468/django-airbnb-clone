@@ -29,7 +29,7 @@ class RoomModelTest(TestCase):
             instant_book : True
             host         : test_user
             created_at   : 2019.11.30.00.00.00
-            upated_at    : 2019.12.01.00.00.00
+            updated_at    : 2019.12.01.00.00.00
         """
         user = User.objects.create_user("test_user")
         mocked = datetime(2019, 11, 30, 0, 0, 0, tzinfo=pytz.utc)
