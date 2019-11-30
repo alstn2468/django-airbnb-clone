@@ -105,10 +105,10 @@ class UserModelTest(TestCase):
 
     def test_user_birth_date_blank(self):
         """User model birth_date field blank test
-        Check test_user_1's birth_date is ""
+        Check test_user_1's birth_date is None
         """
         user = User.objects.get(username="test_user_1")
-        self.assertEqual("", user.birth_date)
+        self.assertIsNone(user.birth_date)
 
     def test_user_birth_date_set(self):
         """User model birth_date field set value test
