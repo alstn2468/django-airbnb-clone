@@ -71,12 +71,10 @@ class ReviewModelTest(TestCase):
 
     def test_review_create_fail(self):
         """Review model creation failure test
-        Duplicate user & room with IntegrityError exception
+        Review model's all fields can't contain NULL, IntegrityError exception
         """
         with self.assertRaises(IntegrityError):
-            user = User.objects.get(id=1)
-            room = Room.objects.get(id=1)
-            Review.objects.create(review="Test Review2", user=user, room=room)
+            Review.objects.create()
 
     def test_review_get_fields(self):
         """Review model get fields data test

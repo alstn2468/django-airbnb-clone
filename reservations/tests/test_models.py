@@ -62,7 +62,7 @@ class ReservationModelTest(TestCase):
 
     def test_reservation_create_fail(self):
         """Reservation model creation failure test
-        Duplicate pk index with IntegrityError exception
+        Reservation model's all fields can't contain NULL, IntegrityError exception
         """
         with self.assertRaises(IntegrityError):
             Reservation.objects.create()
