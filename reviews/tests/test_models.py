@@ -92,7 +92,7 @@ class ReviewModelTest(TestCase):
 
     def test_review_str_method(self):
         """Review model str method test
-        CHeck str mehtod equal review instance name field
+        Check str mehtod equal __str__ method return format
         """
         review = Review.objects.get(id=1)
         self.assertEqual("Test Review 1 - Test Room", str(review))
