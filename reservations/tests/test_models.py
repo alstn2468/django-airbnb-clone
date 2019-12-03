@@ -20,8 +20,8 @@ class ReservationModelTest(TestCase):
             check_out  : 2019.12.04
             guest      : test_user
             room       : test_room
-            created_at : 2019.11.30
-            updated_at : 2019.12.01
+            created_at : 2019.11.30.00.00.00
+            updated_at : 2019.12.01.00.00.00
         """
         user = User.objects.create_user("test_user")
         room = Room.objects.create(

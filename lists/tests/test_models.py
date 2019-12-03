@@ -14,10 +14,12 @@ class ListModelTest(TestCase):
         """Run only once when running ListModelTest
 
         Fields:
-            id    : 1
-            name  : Test List 1
-            user  : test_user
-            rooms : <Test Room 1, Test Room 2, ... Test Room 10>
+            id         : 1
+            name       : Test List 1
+            user       : test_user
+            rooms      : <Test Room 1, Test Room 2, ... Test Room 10>
+            created_at : 2019.11.30.00.00.00
+            updated_at : 2019.12.01.00.00.00
         """
         user = User.objects.create_user("test_user")
         mocked = datetime(2019, 11, 30, 0, 0, 0, tzinfo=pytz.utc)
