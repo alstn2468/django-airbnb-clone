@@ -93,7 +93,7 @@ class RoomModelTest(TestCase):
         room = Room.objects.get(id=1)
         self.assertEqual(str(room), room.name)
 
-    def test_time_stamp_created_at(self):
+    def test_room_time_stamp_created_at(self):
         """TimeStamp model created_at test
         Check Test Room 1's created_at field is datetime (2019.11.30)
         """
@@ -101,7 +101,7 @@ class RoomModelTest(TestCase):
         mocked = datetime(2019, 11, 30, 0, 0, 0, tzinfo=pytz.utc)
         self.assertEqual(room.created_at, mocked)
 
-    def test_time_stamp_updated_at(self):
+    def test_room_time_stamp_updated_at(self):
         """TimeStamp model updated_at test
         Get Test Room 1 objects and update Test Room 1 object
         Check Test Room 1's updated_at field is datetime (2019.12.01)
