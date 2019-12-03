@@ -9,11 +9,13 @@ class Reservation(AbstractTimeStamp):
         AbstractTimeStamp
 
     Fields:
-        status    : CharField
-        check_in  : DateField
-        check_out : DateField
-        guest     : User Model (1:N)
-        room      : Room Model (1:N)
+        status     : CharField
+        check_in   : DateField
+        check_out  : DateField
+        guest      : User Model (1:N)
+        room       : Room Model (1:N)
+        created_at : DateTimeField
+        updated_at : DateTimeField
     """
 
     STATUS_PENDING = "pending"

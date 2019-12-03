@@ -18,6 +18,8 @@ class Review(AbstractTimeStamp):
         value         : IntegerField
         user          : User Model (1:N)
         room          : Room Model (1:N)
+        created_at    : DateTimeField
+        updated_at    : DateTimeField
     """
 
     review = models.TextField()

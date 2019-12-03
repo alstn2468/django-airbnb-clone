@@ -9,9 +9,11 @@ class List(AbstractTimeStamp):
         AbstractTimeStamp
 
     FIelds:
-        name  : CharField
-        user  : User Model (1:N)
-        rooms : Room Model (N:N)
+        name       : CharField
+        user       : User Model (1:N)
+        rooms      : Room Model (N:N)
+        created_at : DateTimeField
+        updated_at : DateTimeField
     """
 
     name = models.CharField(max_length=80)

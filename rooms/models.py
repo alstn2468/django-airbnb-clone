@@ -10,7 +10,9 @@ class AbstractItem(AbstractTimeStamp):
         AbstractTimeStamp
 
     Fields:
-        name : CharField
+        name       : CharField
+        created_at : DateTimeField
+        updated_at : DateTimeField
     """
 
     name = models.CharField(max_length=80)
@@ -73,9 +75,11 @@ class Photo(AbstractTimeStamp):
         AbstractTimeStamp
 
     Fields:
-        caption : CharField
-        file    : ImageField
-        room    : Room Model (1:N)
+        caption    : CharField
+        file       : ImageField
+        room       : Room Model (1:N)
+        created_at : DateTimeField
+        updated_at : DateTimeField
     """
 
     caption = models.CharField(max_length=80)
@@ -111,6 +115,8 @@ class Room(AbstractTimeStamp):
         amenities    : Amenity model (N:N)
         facilities   : Facility model (N:N)
         house_rules  : HouseRule model(N:N)
+        created_at   : DateTimeField
+        updated_at   : DateTimeField
     """
 
     name = models.CharField(max_length=140)

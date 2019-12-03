@@ -8,7 +8,7 @@ class AbstractTimeStamp(models.Model):
         Model
 
     Fields:
-        created_at : DateTImeField (UnEditable)
+        created_at : DateTimeField (UnEditable)
         updated_at : DateTimeField (Editable)
     """
 
