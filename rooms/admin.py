@@ -17,9 +17,23 @@ class RoomAdmin(admin.ModelAdmin):
         country           : CharField
 
     Search by:
-        city          : exact
-        host.username : startwith
+        city              : exact
+        host.username     : startwith
     """
+
+    fieldsets = (
+        (
+            "Basic Info",
+            {"fields": ("name", "description", "country", "address", "price")},
+        ),
+        ("Times", {"fields": ("check_in", "check_out", "instant_book")}),
+        ("Spaces", {"fields": ("guests", "beds", "bedrooms", "baths")}),
+        (
+            "More About the Space",
+            {"fields": ("amenities", "facilities", "house_rules")},
+        ),
+        ("Last Details", {"fields": ("host",)}),
+    )
 
     list_display = (
         "name",
@@ -45,6 +59,7 @@ class RoomAdmin(admin.ModelAdmin):
         "house_rules",
         "country",
     )
+    filter_horizontal = ("amenities", "facilities", "house_rules")
     search_fields = ("=city", "^host__username")
 
 
