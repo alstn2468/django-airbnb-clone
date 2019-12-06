@@ -7,9 +7,14 @@ class RoomAdmin(admin.ModelAdmin):
     """Register Room model at admin panel
 
     Filter by:
-        instant_book : BooleanField
-        city         : CharField
-        country      : CharField
+        instant_book      : BooleanField
+        host.is_superhost : BooleanField
+        city              : CharField
+        room_type         : RoomType Model
+        amenities         : Amenity Model
+        facilities        : Facility Model
+        house_rules       : HouseRule Model
+        country           : CharField
 
     Search by:
         city          : exact
@@ -30,7 +35,16 @@ class RoomAdmin(admin.ModelAdmin):
         "check_out",
         "instant_book",
     )
-    list_filter = ("instant_book", "city", "country")
+    list_filter = (
+        "instant_book",
+        "host__is_superhost",
+        "city",
+        "room_type",
+        "amenities",
+        "facilities",
+        "house_rules",
+        "country",
+    )
     search_fields = ("=city", "^host__username")
 
 
