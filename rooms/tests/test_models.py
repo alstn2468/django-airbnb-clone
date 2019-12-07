@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.db import IntegrityError
 from datetime import datetime
 from rooms.models import Room, RoomType, Amenity, Facility, HouseRule, Photo
+from rooms.admin import RoomAdmin
 from users.models import User
 from unittest import mock
 import pytz
@@ -409,3 +410,83 @@ class HouseRuleModelTest(TestCase):
         """
         house_rule = HouseRule.objects.get(id=1)
         self.assertEqual(str(house_rule), house_rule.name)
+
+
+class RoomAdminTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        """Run only once when running RoomAdminTest
+
+        Fields :
+            id           : 1
+            name         : Test Room 1
+            description  : Test Description 1
+            country      : KR -> 대한민국
+            city         : Seoul
+            price        : 100
+            address      : Test Address
+            guest        : 4
+            beds         : 2
+            bedrooms     : 1
+            baths        : 1
+            check_in     : 09-30
+            check_out    : 10-30
+            instant_book : True
+            host         : test_user
+            amenities    : [Test Amenity 1, ... , Test Amenity 3]
+            facility     : [Test Facility 1, ... , Test Facility 10]
+            house_rules  : []
+        """
+        user = User.objects.create_user("test_user")
+        room = Room.objects.create(
+            name="Test Room 1",
+            description="Test Description 1",
+            country="KR",
+            city="Seoul",
+            price=100,
+            address="Test Address",
+            guests=4,
+            beds=2,
+            bedrooms=1,
+            baths=1,
+            check_in=datetime(2019, 1, 1, 9, 30),
+            check_out=datetime(2019, 1, 2, 10, 30),
+            instant_book=True,
+            host=user,
+        )
+
+        for i in range(1, 4):
+            amenity = Amenity.objects.create(name=f"Test Amenity {i}")
+            room.amenities.add(amenity)
+
+        for i in range(1, 11):
+            facility = Facility.objects.create(name=f"Test Facility {i}")
+            room.facilities.add(facility)
+
+    def test_room_admin_count_amenities(self):
+        """RoomAdmin class count_amenities function test
+        Check RoomAdmin's count_amenities function equal amenities length
+        """
+        room = Room.objects.get(id=1)
+        self.assertEqual(3, RoomAdmin.count_amenities(RoomAdmin, room))
+
+    def test_room_admin_count_facilities(self):
+        """RoomAdmin class count_facilities function test
+        Check RoomAdmin's count_facilities function equal facilities length
+        """
+        room = Room.objects.get(id=1)
+        self.assertEqual(10, RoomAdmin.count_facilities(RoomAdmin, room))
+
+    def test_room_admin_count_house_rules(self):
+        """RoomAdmin class count_house_rules function test
+        Check RoomAdmin's count_house_rules function equal house_rules length
+        Run two tests with no house_rule and add 5 house_rules value
+        """
+        room = Room.objects.get(id=1)
+        self.assertEqual(0, RoomAdmin.count_house_rules(RoomAdmin, room))
+
+        for i in range(1, 6):
+            house_rule = HouseRule.objects.create(name=f"Test House Rule {i}")
+            room.house_rules.add(house_rule)
+
+        self.assertEqual(5, RoomAdmin.count_house_rules(RoomAdmin, room))
