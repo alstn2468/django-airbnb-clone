@@ -19,6 +19,11 @@ class RoomAdmin(admin.ModelAdmin):
     Search by:
         city              : exact
         host.username     : startwith
+
+    Admin function :
+        count_amenities   : return amenities count
+        count_facilities  : return facilities count
+        count_house_rules : return house_rules count
     """
 
     fieldsets = (
@@ -30,7 +35,10 @@ class RoomAdmin(admin.ModelAdmin):
         ("Spaces", {"fields": ("guests", "beds", "bedrooms", "baths")}),
         (
             "More About the Space",
-            {"fields": ("amenities", "facilities", "house_rules")},
+            {
+                "classes": ("collapse",),
+                "fields": ("amenities", "facilities", "house_rules"),
+            },
         ),
         ("Last Details", {"fields": ("host",)}),
     )
@@ -48,6 +56,9 @@ class RoomAdmin(admin.ModelAdmin):
         "check_in",
         "check_out",
         "instant_book",
+        "count_amenities",
+        "count_facilities",
+        "count_house_rules",
     )
     list_filter = (
         "instant_book",
@@ -61,6 +72,15 @@ class RoomAdmin(admin.ModelAdmin):
     )
     filter_horizontal = ("amenities", "facilities", "house_rules")
     search_fields = ("=city", "^host__username")
+
+    def count_amenities(self, obj):
+        return obj.amenities.count()
+
+    def count_facilities(self, obj):
+        return obj.facilities.count()
+
+    def count_house_rules(self, obj):
+        return obj.house_rules.count()
 
 
 @admin.register(RoomType, Amenity, Facility, HouseRule)
