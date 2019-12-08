@@ -59,6 +59,7 @@ class RoomAdmin(admin.ModelAdmin):
         "count_amenities",
         "count_facilities",
         "count_house_rules",
+        "count_photos",
     )
     list_filter = (
         "instant_book",
@@ -82,12 +83,18 @@ class RoomAdmin(admin.ModelAdmin):
     def count_house_rules(self, obj):
         return obj.house_rules.count()
 
+    def count_photos(self, obj):
+        return obj.photos.count()
+
 
 @admin.register(RoomType, Amenity, Facility, HouseRule)
 class ItemAdmin(admin.ModelAdmin):
     """Register model classes inherited from the AbstractItem model"""
 
-    pass
+    list_display = ("name", "used_by")
+
+    def used_by(self, obj):
+        return obj.rooms.count()
 
 
 @admin.register(Photo)

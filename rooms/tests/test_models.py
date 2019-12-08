@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.db import IntegrityError
 from datetime import datetime
 from rooms.models import Room, RoomType, Amenity, Facility, HouseRule, Photo
-from rooms.admin import RoomAdmin
+from rooms.admin import RoomAdmin, ItemAdmin
 from users.models import User
 from unittest import mock
 import pytz
@@ -490,3 +490,178 @@ class RoomAdminTest(TestCase):
             room.house_rules.add(house_rule)
 
         self.assertEqual(5, RoomAdmin.count_house_rules(RoomAdmin, room))
+
+    def test_room_admin_count_photos(self):
+        """RoomAdmin class count_photos function test
+        Check RoomAdmin's count_photos function equal photos length
+        """
+        room = Room.objects.get(id=1)
+        self.assertEqual(0, RoomAdmin.count_photos(RoomAdmin, room))
+
+
+class ItemAdminTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        """Run only once when running ItemAdminTest
+
+        Fields :
+            Amenity
+                id   : 1
+                name : Test Amenity
+
+            Facility
+                id   : 1
+                name : Test Facility
+
+            RoomType
+                id   : 1
+                name : Test Room Type
+
+            HouseRule
+                id   : 1
+                name : Test House Rule
+        """
+        Amenity.objects.create(name="Test Amenity")
+        Facility.objects.create(name="Test Facility")
+        RoomType.objects.create(name="Test Room Type")
+        HouseRule.objects.create(name="Test House Rule")
+
+    def test_amenity_used_by(self):
+        """ItemAdmin used_by function test (No room has amenity)
+        Check ItemAdmin's used_by function equal amenity's rooms count
+        """
+        amenity = Amenity.objects.get(id=1)
+        self.assertEqual(0, ItemAdmin.used_by(ItemAdmin, amenity))
+
+    def test_facility_used_by(self):
+        """ItemAdmin used_by function test (No room has facility)
+        Check ItemAdmin's used_by function equal facility's rooms count
+        """
+        facility = Facility.objects.get(id=1)
+        self.assertEqual(0, ItemAdmin.used_by(ItemAdmin, facility))
+
+    def test_room_type_used_by(self):
+        """ItemAdmin used_by function test (No room has room_type)
+        Check ItemAdmin's used_by function equal room_type's rooms count
+        """
+        room_type = RoomType.objects.get(id=1)
+        self.assertEqual(0, ItemAdmin.used_by(ItemAdmin, room_type))
+
+    def test_house_rule_used_by(self):
+        """ItemAdmin used_by function test (No room has house_rules)
+        Check ItemAdmin's used_by function equal house_rule' rooms count
+        """
+        house_rule = HouseRule.objects.get(id=1)
+        self.assertEqual(0, ItemAdmin.used_by(ItemAdmin, house_rule))
+
+    def test_amenity_used_by_add_rooms(self):
+        """ItemAdmin used_by function test
+        Check ItemAdmin's used_by function equal amenity's rooms count
+        """
+        user = User.objects.create_user("test_user")
+        amenity = Amenity.objects.get(id=1)
+
+        for i in range(1, 11):
+            room = Room.objects.create(
+                name=f"Test Room {i}",
+                description=f"Test Description {i}",
+                country="KR",
+                city="Seoul",
+                price=100,
+                address="Test Address",
+                guests=4,
+                beds=2,
+                bedrooms=1,
+                baths=1,
+                check_in=datetime(2019, 1, 1, 9, 30),
+                check_out=datetime(2019, 1, 2, 10, 30),
+                instant_book=True,
+                host=user,
+            )
+            room.amenities.add(amenity)
+
+        self.assertEqual(10, ItemAdmin.used_by(ItemAdmin, amenity))
+
+    def test_facility_used_by_add_rooms(self):
+        """ItemAdmin used_by function test
+        Check ItemAdmin's used_by function equal facility's rooms count
+        """
+        user = User.objects.create_user("test_user")
+        facility = Facility.objects.get(id=1)
+
+        for i in range(1, 5):
+            room = Room.objects.create(
+                name=f"Test Room {i}",
+                description=f"Test Description {i}",
+                country="KR",
+                city="Seoul",
+                price=100,
+                address="Test Address",
+                guests=4,
+                beds=2,
+                bedrooms=1,
+                baths=1,
+                check_in=datetime(2019, 1, 1, 9, 30),
+                check_out=datetime(2019, 1, 2, 10, 30),
+                instant_book=True,
+                host=user,
+            )
+            room.facilities.add(facility)
+
+        self.assertEqual(4, ItemAdmin.used_by(ItemAdmin, facility))
+
+    def test_room_type_used_by_add_rooms(self):
+        """ItemAdmin used_by function test
+        Check ItemAdmin's used_by function equal room_type's rooms count
+        """
+        user = User.objects.create_user("test_user")
+        room_type = RoomType.objects.get(id=1)
+
+        for i in range(1, 11):
+            Room.objects.create(
+                name=f"Test Room {i}",
+                description=f"Test Description {i}",
+                country="KR",
+                city="Seoul",
+                price=100,
+                address="Test Address",
+                guests=4,
+                beds=2,
+                bedrooms=1,
+                baths=1,
+                check_in=datetime(2019, 1, 1, 9, 30),
+                check_out=datetime(2019, 1, 2, 10, 30),
+                instant_book=True,
+                host=user,
+                room_type=room_type
+            )
+
+        self.assertEqual(10, ItemAdmin.used_by(ItemAdmin, room_type))
+
+    def test_house_rule_used_by_add_rooms(self):
+        """ItemAdmin used_by function test
+        Check ItemAdmin's used_by function equal house_rule's rooms count
+        """
+        user = User.objects.create_user("test_user")
+        house_rule = HouseRule.objects.get(id=1)
+
+        for i in range(1, 9):
+            room = Room.objects.create(
+                name=f"Test Room {i}",
+                description=f"Test Description {i}",
+                country="KR",
+                city="Seoul",
+                price=100,
+                address="Test Address",
+                guests=4,
+                beds=2,
+                bedrooms=1,
+                baths=1,
+                check_in=datetime(2019, 1, 1, 9, 30),
+                check_out=datetime(2019, 1, 2, 10, 30),
+                instant_book=True,
+                host=user,
+            )
+            room.house_rules.add(house_rule)
+
+        self.assertEqual(8, ItemAdmin.used_by(ItemAdmin, house_rule))
