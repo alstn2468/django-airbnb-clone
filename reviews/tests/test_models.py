@@ -115,3 +115,24 @@ class ReviewModelTest(TestCase):
             review.location = 1
             review.save()
             self.assertEqual(review.updated_at, mocked)
+
+    def test_review_rating_average_method(self):
+        """Review model rating_average method test
+        Check method result equal calculated directly result
+        """
+        review = Review.objects.get(id=1)
+        avg = round(
+            (
+                review.accuracy
+                + review.communication
+                + review.cleanliness
+                + review.location
+                + review.check_in
+                + review.value
+            )
+            / 6,
+            2,
+        )
+
+        self.assertEqual(avg, review.rating_average())
+

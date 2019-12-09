@@ -6,4 +6,4 @@ from reviews.models import Review
 class ReviewAdmin(admin.ModelAdmin):
     """Register Review model at admin panel"""
 
-    pass
+    list_display = ("__str__", "rating_average")
