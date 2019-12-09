@@ -31,3 +31,18 @@ class UserAdmin(BaseUserAdmin):
         ),
     )
     fieldsets = BaseUserAdmin.fieldsets + user_fieldsets
+
+    list_filter = BaseUserAdmin.list_filter + ("is_superhost",)
+
+    list_display = (
+        "username",
+        "first_name",
+        "last_name",
+        "email",
+        "is_active",
+        "language",
+        "currency",
+        "is_superhost",
+        "is_staff",
+        "is_superuser",
+    )
