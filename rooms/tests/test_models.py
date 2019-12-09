@@ -3,6 +3,7 @@ from django.db import IntegrityError
 from datetime import datetime
 from rooms.models import Room, RoomType, Amenity, Facility, HouseRule, Photo
 from rooms.admin import RoomAdmin, ItemAdmin
+from reviews.models import Review
 from users.models import User
 from unittest import mock
 import pytz
@@ -303,6 +304,32 @@ class RoomModelTest(TestCase):
 
         self.assertEqual(str(photo), photo.caption)
 
+    def test_room_total_rating_method(self):
+        """Room model total_rating method test
+        Check method result equal calculated directly result
+        """
+        room = Room.objects.get(id=1)
+        total_avg, review_cnt = 0, 0
+
+        for i in range(1, 11):
+            user = User.objects.create_user(f"test_user_{i}")
+            review = Review.objects.create(
+                review=f"Test Review {i}",
+                accuracy=(i % 5 + 1),
+                communication=(i % 5 + 1),
+                cleanliness=(i % 5 + 1),
+                location=(i % 5 + 1),
+                check_in=(i % 5 + 1),
+                value=(i % 5 + 1),
+                user=user,
+                room=room
+            )
+            total_avg += review.rating_average()
+            review_cnt += 1
+
+        total_avg = round(total_avg / review_cnt, 2)
+        
+        self.assertEqual(room.total_rating(), total_avg)
 
 class RoomTypeModelTest(TestCase):
     @classmethod
