@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.db import IntegrityError
+from django.utils import timezone
 from reservations.models import Reservation
 from users.models import User
 from rooms.models import Room
@@ -103,3 +104,51 @@ class ReservationModelTest(TestCase):
             reservation.status = Reservation.STATUS_PENDING
             reservation.save()
             self.assertEqual(reservation.updated_at, mocked)
+
+    def test_reservation_in_progress_method_true(self):
+        """Reservation model in_progress method test
+        Check reservation's in_progress method return True
+        """
+        user = User.objects.get(id=1)
+        room = Room.objects.get(id=1)
+        check_in = (timezone.now() - timezone.timedelta(days=1)).date()
+        check_out = (timezone.now() + timezone.timedelta(days=2)).date()
+        reservation = Reservation.objects.create(
+            status=Reservation.STATUS_CONFIRMED,
+            check_in=check_in,
+            check_out=check_out,
+            guest=user,
+            room=room,
+        )
+        self.assertTrue(reservation.in_progress())
+
+    def test_reservation_in_progress_method_false(self):
+        """Reservation model in_progress method test
+        Check reservation's in_progress method return False
+        """
+        reservation = Reservation.objects.get(id=1)
+        self.assertFalse(reservation.in_progress())
+
+    def test_reservation_is_finished_method_true(self):
+        """Reservation model is_finished method test
+        Check reservation's is_finished method return True
+        """
+        reservation = Reservation.objects.get(id=1)
+        self.assertTrue(reservation.is_finished())
+
+    def test_reservation_is_finished_method_false(self):
+        """Reservation model is_finished method test
+        Check reservation's is_finished method return False
+        """
+        user = User.objects.get(id=1)
+        room = Room.objects.get(id=1)
+        check_in = (timezone.now() - timezone.timedelta(days=1)).date()
+        check_out = (timezone.now() + timezone.timedelta(days=2)).date()
+        reservation = Reservation.objects.create(
+            status=Reservation.STATUS_CONFIRMED,
+            check_in=check_in,
+            check_out=check_out,
+            guest=user,
+            room=room,
+        )
+        self.assertFalse(reservation.is_finished())
