@@ -147,10 +147,10 @@ class Room(AbstractTimeStamp):
 
     def total_rating(self):
         all_reviews = self.reviews.all()
-        all_ratings = []
+        all_ratings = 0
 
         for review in all_reviews:
-            all_ratings.append(review.rating_average())
+            all_ratings += review.rating_average()
 
-        return round(sum(all_ratings) / len(all_ratings), 2)
+        return all_ratings / len(all_reviews)
 
