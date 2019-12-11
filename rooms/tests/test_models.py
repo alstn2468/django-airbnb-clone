@@ -327,9 +327,10 @@ class RoomModelTest(TestCase):
             total_avg += review.rating_average()
             review_cnt += 1
 
-        total_avg = round(total_avg / review_cnt, 2)
+        total_avg = total_avg / review_cnt
         
         self.assertEqual(room.total_rating(), total_avg)
+
 
 class RoomTypeModelTest(TestCase):
     @classmethod
@@ -486,10 +487,6 @@ class RoomAdminTest(TestCase):
             amenity = Amenity.objects.create(name=f"Test Amenity {i}")
             room.amenities.add(amenity)
 
-        for i in range(1, 11):
-            facility = Facility.objects.create(name=f"Test Facility {i}")
-            room.facilities.add(facility)
-
     def test_room_admin_count_amenities(self):
         """RoomAdmin class count_amenities function test
         Check RoomAdmin's count_amenities function equal amenities length
@@ -497,33 +494,20 @@ class RoomAdminTest(TestCase):
         room = Room.objects.get(id=1)
         self.assertEqual(3, RoomAdmin.count_amenities(RoomAdmin, room))
 
-    def test_room_admin_count_facilities(self):
-        """RoomAdmin class count_facilities function test
-        Check RoomAdmin's count_facilities function equal facilities length
-        """
-        room = Room.objects.get(id=1)
-        self.assertEqual(10, RoomAdmin.count_facilities(RoomAdmin, room))
-
-    def test_room_admin_count_house_rules(self):
-        """RoomAdmin class count_house_rules function test
-        Check RoomAdmin's count_house_rules function equal house_rules length
-        Run two tests with no house_rule and add 5 house_rules value
-        """
-        room = Room.objects.get(id=1)
-        self.assertEqual(0, RoomAdmin.count_house_rules(RoomAdmin, room))
-
-        for i in range(1, 6):
-            house_rule = HouseRule.objects.create(name=f"Test House Rule {i}")
-            room.house_rules.add(house_rule)
-
-        self.assertEqual(5, RoomAdmin.count_house_rules(RoomAdmin, room))
-
     def test_room_admin_count_photos(self):
         """RoomAdmin class count_photos function test
         Check RoomAdmin's count_photos function equal photos length
         """
         room = Room.objects.get(id=1)
-        self.assertEqual(0, RoomAdmin.count_photos(RoomAdmin, room))
+
+        for i in range(1, 11):
+            Photo.objects.create(
+                caption=f"Test Caption {i}",
+                file=tempfile.NamedTemporaryFile(suffix=".jpg").name,
+                room=room,
+            )
+
+        self.assertEqual(10, RoomAdmin.count_photos(RoomAdmin, room))
 
 
 class ItemAdminTest(TestCase):
