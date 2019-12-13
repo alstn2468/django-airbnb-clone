@@ -4,6 +4,11 @@ from lists.models import List
 
 @admin.register(List)
 class ListAdmin(admin.ModelAdmin):
-    """Register List model at admin panel"""
+    """Register List model at admin panel
 
-    pass
+    Search by:
+        name : icontains
+    """
+
+    list_display = ("name", "user", "count_rooms")
+    search_fields = ("name",)

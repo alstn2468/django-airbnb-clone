@@ -111,3 +111,33 @@ class ListModelTest(TestCase):
             list_obj.save()
             self.assertEqual("Update Test List 1", list_obj.name)
             self.assertEqual(list_obj.updated_at, mocked)
+
+    def test_list_count_rooms_method(self):
+        """List model count_rooms method test
+        Check list model's count_rooms method return value equal room counts
+        """
+        user = User.objects.get(id=1)
+        list_obj = List.objects.get(id=1)
+
+        self.assertEqual(0, list_obj.count_rooms())
+
+        for i in range(1, 11):
+            room = Room.objects.create(
+                name=f"Test Room {i}",
+                description=f"Test Description {i}",
+                country="KR",
+                city="Seoul",
+                price=100,
+                address="Test Address",
+                guests=4,
+                beds=2,
+                bedrooms=1,
+                baths=1,
+                check_in=datetime(2019, 1, 1, 9, 30),
+                check_out=datetime(2019, 1, 2, 10, 30),
+                instant_book=True,
+                host=user,
+            )
+            list_obj.rooms.add(room)
+
+        self.assertEqual(10, list_obj.count_rooms())
