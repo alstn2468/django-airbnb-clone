@@ -99,6 +99,20 @@ class ConversationModelTest(TestCase):
 
         self.assertEqual(10, conversation.count_messages())
 
+    def test_conversation_count_participants_method(self):
+        """Conversation model count_participants method test
+        Check conversation model's participants count equal method return value
+        """
+        conversation = Conversation.objects.get(id=1)
+
+        self.assertEqual(0, conversation.count_participants())
+
+        for i in range(10):
+            user = User.objects.create_user(f"test_user_{i}")
+            conversation.participants.add(user)
+
+        self.assertEqual(10, conversation.count_participants())
+
 
 class MessageModelTest(TestCase):
     @classmethod

@@ -6,7 +6,7 @@ from conversations.models import Conversation, Message
 class ConversationAdmin(admin.ModelAdmin):
     """Register Conversation model at admin panel"""
 
-    pass
+    list_display = ("__str__", "count_messages", "count_participants")
 
 
 @admin.register(Message)
