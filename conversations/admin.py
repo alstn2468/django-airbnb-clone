@@ -13,4 +13,4 @@ class ConversationAdmin(admin.ModelAdmin):
 class MessageAdmin(admin.ModelAdmin):
     """Register Message model at admin panel"""
 
-    pass
+    list_display = ("__str__", "created_at")

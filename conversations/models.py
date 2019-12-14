@@ -19,7 +19,12 @@ class Conversation(AbstractTimeStamp):
     )
 
     def __str__(self):
-        return str(self.created_at)
+        usernames = [user.username for user in self.participants.all()]
+
+        return ", ".join(usernames)
+
+    def count_messages(self):
+        return self.messages.count()
 
 
 class Message(AbstractTimeStamp):

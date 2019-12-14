@@ -57,7 +57,13 @@ class ConversationModelTest(TestCase):
         Check str method equal __str__ method return format
         """
         conversation = Conversation.objects.get(id=1)
-        self.assertEqual("2019-11-30 00:00:00+00:00", str(conversation))
+        expected_value = "test_user_1, test_user_2, test_user_3"
+
+        for i in range(1, 4):
+            user = User.objects.create_user(f"test_user_{i}")
+            conversation.participants.add(user)
+
+        self.assertEqual(expected_value, str(conversation))
 
     def test_conversation_time_stamp_created_at(self):
         """TimeStamp model created_at test
@@ -78,6 +84,20 @@ class ConversationModelTest(TestCase):
         with mock.patch("django.utils.timezone.now", mock.Mock(return_value=mocked)):
             conversation.save()
             self.assertEqual(conversation.updated_at, mocked)
+
+    def test_conversation_count_messages_method(self):
+        """Conversation model count_messages method test
+        Check conversation model's messages count equal method return value
+        """
+        conversation = Conversation.objects.get(id=1)
+        user = User.objects.create_user("test_user")
+
+        for i in range(10):
+            Message.objects.create(
+                message=f"test message {i}", user=user, conversation=conversation
+            )
+
+        self.assertEqual(10, conversation.count_messages())
 
 
 class MessageModelTest(TestCase):
