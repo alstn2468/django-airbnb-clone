@@ -3,6 +3,34 @@ from django.utils.html import mark_safe
 from .models import Room, RoomType, Amenity, Facility, HouseRule, Photo
 
 
+@admin.register(RoomType, Amenity, Facility, HouseRule)
+class ItemAdmin(admin.ModelAdmin):
+    """Register model classes inherited from the AbstractItem model"""
+
+    list_display = ("name", "used_by")
+
+    def used_by(self, obj):
+        return obj.rooms.count()
+
+
+@admin.register(Photo)
+class PhotoAdmin(admin.ModelAdmin):
+    """Register Photo model at admin panel"""
+
+    list_display = ("__str__", "get_thumbnail")
+
+    def get_thumbnail(self, obj):
+        return mark_safe(f'<img width="50px" src="{obj.file.url}" />')
+
+    get_thumbnail.short_description = "Thumbnail"
+
+
+class PhotoInlineAdmin(admin.TabularInline):
+    """Photo model's inline admin"""
+
+    model = Photo
+
+
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
     """Register Room model at admin panel
@@ -27,6 +55,8 @@ class RoomAdmin(admin.ModelAdmin):
         count_house_rules : return house_rules count
     """
 
+    inlines = (PhotoInlineAdmin,)
+
     fieldsets = (
         (
             "Basic Info",
@@ -43,6 +73,8 @@ class RoomAdmin(admin.ModelAdmin):
         ),
         ("Last Details", {"fields": ("host",)}),
     )
+
+    raw_id_fields = ("host",)
 
     list_display = (
         "name",
@@ -79,25 +111,3 @@ class RoomAdmin(admin.ModelAdmin):
 
     def count_photos(self, obj):
         return obj.photos.count()
-
-
-@admin.register(RoomType, Amenity, Facility, HouseRule)
-class ItemAdmin(admin.ModelAdmin):
-    """Register model classes inherited from the AbstractItem model"""
-
-    list_display = ("name", "used_by")
-
-    def used_by(self, obj):
-        return obj.rooms.count()
-
-
-@admin.register(Photo)
-class PhotoAdmin(admin.ModelAdmin):
-    """Register Photo model at admin panel"""
-
-    list_display = ("__str__", "get_thumbnail")
-
-    def get_thumbnail(self, obj):
-        return mark_safe(f'<img width="50px" src="{obj.file.url}" />')
-
-    get_thumbnail.short_description = "Thumbnail"
