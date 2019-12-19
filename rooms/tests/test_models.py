@@ -1,8 +1,9 @@
 from django.test import TestCase
 from django.db import IntegrityError
+from django.utils.html import mark_safe
 from datetime import datetime
 from rooms.models import Room, RoomType, Amenity, Facility, HouseRule, Photo
-from rooms.admin import RoomAdmin, ItemAdmin
+from rooms.admin import RoomAdmin, ItemAdmin, PhotoAdmin
 from reviews.models import Review
 from users.models import User
 from unittest import mock
@@ -676,3 +677,50 @@ class ItemAdminTest(TestCase):
             room.house_rules.add(house_rule)
 
         self.assertEqual(8, ItemAdmin.used_by(ItemAdmin, house_rule))
+
+
+class PhotoAdminTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        """Run only once when running ItemAdminTest
+
+        Fields :
+            Photo
+                id      : 1
+                caption : Test Caption
+                file    : xxxxx.jpg
+                room    : Test Room
+        """
+        user = User.objects.create_user("test_user")
+        room = Room.objects.create(
+            name="Test Room",
+            description="Test Description",
+            country="KR",
+            city="Seoul",
+            price=100,
+            address="Test Address",
+            guests=4,
+            beds=2,
+            bedrooms=1,
+            baths=1,
+            check_in=datetime(2019, 1, 1, 9, 30),
+            check_out=datetime(2019, 1, 2, 10, 30),
+            instant_book=True,
+            host=user,
+        )
+        Photo.objects.create(
+            caption="Test Caption",
+            file=tempfile.NamedTemporaryFile(suffix=".jpg").name,
+            room=room,
+        )
+
+    def test_get_thumbnail_method(self):
+        """PhotoAdmin get_thumbnail method test
+        Check PhotoAdmin's get_thumbnail method equal expected_value
+        """
+        photo = Photo.objects.get(id=1)
+        expected_value = mark_safe(f'<img width="50px" src="{photo.file.url}" />')
+
+        self.assertEqual(expected_value, PhotoAdmin.get_thumbnail(PhotoAdmin, photo))
+
+
