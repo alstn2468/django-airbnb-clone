@@ -329,8 +329,33 @@ class RoomModelTest(TestCase):
             review_cnt += 1
 
         total_avg = total_avg / review_cnt
-        
+
         self.assertEqual(room.total_rating(), total_avg)
+
+    def test_room_save_method(self):
+        """Room model save method test
+        Check Room model's city field's first word is upper case
+        """
+        user = User.objects.get(id=1)
+
+        room = Room.objects.create(
+            name="Test Save Room",
+            description="Test Save Room Desc",
+            country="KR",
+            city="seoul",
+            price=100,
+            address="Test Address",
+            guests=4,
+            beds=2,
+            bedrooms=1,
+            baths=1,
+            check_in=datetime(2019, 1, 1, 9, 30),
+            check_out=datetime(2019, 1, 2, 10, 30),
+            instant_book=True,
+            host=user,
+        )
+
+        self.assertEqual("Seoul", room.city)
 
 
 class RoomTypeModelTest(TestCase):
