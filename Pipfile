@@ -13,6 +13,7 @@ coverage = "*"
 codecov = "*"
 pillow = "*"
 django-countries = "*"
+django-seed = "*"
 
 [requires]
 python_version = "3.7"
