@@ -11,16 +11,42 @@
 
 This Repository quoted by [Nomad Coder](https://academy.nomadcoders.co)'s membership course.
 
-### Function
-
-
-### Requirements
-
-- Python
-- Django
-- Pillow
-- django_countries
-- coverage
-- codecov
 
 ### To Do
+
+#### Model
+
+- [x] User
+- [x] Room
+  - [x] AbstractItem
+  - [x] RoomType
+  - [x] Amenity
+  - [x] Facility
+  - [x] HouseRule
+  - [x] Photo    
+- [x] Review
+- [x] Reservation
+- [x] List
+- [x] Conversation
+  - [x] Message
+- [x] AbstractTimeStamp
+
+#### View
+
+- [ ] User App
+- [ ] Core App
+- [ ] Room App
+- [ ] Review App
+- [ ] Reservation App
+- [ ] List App
+- [ ] Conversation App
+
+#### Templates
+
+- [ ] User App
+- [ ] Core App
+- [ ] Room App
+- [ ] Review App
+- [ ] Reservation App
+- [ ] List App
+- [ ] Conversation App
