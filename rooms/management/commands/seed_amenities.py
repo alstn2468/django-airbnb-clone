@@ -52,7 +52,7 @@ class Command(BaseCommand):
                 "TV",
             ]
 
-            self.stdout.write(self.style.SUCCESS("■ START CREATE AMENITY"))
+            self.stdout.write(self.style.SUCCESS("■ START CREATE AMENITIES"))
 
             for name in amenities:
                 Amenity.objects.create(name=name)
