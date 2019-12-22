@@ -15,7 +15,7 @@ class AbstractItem(AbstractTimeStamp):
         updated_at : DateTimeField
     """
 
-    name = models.CharField(max_length=80)
+    name = models.CharField(max_length=80, unique=True)
 
     class Meta:
         abstract = True
