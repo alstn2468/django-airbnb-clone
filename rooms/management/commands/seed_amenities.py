@@ -60,6 +60,6 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS("■ SUCCESS CREATE ALL AMENITIES!"))
 
         except Exception as e:
-            self.stdout.write(self.style.ERROR(e))
+            self.stdout.write(self.style.ERROR(f"■ {e}"))
             self.stdout.write(self.style.ERROR("■ FAIL CREATE  AMENITIES"))
 

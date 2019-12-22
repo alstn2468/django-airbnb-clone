@@ -15,10 +15,11 @@ class AbstractItem(AbstractTimeStamp):
         updated_at : DateTimeField
     """
 
-    name = models.CharField(max_length=80)
+    name = models.CharField(max_length=80, primary_key=True)
 
     class Meta:
         abstract = True
+        # unique_together = (("id", "name"),)
 
     def __str__(self):
         return self.name
