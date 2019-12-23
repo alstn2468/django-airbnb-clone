@@ -151,6 +151,10 @@ class Room(AbstractTimeStamp):
 
     def total_rating(self):
         all_reviews = self.reviews.all()
+
+        if len(all_reviews) == 0:
+            return 0
+
         all_ratings = 0
 
         for review in all_reviews:

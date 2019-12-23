@@ -332,6 +332,14 @@ class RoomModelTest(TestCase):
 
         self.assertEqual(room.total_rating(), total_avg)
 
+    def test_room_total_rating_method_no_review(self):
+        """Room model no review room total_rating method test
+        Check total_rating method return zero
+        """
+        room = Room.objects.get(id=1)
+
+        self.assertEqual(0, room.total_rating())
+
     def test_room_save_method(self):
         """Room model save method test
         Check Room model's city field's first word is upper case
