@@ -1,4 +1,4 @@
-from rooms.management.commands.custom_command import CustomCommand
+from core.management.commands.custom_command import CustomCommand
 from django.contrib.admin.utils import flatten
 from django_seed import Seed
 from random import choice, randint

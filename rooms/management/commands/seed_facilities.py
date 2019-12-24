@@ -1,4 +1,4 @@
-from rooms.management.commands.custom_command import CustomCommand
+from core.management.commands.custom_command import CustomCommand
 from rooms.models import Facility
 
 
