@@ -1,4 +1,4 @@
-from django.core.management.base import BaseCommand
+from rooms.management.commands.custom_command import CustomCommand
 from django.contrib.admin.utils import flatten
 from django_seed import Seed
 from random import choice, randint
@@ -6,7 +6,7 @@ from rooms.models import Room, RoomType, Photo, Amenity, Facility, HouseRule
 from users.models import User
 
 
-class Command(BaseCommand):
+class Command(CustomCommand):
     help = "Automatically create rooms"
 
     def add_arguments(self, parser):
@@ -41,9 +41,12 @@ class Command(BaseCommand):
             )
             clean_pk_list = flatten(list(seeder.execute().values()))
 
-            for pk in clean_pk_list:
+            for idx, pk in enumerate(clean_pk_list):
                 room = Room.objects.get(pk=pk)
                 BOOLEAN = [True, False]
+                self.progress_bar(
+                    idx + 1, number, prefix="■ PROGRESS", suffix="Complete", length=40
+                )
 
                 for i in range(randint(7, 27)):
                     Photo.objects.create(

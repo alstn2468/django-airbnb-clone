@@ -1,8 +1,8 @@
-from django.core.management.base import BaseCommand
+from rooms.management.commands.custom_command import CustomCommand
 from rooms.models import RoomType
 
 
-class Command(BaseCommand):
+class Command(CustomCommand):
     help = "Automatically create room types"
 
     def handle(self, *args, **options):
@@ -11,8 +11,15 @@ class Command(BaseCommand):
 
             self.stdout.write(self.style.SUCCESS("■ START CREATE ROOM TYPES"))
 
-            for name in room_types:
+            for idx, name in enumerate(room_types):
                 RoomType.objects.create(name=name)
+                self.progress_bar(
+                    idx + 1,
+                    len(room_types),
+                    prefix="■ PROGRESS",
+                    suffix="Complete",
+                    length=40,
+                )
 
             self.stdout.write(self.style.SUCCESS("■ SUCCESS CREATE ALL ROOM TYPES!"))
 
