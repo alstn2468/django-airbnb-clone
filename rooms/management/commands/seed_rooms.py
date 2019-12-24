@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 from django.contrib.admin.utils import flatten
 from django_seed import Seed
 from random import choice, randint
-from rooms.models import Room, RoomType, Photo
+from rooms.models import Room, RoomType, Photo, Amenity, Facility, HouseRule
 from users.models import User
 
 
@@ -20,6 +20,9 @@ class Command(BaseCommand):
 
             users = User.objects.all()
             room_types = RoomType.objects.all()
+            amenities = Amenity.objects.all()
+            facilities = Facility.objects.all()
+            house_rules = HouseRule.objects.all()
 
             seeder = Seed.seeder()
             seeder.add_entity(
@@ -40,13 +43,26 @@ class Command(BaseCommand):
 
             for pk in clean_pk_list:
                 room = Room.objects.get(pk=pk)
+                BOOLEAN = [True, False]
 
-                for i in range(randint(7, 14)):
+                for i in range(randint(7, 27)):
                     Photo.objects.create(
                         caption=seeder.faker.sentence(),
                         file=f"room_photos/{randint(1, 31)}.webp",
                         room=room,
                     )
+
+                for amenity in amenities:
+                    if choice(BOOLEAN):
+                        room.amenities.add(amenity)
+
+                for facility in facilities:
+                    if choice(BOOLEAN):
+                        room.facilities.add(facility)
+
+                for house_rule in house_rules:
+                    if choice(BOOLEAN):
+                        room.house_rules.add(house_rule)
 
             self.stdout.write(self.style.SUCCESS("■ SUCCESS CREATE ALL ROOMS!"))
 
