@@ -328,7 +328,7 @@ class RoomModelTest(TestCase):
             total_avg += review.rating_average()
             review_cnt += 1
 
-        total_avg = total_avg / review_cnt
+        total_avg = round(total_avg / review_cnt, 2)
 
         self.assertEqual(room.total_rating(), total_avg)
 
