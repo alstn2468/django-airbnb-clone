@@ -111,23 +111,35 @@ class ReservationModelTest(TestCase):
         """
         user = User.objects.get(id=1)
         room = Room.objects.get(id=1)
-        check_in = (timezone.now() - timezone.timedelta(days=1)).date()
-        check_out = (timezone.now() + timezone.timedelta(days=2)).date()
-        reservation = Reservation.objects.create(
-            status=Reservation.STATUS_CONFIRMED,
-            check_in=check_in,
-            check_out=check_out,
-            guest=user,
-            room=room,
-        )
-        self.assertTrue(reservation.in_progress())
+        mocked = datetime(2019, 12, 4, 0, 0, 0, tzinfo=pytz.utc)
+
+        with mock.patch("django.utils.timezone.now", mock.Mock(return_value=mocked)):
+            check_in = (timezone.now() - timezone.timedelta(days=1)).date()
+            check_out = (timezone.now() + timezone.timedelta(days=2)).date()
+            reservation = Reservation.objects.create(
+                status=Reservation.STATUS_CONFIRMED,
+                check_in=check_in,
+                check_out=check_out,
+                guest=user,
+                room=room,
+            )
+
+            self.assertTrue(reservation.in_progress())
+
+            reservation.check_in = timezone.now().date()
+            reservation.save()
+
+            self.assertTrue(reservation.in_progress())
 
     def test_reservation_in_progress_method_false(self):
         """Reservation model in_progress method test
         Check reservation's in_progress method return False
         """
         reservation = Reservation.objects.get(id=1)
-        self.assertFalse(reservation.in_progress())
+        mocked = datetime(2019, 11, 4, 0, 0, 0, tzinfo=pytz.utc)
+
+        with mock.patch("django.utils.timezone.now", mock.Mock(return_value=mocked)):
+            self.assertFalse(reservation.in_progress())
 
     def test_reservation_is_finished_method_true(self):
         """Reservation model is_finished method test
