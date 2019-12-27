@@ -27,14 +27,14 @@ class Command(CustomCommand):
                     Review,
                     number,
                     {
-                        "accuracy": lambda x: randint(0, 6),
-                        "communication": lambda x: randint(0, 6),
-                        "cleanliness": lambda x: randint(0, 6),
-                        "location": lambda x: randint(0, 6),
-                        "check_in": lambda x: randint(0, 6),
-                        "value": lambda x: randint(0, 6),
+                        "accuracy": randint(0, 6),
+                        "communication": randint(0, 6),
+                        "cleanliness": randint(0, 6),
+                        "location": randint(0, 6),
+                        "check_in": randint(0, 6),
+                        "value": randint(0, 6),
                         "room": room,
-                        "user": lambda x: choice(users),
+                        "user": choice(users),
                     },
                 )
 
