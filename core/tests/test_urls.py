@@ -9,5 +9,5 @@ class CoreUrlTest(TestCase):
         Check '/' pattern resolved func is all_rooms
         """
         found = resolve("/")
-        self.assertTrue(found.func, all_rooms)
+        self.assertEqual(found.func, all_rooms)
 
