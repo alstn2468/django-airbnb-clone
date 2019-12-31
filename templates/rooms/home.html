@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block page_name %}HOME{% endblock page_name %}
+
+{% block content %}
+    {% for room in rooms %}
+        <h1>{{room}} / ${{room.price}}</h1>
+    {% endfor %}
+{% endblock content %}
