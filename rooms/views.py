@@ -8,7 +8,6 @@ def all_rooms(request):
     page = int(page or 1)
 
     PAGE_SIZE = 10
-
     LIMIT = PAGE_SIZE * page
     OFFSET = LIMIT - PAGE_SIZE
 
@@ -18,10 +17,5 @@ def all_rooms(request):
     return render(
         request,
         "rooms/home.html",
-        {
-            "rooms": rooms,
-            "page": page,
-            "page_count": page_count,
-            "page_range": range(1, page_count + 1),
-        },
+        {"rooms": rooms, "page": page, "page_count": page_count,},
     )
