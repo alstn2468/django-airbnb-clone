@@ -1,5 +1,4 @@
-from django.test import TestCase, Client
-from rooms.views import all_rooms
+from django.test import TestCase
 from rooms.models import Room
 from users.models import User
 from datetime import datetime
