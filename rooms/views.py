@@ -10,4 +10,4 @@ def all_rooms(request):
     paginator = Paginator(room_qs, 10)
     rooms = paginator.get_page(page)
 
-    return render(request, "rooms/home.html", {"pages": rooms})
+    return render(request, "rooms/home.html", {"page": rooms})
