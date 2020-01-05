@@ -8,11 +8,11 @@ class RoomViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         """Run only once when running RoomViewTest
-        Create 13 rooms for RoomViewTest
+        Create 23 rooms for RoomViewTest
         """
         user = User.objects.create_user("test_user")
 
-        for i in range(1, 14):
+        for i in range(1, 24):
             Room.objects.create(
                 name=f"Test Room {i}",
                 description="Test Description",
@@ -44,9 +44,10 @@ class RoomViewTest(TestCase):
             self.assertIn(f"<h1>{room} / ${room.price}</h1>", html)
 
         response = self.client.get("/")
-        rooms = Room.objects.all()[:10]
-
+        self.assertEqual(200, response.status_code)
         html = response.content.decode("utf8")
+
+        rooms = Room.objects.all()[:10]
         self.assertIn("<title>HOME | Airbnb</title>", html)
 
         for room in rooms:
@@ -57,23 +58,19 @@ class RoomViewTest(TestCase):
         Check all_rooms HttpResponse content data contain right data
         """
         response = self.client.get("/", {"page": 2})
-        rooms = Room.objects.all()[10:13]
-
+        self.assertEqual(200, response.status_code)
         html = response.content.decode("utf8")
+
+        rooms = Room.objects.all()[10:24]
         self.assertIn("<title>HOME | Airbnb</title>", html)
 
         for room in rooms:
             self.assertIn(f"<h1>{room} / ${room.price}</h1>", html)
 
-    def test_view_rooms_app_all_rooms_page_is_empty_string(self):
-        """Rooms application all_rooms view test page param is empty string
-        Check all_rooms HttpResponse content data contain right data
+    def test_view_rooms_app_all_rooms_page_is_empty_page(self):
+        """Rooms application all_rooms view test page param is empty page
+        Check all_rooms HttpResponse is redirect to '/' url
         """
-        response = self.client.get("/", {"page": ""})
-        rooms = Room.objects.all()[:10]
 
-        html = response.content.decode("utf8")
-        self.assertIn("<title>HOME | Airbnb</title>", html)
-
-        for room in rooms:
-            self.assertIn(f"<h1>{room} / ${room.price}</h1>", html)
+        response = self.client.get("/", {"page": "3"})
+        self.assertRedirects(response, "/")
