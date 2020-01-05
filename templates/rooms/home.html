@@ -3,17 +3,17 @@
 {% block page_name %}HOME{% endblock page_name %}
 
 {% block content %}
-    {% for room in rooms.object_list %}
+    {% for room in pages.object_list %}
         <h1>{{ room }} / ${{ room.price }}</h1>
     {% endfor %}
 
     <h5>
-        {% if rooms.has_previous %}
-            <a href="?page={{ rooms.number|add:-1 }}">Pervious</a>
+        {% if pages.has_previous %}
+            <a href="?page={{ pages.previous_page_number }}">Pervious</a>
         {% endif %}
-            Page {{ rooms.number }} / {{ rooms.paginator.num_pages }}
-        {% if rooms.has_next %}
-            <a href="?page={{ rooms.number|add:1 }}">Next</a>
+            Page {{ pages.number }} / {{ pages.paginator.num_pages }}
+        {% if pages.has_next %}
+            <a href="?page={{ pages.next_page_number }}">Next</a>
         {% endif %}
     </h5>
 {% endblock content %}
