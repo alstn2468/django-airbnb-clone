@@ -43,7 +43,7 @@ class RoomViewTest(TestCase):
         for room in rooms:
             self.assertIn(f"<h1>{room} / ${room.price}</h1>", html)
 
-        response = self.client.get("/", {"page": ""})
+        response = self.client.get("/")
         rooms = Room.objects.all()[:10]
 
         html = response.content.decode("utf8")
