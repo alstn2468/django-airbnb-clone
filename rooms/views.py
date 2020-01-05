@@ -14,5 +14,5 @@ def all_rooms(request):
 
         return render(request, "rooms/home.html", {"page": rooms})
 
-    except EmptyPage:
+    except (EmptyPage, ValueError):
         return redirect("/")
