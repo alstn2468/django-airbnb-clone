@@ -1,13 +1,13 @@
 from django.test import TestCase
 from django.urls import resolve
-from rooms.views import all_rooms
+from rooms.views import HomeView
 
 
 class CoreUrlTest(TestCase):
     def test_root_url_resolves_to_all_rooms(self):
         """Core application '/' pattern urls test
-        Check '/' pattern resolved func is all_rooms
+        Check '/' pattern resolved class is HomeView
         """
         found = resolve("/")
-        self.assertEqual(found.func, all_rooms)
+        self.assertEqual(found.func.view_class, HomeView)
 

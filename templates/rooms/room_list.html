@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block page_name %}HOME{% endblock page_name %}
+
+{% block content %}
+    {% for room in object_list %}
+        <h1>{{ room }} / ${{ room.price }}</h1>
+    {% endfor %}
+
+    <h5>
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+            Page {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Next</a>
+        {% endif %}
+    </h5>
+{% endblock content %}
