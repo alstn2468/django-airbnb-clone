@@ -1,6 +1,6 @@
 from django.views.generic import ListView
 from django.shortcuts import redirect
-from django.core.paginator import EmptyPage, InvalidPage
+from django.http import Http404
 from rooms.models import Room
 
 
@@ -25,8 +25,7 @@ class HomeView(ListView):
 
     def dispatch(self, request, *args, **kwargs):
         try:
-            int(request.GET.get("page", 1))
             return super(HomeView, self).dispatch(request, *args, **kwargs)
 
-        except (EmptyPage, ValueError, InvalidPage):
+        except Http404:
             return redirect("/")

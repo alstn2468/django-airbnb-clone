@@ -62,12 +62,12 @@ class RoomViewTest(TestCase):
         for room in rooms:
             self.assertIn(f"<h1>{room} / ${room.price}</h1>", html)
 
-    # def test_view_rooms_app_all_rooms_invalid_page(self):
-    #     """Rooms application all_rooms view test page param is invalid page
-    #     Check all_rooms HttpResponse is redirect to '/' url
-    #     """
-    #     response = self.client.get("/", {"page": "3"})
-    #     self.assertRedirects(response, "/")
+    def test_view_rooms_app_all_rooms_invalid_page(self):
+        """Rooms application all_rooms view test page param is invalid page
+        Check all_rooms HttpResponse is redirect to '/' url
+        """
+        response = self.client.get("/", {"page": "3"})
+        self.assertRedirects(response, "/")
 
     def test_view_rooms_app_all_rooms_str_page_param(self):
         """Rooms application all_rooms view test page param is invalid string
