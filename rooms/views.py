@@ -1,9 +1,7 @@
 from django.views.generic import ListView
-from django.utils import timezone
+from django.shortcuts import redirect
+from django.core.paginator import EmptyPage, InvalidPage
 from rooms.models import Room
-
-# from django.shortcuts import redirect
-# from django.core.paginator import EmptyPage, InvalidPage
 
 
 class HomeView(ListView):
@@ -25,19 +23,10 @@ class HomeView(ListView):
     ordering = "created_at"
     context_object_name = "rooms"
 
-    # def dispatch(self, request, *args, **kwargs):
-    #     try:
-    #         page = int(request.GET.get("page", 1))
-    #         return super(HomeView, self).dispatch(request, *args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            int(request.GET.get("page", 1))
+            return super(HomeView, self).dispatch(request, *args, **kwargs)
 
-    #     except EmptyPage or ValueError or InvalidPage:
-    #         return redirect("/")
-
-    # def render_to_response(self, context):
-    #     try:
-    #         page = int(self.request.GET.get("page", 1))
-
-    #         return super(HomeView, self).render_to_response(context)
-
-    #     except EmptyPage or ValueError or InvalidPage:
-    #         return redirect("/")
+        except (EmptyPage, ValueError, InvalidPage):
+            return redirect("/")
