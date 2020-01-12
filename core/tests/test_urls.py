@@ -4,7 +4,7 @@ from rooms.views import HomeView
 
 
 class CoreUrlTest(TestCase):
-    def test_root_url_resolves_to_all_rooms(self):
+    def test_root_url_resolves_to_home_view(self):
         """Core application '/' pattern urls test
         Check '/' pattern resolved class is HomeView
         """

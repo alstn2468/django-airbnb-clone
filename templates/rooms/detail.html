@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block page_name %}ROOM DETAIL{% endblock page_name %}
+
+{% block content %}
+    {% for key, val in room.items %}
+        <h5>{{ key }} / {{ val }}</h5>
+    {% endfor %}
+{% endblock content %}

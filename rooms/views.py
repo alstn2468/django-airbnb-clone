@@ -1,5 +1,5 @@
 from django.views.generic import ListView
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render, get_object_or_404
 from django.http import Http404
 from rooms.models import Room
 
@@ -29,3 +29,9 @@ class HomeView(ListView):
 
         except Http404:
             return redirect("/")
+
+
+def room_detail(request, pk):
+    room = get_object_or_404(Room, pk=pk)
+
+    return render(request, "rooms/detail.html", {"room": vars(room)})
