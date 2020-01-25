@@ -1,5 +1,4 @@
 from django.test import TestCase
-from django.http import Http404
 from rooms.models import Room
 from users.models import User
 from datetime import datetime
@@ -14,6 +13,11 @@ class RoomViewTest(TestCase):
         user = User.objects.create_user("test_user")
 
         for i in range(1, 24):
+            if i == 23:
+                user = User.objects.get(id=1)
+                user.is_superhost = True
+                user.save()
+
             Room.objects.create(
                 name=f"Test Room {i}",
                 description="Test Description",
@@ -85,14 +89,30 @@ class RoomViewTest(TestCase):
         """
         response = self.client.get("/rooms/1")
         html = response.content.decode("utf8")
+        room = Room.objects.get(pk=1)
 
         self.assertIn("<title>ROOM DETAIL | Airbnb</title>", html)
-        self.assertIn(f"<h5>name / Test Room 1</h5>", html)
-        self.assertIn(f"<h5>description / Test Description</h5>", html)
+        self.assertIn(room.name, html)
+        self.assertIn(room.description, html)
+        self.assertIn(f"By : { room.host.username }", html)
+
+    def test_view_rooms_app_room_detail_is_superhost(self):
+        """Rooms application room_detail test is success and host is superhost
+        Check room_deatil HttpResponse contain right room instance data
+        """
+        response = self.client.get("/rooms/23")
+        html = response.content.decode("utf8")
+        room = Room.objects.get(pk=23)
+
+        self.assertIn("<title>ROOM DETAIL | Airbnb</title>", html)
+        self.assertIn(room.name, html)
+        self.assertIn(room.description, html)
+        self.assertIn(f"By : { room.host.username }", html)
+        self.assertIn("(superhost)", html)
 
     def test_view_rooms_app_room_detail_fail(self):
-        """Rooms application room_detail test is fail
-        Check room_deatil HttpResponse return status code 404
+        """Rooms application room_detail test catch exception
+        Check room_deatil catch DoesNotExist exception then redirect home
         """
         response = self.client.get("/rooms/25")
-        self.assertEqual(404, response.status_code)
+        self.assertEqual(302, response.status_code)

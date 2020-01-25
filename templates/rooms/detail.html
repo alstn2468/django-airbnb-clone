@@ -3,7 +3,37 @@
 {% block page_name %}ROOM DETAIL{% endblock page_name %}
 
 {% block content %}
-    {% for key, val in room.items %}
-        <h5>{{ key }} / {{ val }}</h5>
-    {% endfor %}
+    <div>
+        <h1>{{ room.name }}</h1>
+        <h3>{{ room.description }}</h3>
+    </div>
+
+    <div>
+        <h2>By : {{ room.host.username }}
+        {% if room.host.is_superhost %}
+            (superhost)
+        {% endif %}
+        </h2>
+
+        <h3>Amenities</h3>
+        <ul>
+        {% for amenity in room.amenities.all %}
+            <li>{{ amenity }}</li>
+        {% endfor %}
+        </ul>
+
+        <h3>Facilities</h3>
+        <ul>
+        {% for facility in room.facilities.all %}
+            <li>{{ facility }}</li>
+        {% endfor %}
+        </ul>
+
+        <h3>House Rules</h3>
+        <ul>
+        {% for house_rule in room.house_rules.all %}
+            <li>{{ house_rule }}</li>
+        {% endfor %}
+        </ul>
+    </div>
 {% endblock content %}
