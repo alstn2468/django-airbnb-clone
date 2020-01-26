@@ -94,7 +94,7 @@ class RoomViewTest(TestCase):
         self.assertIn("<title>ROOM DETAIL | Airbnb</title>", html)
         self.assertIn(room.name, html)
         self.assertIn(room.description, html)
-        self.assertIn(f"By : { room.host.username }", html)
+        self.assertIn(f"By : {room.host.username}", html)
 
     def test_view_rooms_app_room_detail_is_superhost(self):
         """Rooms application room_detail test is success and host is superhost
@@ -107,7 +107,7 @@ class RoomViewTest(TestCase):
         self.assertIn("<title>ROOM DETAIL | Airbnb</title>", html)
         self.assertIn(room.name, html)
         self.assertIn(room.description, html)
-        self.assertIn(f"By : { room.host.username }", html)
+        self.assertIn(f"By : {room.host.username}", html)
         self.assertIn("(superhost)", html)
 
     def test_view_rooms_app_room_detail_fail(self):
