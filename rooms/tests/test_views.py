@@ -112,7 +112,7 @@ class RoomViewTest(TestCase):
 
     def test_view_rooms_app_room_detail_fail(self):
         """Rooms application room_detail test catch exception
-        Check room_deatil catch DoesNotExist exception then redirect home
+        Check room_deatil catch DoesNotExist exception then raise Http404
         """
         response = self.client.get("/rooms/25")
-        self.assertEqual(302, response.status_code)
+        self.assertEqual(404, response.status_code)

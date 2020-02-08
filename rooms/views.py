@@ -38,5 +38,5 @@ def room_detail(request, pk):
         return render(request, "rooms/detail.html", {"room": room})
 
     except Room.DoesNotExist:
-        return redirect(reverse("core:home"))
+        raise Http404()
 
