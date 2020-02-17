@@ -91,7 +91,7 @@ class RoomViewTest(TestCase):
         html = response.content.decode("utf8")
         room = Room.objects.get(pk=1)
 
-        self.assertIn("<title>ROOM DETAIL | Airbnb</title>", html)
+        self.assertIn(f"<title>{room.name} | Airbnb</title>", html)
         self.assertIn(room.name, html)
         self.assertIn(room.description, html)
         self.assertIn(f"By : {room.host.username}", html)
@@ -104,7 +104,7 @@ class RoomViewTest(TestCase):
         html = response.content.decode("utf8")
         room = Room.objects.get(pk=23)
 
-        self.assertIn("<title>ROOM DETAIL | Airbnb</title>", html)
+        self.assertIn(f"<title>{room.name} | Airbnb</title>", html)
         self.assertIn(room.name, html)
         self.assertIn(room.description, html)
         self.assertIn(f"By : {room.host.username}", html)
