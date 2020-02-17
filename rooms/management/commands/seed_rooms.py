@@ -29,14 +29,14 @@ class Command(CustomCommand):
                 Room,
                 number,
                 {
-                    "name": seeder.faker.address(),
-                    "host": choice(users),
-                    "room_type": choice(room_types),
-                    "price": randint(1, 300),
-                    "guests": randint(1, 10),
-                    "beds": randint(1, 5),
-                    "bedrooms": randint(1, 5),
-                    "baths": randint(1, 5),
+                    "name": lambda x: seeder.faker.address(),
+                    "host": lambda x: choice(users),
+                    "room_type": lambda x: choice(room_types),
+                    "price": lambda x: randint(1, 300),
+                    "guests": lambda x: randint(1, 10),
+                    "beds": lambda x: randint(1, 5),
+                    "bedrooms": lambda x: randint(1, 5),
+                    "baths": lambda x: randint(1, 5),
                 },
             )
             clean_pk_list = flatten(list(seeder.execute().values()))

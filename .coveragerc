@@ -6,3 +6,5 @@ omit=
     /usr/*
     # omit manage.py
     manage.py
+    # omit virtualenv dir at Windows env
+    */.virtualenvs/*

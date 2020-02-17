@@ -29,17 +29,18 @@ class Command(CustomCommand):
                 Reservation,
                 number,
                 {
-                    "status": choice(
+                    "status": lambda x: choice(
                         [
                             Reservation.STATUS_CANCELED,
                             Reservation.STATUS_CONFIRMED,
                             Reservation.STATUS_PENDING,
                         ]
                     ),
-                    "guest": choice(users),
-                    "room": choice(rooms),
-                    "check_in": datetime.now(),
-                    "check_out": datetime.now() + timedelta(days=randint(3, 25)),
+                    "guest": lambda x: choice(users),
+                    "room": lambda x: choice(rooms),
+                    "check_in": lambda x: datetime.now(),
+                    "check_out": lambda x: datetime.now()
+                    + timedelta(days=randint(3, 25)),
                 },
             )
             seeder.execute()
