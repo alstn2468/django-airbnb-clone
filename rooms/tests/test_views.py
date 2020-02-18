@@ -1,7 +1,8 @@
 from django.test import TestCase
-from rooms.models import Room
+from rooms.models import Room, RoomType
 from users.models import User
 from datetime import datetime
+from django_countries import countries
 
 
 class RoomViewTest(TestCase):
@@ -34,6 +35,9 @@ class RoomViewTest(TestCase):
                 instant_book=True,
                 host=user,
             )
+
+        for i in range(4):
+            RoomType.objects.create(name=f"Room Type {i + 1}")
 
     def test_view_rooms_home_view_default_page(self):
         """Rooms application HomeView test without pagination param
@@ -126,4 +130,49 @@ class RoomViewTest(TestCase):
         html = response.content.decode("utf8")
 
         self.assertIn("<title>Search | Airbnb</title>", html)
-        self.assertIn(f"<h4>Searching by {str.capitalize(city)}</h4>", html)
+        self.assertIn('<input value="Seoul"', html)
+
+    def test_view_rooms_search_default_city(self):
+        """Room application search test with empty param
+        Check search param city is Anywhere
+        """
+        response = self.client.get("/rooms/search/")
+        html = response.content.decode("utf8")
+
+        self.assertIn("<title>Search | Airbnb</title>", html)
+        self.assertIn('<input value="Anywhere"', html)
+
+    def test_view_rooms_search_empty_city(self):
+        """Room application search test city is empty str
+        Check search param city is Anywhere
+        """
+        response = self.client.get("/rooms/search/", {"city": ""})
+        html = response.content.decode("utf8")
+
+        self.assertIn("<title>Search | Airbnb</title>", html)
+        self.assertIn('<input value="Anywhere"', html)
+
+    def test_view_rooms_search_country_options(self):
+        """Room application search view django_countries option test
+        Check contain all countries option in select tag
+        """
+        response = self.client.get("/rooms/search/")
+        html = response.content.decode("utf8")
+
+        for country in countries:
+            self.assertIn(
+                f'<option value="{country.code}">{country.name}</option>', html
+            )
+
+    def test_view_rooms_search_room_types(self):
+        """Room application search view room types option test
+        Check contain all room tpyes option in select tag
+        """
+        response = self.client.get("/rooms/search/")
+        html = response.content.decode("utf8")
+        room_types = RoomType.objects.all()
+
+        for room_type in room_types:
+            self.assertIn(
+                f'<option value="{room_type.pk}">{room_type.name}</option>', html
+            )

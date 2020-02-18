@@ -2,7 +2,8 @@ from django.views.generic import ListView, DetailView
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import Http404
-from rooms.models import Room
+from rooms.models import Room, RoomType
+from django_countries import countries
 
 
 class HomeView(ListView):
@@ -44,5 +45,26 @@ class RoomDetail(DetailView):
 
 
 def search(request):
-    city = str.capitalize(request.GET.get("city"))
-    return render(request, "rooms/search.html", {"city": city})
+    """rooms aplication search method
+    Display list of rooms searched by city
+
+    Params
+        request : HttpRequest
+
+    Return
+        rendered rooms/search.html
+    """
+    city = request.GET.get("city", "anywhere")
+
+    if city == "":
+        city = "anywhere"
+
+    city = str.capitalize(city)
+
+    room_types = RoomType.objects.all()
+
+    return render(
+        request,
+        "rooms/search.html",
+        {"city": city, "countries": countries, "room_types": room_types},
+    )

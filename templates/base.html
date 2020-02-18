@@ -7,7 +7,15 @@
     <title>{% block page_name %}{% endblock page_name %} | Airbnb</title>
 </head>
 <body>
-    {% include "partials/header.html" %}
+    <header>
+        {% include "partials/nav.html" %}
+
+        {% block search-bar %}
+            <form method="GET" action="{% url "rooms:search" %}">
+                <input name="city" placeholder="Search by City"/>
+            </form>
+        {% endblock search-bar %}
+    </header>
 
     {% block content %}{% endblock content %}
     
