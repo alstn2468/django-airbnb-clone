@@ -84,7 +84,7 @@ class RoomViewTest(TestCase):
         self.assertRedirects(response, "/")
 
     def test_view_rooms_app_room_detail_success(self):
-        """Rooms application room_detail test is success
+        """Rooms application RoomDetail test is success
         Check room_deatil HttpResponse contain right room instance data
         """
         response = self.client.get("/rooms/1")
@@ -97,7 +97,7 @@ class RoomViewTest(TestCase):
         self.assertIn(f"By : {room.host.username}", html)
 
     def test_view_rooms_app_room_detail_is_superhost(self):
-        """Rooms application room_detail test is success and host is superhost
+        """Rooms application RoomDetail test is success and host is superhost
         Check room_deatil HttpResponse contain right room instance data
         """
         response = self.client.get("/rooms/23")
@@ -111,8 +111,19 @@ class RoomViewTest(TestCase):
         self.assertIn("(superhost)", html)
 
     def test_view_rooms_app_room_detail_fail(self):
-        """Rooms application room_detail test catch exception
+        """Rooms application RoomDetail test catch exception
         Check room_deatil catch DoesNotExist exception then raise Http404
         """
         response = self.client.get("/rooms/25")
         self.assertEqual(404, response.status_code)
+
+    def test_view_rooms_search_success(self):
+        """Room application search test is success
+        Check search HttpResponse contain right search result
+        """
+        city = "seoul"
+        response = self.client.get("/rooms/search/", {"city": city})
+        html = response.content.decode("utf8")
+
+        self.assertIn("<title>Search | Airbnb</title>", html)
+        self.assertIn(f"<h4>Searching by {str.capitalize(city)}</h4>", html)
