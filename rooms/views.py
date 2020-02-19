@@ -2,7 +2,7 @@ from django.views.generic import ListView, DetailView
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import Http404
-from rooms.models import Room, RoomType
+from rooms.models import Room, RoomType, Amenity, Facility
 from django_countries import countries
 
 
@@ -57,20 +57,39 @@ def search(request):
     city = request.GET.get("city", "anywhere")
     selected_country = request.GET.get("country", "KR")
     selected_room_type = int(request.GET.get("room-type", 0))
+    price = int(request.GET.get("price", 0))
+    guests = int(request.GET.get("guests", 0))
+    bedrooms = int(request.GET.get("bedrooms", 0))
+    beds = int(request.GET.get("beds", 0))
+    baths = int(request.GET.get("baths", 0))
+    checked_amenities = request.GET.get("amenities")
+    checked_facilities = request.GET.get("facilities")
 
     if city == "":
         city = "anywhere"
 
     city = str.capitalize(city)
 
-    room_types = RoomType.objects.all()
-
     form = {
         "city": city,
         "selected_room_type": selected_room_type,
         "selected_country": selected_country,
+        "price": price,
+        "guests": guests,
+        "bedrooms": bedrooms,
+        "beds": beds,
+        "baths": baths,
     }
-    choices = {"countries": countries, "room_types": room_types}
+
+    room_types = RoomType.objects.all()
+    amenities = Amenity.objects.all()
+    facilities = Facility.objects.all()
+
+    choices = {
+        "countries": countries,
+        "room_types": room_types,
+        "amenities": amenities,
+        "facilities": facilities,
+    }
 
     return render(request, "rooms/search.html", {**form, **choices})
-

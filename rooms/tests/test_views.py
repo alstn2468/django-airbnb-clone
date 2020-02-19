@@ -1,5 +1,5 @@
 from django.test import TestCase
-from rooms.models import Room, RoomType
+from rooms.models import Room, RoomType, Amenity, Facility
 from users.models import User
 from datetime import datetime
 from django_countries import countries
@@ -38,6 +38,10 @@ class RoomViewTest(TestCase):
 
         for i in range(4):
             RoomType.objects.create(name=f"Room Type {i + 1}")
+
+        for i in range(10):
+            Amenity.objects.create(name=f"Amenity {i + 1}")
+            Facility.objects.create(name=f"Facility {i + 1}")
 
     def test_view_rooms_home_view_default_page(self):
         """Rooms application HomeView test without pagination param
@@ -194,3 +198,90 @@ class RoomViewTest(TestCase):
         html = response.content.decode("utf8")
 
         self.assertIn('<option value="2" selected>', html)
+
+    def test_view_rooms_search_num_param_default(self):
+        """Room application search view number params test
+        Check all number params default value is 0
+        """
+        response = self.client.get("/rooms/search/")
+        html = response.content.decode("utf8")
+
+        self.assertIn(
+            '<input value="0" type="number" name="price" id="price" placeholder="Price"/>',
+            html,
+        )
+        self.assertIn(
+            '<input value="0" type="number" name="guests" id="guests" placeholder="Guests"/>',
+            html,
+        )
+        self.assertIn(
+            '<input value="0" type="number" name="bedrooms" id="bedrooms" placeholder="Bedrooms"/>',
+            html,
+        )
+        self.assertIn(
+            '<input value="0" type="number" name="beds" id="beds" placeholder="Beds"/>',
+            html,
+        )
+        self.assertIn(
+            '<input value="0" type="number" name="baths" id="baths" placeholder="Baths"/>',
+            html,
+        )
+
+    def test_view_rooms_search_num_param_set(self):
+        """Room application search view number params test
+        Check all number params default value is set value
+        """
+        response = self.client.get(
+            "/rooms/search/",
+            {"price": 10, "guests": 5, "bedrooms": 2, "beds": 1, "baths": 1},
+        )
+        html = response.content.decode("utf8")
+
+        self.assertIn(
+            '<input value="10" type="number" name="price" id="price" placeholder="Price"/>',
+            html,
+        )
+        self.assertIn(
+            '<input value="5" type="number" name="guests" id="guests" placeholder="Guests"/>',
+            html,
+        )
+        self.assertIn(
+            '<input value="2" type="number" name="bedrooms" id="bedrooms" placeholder="Bedrooms"/>',
+            html,
+        )
+        self.assertIn(
+            '<input value="1" type="number" name="beds" id="beds" placeholder="Beds"/>',
+            html,
+        )
+        self.assertIn(
+            '<input value="1" type="number" name="baths" id="baths" placeholder="Baths"/>',
+            html,
+        )
+
+    def test_view_rooms_search_amenities_default(self):
+        """Room application search view amenities checkbox test
+        Check amenities check box is unchecked
+        """
+        response = self.client.get("/rooms/search/")
+        html = response.content.decode("utf8")
+        amenities = Amenity.objects.all()
+
+        for amenity in amenities:
+            self.assertIn(
+                f'<input id="amenity_{amenity.pk}" type="checkbox" name="amenities" value="{amenity.pk}"/>',
+                html,
+            )
+
+    def test_view_rooms_search_facilities_default(self):
+        """Room application search view facilities checkbox test
+        Check facilities check box is unchecked
+        """
+        response = self.client.get("/rooms/search/")
+        html = response.content.decode("utf8")
+        facilities = Facility.objects.all()
+
+        for facility in facilities:
+            self.assertIn(
+                f'<input id="facility_{facility.pk}" type="checkbox" name="facilities" value="{facility.pk}"/>',
+                html,
+            )
