@@ -207,23 +207,23 @@ class RoomViewTest(TestCase):
         html = response.content.decode("utf8")
 
         self.assertIn(
-            '<input value="0" type="number" name="price" id="price" placeholder="Price"/>',
+            '<input value="0" type="number" name="price" id="price" placeholder="Price" />',
             html,
         )
         self.assertIn(
-            '<input value="0" type="number" name="guests" id="guests" placeholder="Guests"/>',
+            '<input value="0" type="number" name="guests" id="guests" placeholder="Guests" />',
             html,
         )
         self.assertIn(
-            '<input value="0" type="number" name="bedrooms" id="bedrooms" placeholder="Bedrooms"/>',
+            '<input value="0" type="number" name="bedrooms" id="bedrooms" placeholder="Bedrooms" />',
             html,
         )
         self.assertIn(
-            '<input value="0" type="number" name="beds" id="beds" placeholder="Beds"/>',
+            '<input value="0" type="number" name="beds" id="beds" placeholder="Beds" />',
             html,
         )
         self.assertIn(
-            '<input value="0" type="number" name="baths" id="baths" placeholder="Baths"/>',
+            '<input value="0" type="number" name="baths" id="baths" placeholder="Baths" />',
             html,
         )
 
@@ -238,23 +238,23 @@ class RoomViewTest(TestCase):
         html = response.content.decode("utf8")
 
         self.assertIn(
-            '<input value="10" type="number" name="price" id="price" placeholder="Price"/>',
+            '<input value="10" type="number" name="price" id="price" placeholder="Price" />',
             html,
         )
         self.assertIn(
-            '<input value="5" type="number" name="guests" id="guests" placeholder="Guests"/>',
+            '<input value="5" type="number" name="guests" id="guests" placeholder="Guests" />',
             html,
         )
         self.assertIn(
-            '<input value="2" type="number" name="bedrooms" id="bedrooms" placeholder="Bedrooms"/>',
+            '<input value="2" type="number" name="bedrooms" id="bedrooms" placeholder="Bedrooms" />',
             html,
         )
         self.assertIn(
-            '<input value="1" type="number" name="beds" id="beds" placeholder="Beds"/>',
+            '<input value="1" type="number" name="beds" id="beds" placeholder="Beds" />',
             html,
         )
         self.assertIn(
-            '<input value="1" type="number" name="baths" id="baths" placeholder="Baths"/>',
+            '<input value="1" type="number" name="baths" id="baths" placeholder="Baths" />',
             html,
         )
 
@@ -268,7 +268,7 @@ class RoomViewTest(TestCase):
 
         for amenity in amenities:
             self.assertIn(
-                f'<input id="amenity_{amenity.pk}" type="checkbox" name="amenities" value="{amenity.pk}"/>',
+                f'<input id="amenity_{amenity.pk}" type="checkbox" name="amenities" value="{amenity.pk}" />',
                 html,
             )
 
@@ -282,6 +282,6 @@ class RoomViewTest(TestCase):
 
         for facility in facilities:
             self.assertIn(
-                f'<input id="facility_{facility.pk}" type="checkbox" name="facilities" value="{facility.pk}"/>',
+                f'<input id="facility_{facility.pk}" type="checkbox" name="facilities" value="{facility.pk}" />',
                 html,
             )
