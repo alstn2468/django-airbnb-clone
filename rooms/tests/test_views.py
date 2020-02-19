@@ -152,19 +152,19 @@ class RoomViewTest(TestCase):
         self.assertIn("<title>Search | Airbnb</title>", html)
         self.assertIn('<input value="Anywhere"', html)
 
-    def test_view_rooms_search_country_options(self):
+    def test_view_rooms_search_country_options_default(self):
         """Room application search view django_countries option test
         Check contain all countries option in select tag
         """
         response = self.client.get("/rooms/search/")
         html = response.content.decode("utf8")
 
-        for country in countries:
-            self.assertIn(
-                f'<option value="{country.code}">{country.name}</option>', html
-            )
+        self.assertIn('<option value="KR" selected>', html)
 
-    def test_view_rooms_search_room_types(self):
+        for country in countries:
+            self.assertIn(f'<option value="{country.code}"', html)
+
+    def test_view_rooms_search_room_types_default(self):
         """Room application search view room types option test
         Check contain all room tpyes option in select tag
         """
@@ -172,7 +172,25 @@ class RoomViewTest(TestCase):
         html = response.content.decode("utf8")
         room_types = RoomType.objects.all()
 
+        self.assertIn('<option value="0" selected>', html)
+
         for room_type in room_types:
-            self.assertIn(
-                f'<option value="{room_type.pk}">{room_type.name}</option>', html
-            )
+            self.assertIn(f'<option value="{room_type.pk}"', html)
+
+    def test_view_rooms_search_country_options_set(self):
+        """Room application search view country option test
+        Check country param "AF" option is selected
+        """
+        response = self.client.get("/rooms/search/", {"country": "AF"})
+        html = response.content.decode("utf8")
+
+        self.assertIn('<option value="AF" selected>', html)
+
+    def test_view_rooms_search_room_types_options_set(self):
+        """Room application search view room types option test
+        Check room-type param "2" option is selected
+        """
+        response = self.client.get("/rooms/search/", {"room-type": 2})
+        html = response.content.decode("utf8")
+
+        self.assertIn('<option value="2" selected>', html)

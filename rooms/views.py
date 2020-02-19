@@ -55,6 +55,8 @@ def search(request):
         rendered rooms/search.html
     """
     city = request.GET.get("city", "anywhere")
+    selected_country = request.GET.get("country", "KR")
+    selected_room_type = int(request.GET.get("room-type", 0))
 
     if city == "":
         city = "anywhere"
@@ -63,8 +65,12 @@ def search(request):
 
     room_types = RoomType.objects.all()
 
-    return render(
-        request,
-        "rooms/search.html",
-        {"city": city, "countries": countries, "room_types": room_types},
-    )
+    form = {
+        "city": city,
+        "selected_room_type": selected_room_type,
+        "selected_country": selected_country,
+    }
+    choices = {"countries": countries, "room_types": room_types}
+
+    return render(request, "rooms/search.html", {**form, **choices})
+
