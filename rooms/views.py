@@ -62,8 +62,10 @@ def search(request):
     bedrooms = int(request.GET.get("bedrooms", 0))
     beds = int(request.GET.get("beds", 0))
     baths = int(request.GET.get("baths", 0))
-    checked_amenities = request.GET.get("amenities")
-    checked_facilities = request.GET.get("facilities")
+    instant = request.GET.get("instant", False)
+    is_superhost = request.GET.get("superhost", False)
+    checked_amenities = request.GET.getlist("amenities")
+    checked_facilities = request.GET.getlist("facilities")
 
     if city == "":
         city = "anywhere"
@@ -72,13 +74,17 @@ def search(request):
 
     form = {
         "city": city,
-        "selected_room_type": selected_room_type,
-        "selected_country": selected_country,
         "price": price,
         "guests": guests,
         "bedrooms": bedrooms,
         "beds": beds,
         "baths": baths,
+        "instant": instant,
+        "is_superhost": is_superhost,
+        "selected_room_type": selected_room_type,
+        "selected_country": selected_country,
+        "checked_amenities": checked_amenities,
+        "checked_facilities": checked_facilities,
     }
 
     room_types = RoomType.objects.all()

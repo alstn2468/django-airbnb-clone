@@ -268,8 +268,7 @@ class RoomViewTest(TestCase):
 
         for amenity in amenities:
             self.assertIn(
-                f'<input id="amenity_{amenity.pk}" type="checkbox" name="amenities" value="{amenity.pk}" />',
-                html,
+                f'<input id="amenity_{amenity.pk}" type="checkbox"', html,
             )
 
     def test_view_rooms_search_facilities_default(self):
@@ -282,6 +281,76 @@ class RoomViewTest(TestCase):
 
         for facility in facilities:
             self.assertIn(
-                f'<input id="facility_{facility.pk}" type="checkbox" name="facilities" value="{facility.pk}" />',
-                html,
+                f'<input id="facility_{facility.pk}"', html,
             )
+
+    def test_view_rooms_search_amenities_set(self):
+        """Room application search view amenities checkbox test
+        Check amenities check box is selected right
+        """
+        response = self.client.get("/rooms/search/", {"amenities": ["1", "2", "3"]})
+        html = response.content.decode("utf8")
+
+        for i in range(1, 4):
+            prefix = f'<input id="amenity_{i}" type="checkbox" name="amenities" value="{i}"\n'
+            suffix = "                    checked />"
+            self.assertIn(
+                prefix + suffix, html,
+            )
+
+    def test_view_rooms_search_facilities_set(self):
+        """Room application search view facilities checkbox test
+        Check facilities check box is selected right
+        """
+        response = self.client.get("/rooms/search/", {"facilities": ["1", "2", "3"]})
+        html = response.content.decode("utf8")
+
+        for i in range(1, 4):
+            prefix = f'<input id="facility_{i}" type="checkbox" name="facilities" value="{i}"\n'
+            suffix = "                    checked />"
+            self.assertIn(
+                prefix + suffix, html,
+            )
+
+    def test_view_rooms_search_instant_book_default(self):
+        """Room application search view instant book checkbox test
+        Check instant book check box is unchecked
+        """
+        response = self.client.get("/rooms/search/")
+        html = response.content.decode("utf8")
+
+        self.assertIn('<input type="checkbox" name="instant" id="instant"  />', html)
+
+    def test_view_rooms_search_superhost_default(self):
+        """Room application search view superhost checkbox test
+        Check superhost check box is unchecked
+        """
+        response = self.client.get("/rooms/search/")
+        html = response.content.decode("utf8")
+
+        self.assertIn(
+            '<input type="checkbox" name="superhost" id="superhost"  />', html
+        )
+
+    def test_view_rooms_search_instant_book_checked(self):
+        """Room application search view instant book checkbox test
+        Check instant book check box is checked
+        """
+        response = self.client.get("/rooms/search/", {"instant": True})
+        html = response.content.decode("utf8")
+
+        self.assertIn(
+            '<input type="checkbox" name="instant" id="instant" checked />', html
+        )
+
+    def test_view_rooms_search_superhost_checked(self):
+        """Room application search view superhost checkbox test
+        Check superhost check box is checked
+        """
+        response = self.client.get("/rooms/search/", {"superhost": True})
+        html = response.content.decode("utf8")
+
+        self.assertIn(
+            '<input type="checkbox" name="superhost" id="superhost" checked />', html
+        )
+
