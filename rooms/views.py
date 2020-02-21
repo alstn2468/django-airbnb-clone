@@ -62,8 +62,8 @@ def search(request):
     bedrooms = int(request.GET.get("bedrooms", 0))
     beds = int(request.GET.get("beds", 0))
     baths = int(request.GET.get("baths", 0))
-    instant = request.GET.get("instant", False)
-    is_superhost = request.GET.get("superhost", False)
+    instant = bool(request.GET.get("instant", False))
+    is_superhost = bool(request.GET.get("superhost", False))
     checked_amenities = request.GET.getlist("amenities")
     checked_facilities = request.GET.getlist("facilities")
 
@@ -107,6 +107,35 @@ def search(request):
 
     if selected_room_type != 0:
         filter_args["room_type__pk"] = selected_room_type
+
+    if price != 0:
+        filter_args["price__lte"] = price
+
+    if guests != 0:
+        filter_args["guests__gte"] = guests
+
+    if bedrooms != 0:
+        filter_args["bedrooms__gte"] = bedrooms
+
+    if beds != 0:
+        filter_args["beds__gte"] = beds
+
+    if baths != 0:
+        filter_args["baths__gte"] = baths
+
+    if instant:
+        filter_args["instant_book"] = True
+
+    if is_superhost:
+        filter_args["host__is_superhost"] = True
+
+    if len(checked_amenities) > 0:
+        for amenitiy in checked_amenities:
+            filter_args["amenities__pk"] = int(amenitiy)
+
+    if len(checked_facilities) > 0:
+        for facility in checked_facilities:
+            filter_args["facilities__pk"] = int(facility)
 
     rooms = Room.objects.filter(**filter_args)
 
