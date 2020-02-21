@@ -253,24 +253,19 @@ class RoomViewTest(TestCase):
         html = response.content.decode("utf8")
 
         self.assertIn(
-            '<input value="10" type="number" name="price" id="price" placeholder="Price" />',
-            html,
+            '<input value="10" type="number" name="price"', html,
         )
         self.assertIn(
-            '<input value="5" type="number" name="guests" id="guests" placeholder="Guests" />',
-            html,
+            '<input value="5" type="number" name="guests" id="guests"', html,
         )
         self.assertIn(
-            '<input value="2" type="number" name="bedrooms" id="bedrooms" placeholder="Bedrooms" />',
-            html,
+            '<input value="2" type="number" name="bedrooms" id="bedrooms"', html,
         )
         self.assertIn(
-            '<input value="1" type="number" name="beds" id="beds" placeholder="Beds" />',
-            html,
+            '<input value="1" type="number" name="beds" id="beds"', html,
         )
         self.assertIn(
-            '<input value="1" type="number" name="baths" id="baths" placeholder="Baths" />',
-            html,
+            '<input value="1" type="number" name="baths" id="baths"', html,
         )
 
     def test_view_rooms_search_amenities_default(self):
