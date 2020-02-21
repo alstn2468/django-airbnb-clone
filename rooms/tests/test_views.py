@@ -222,24 +222,19 @@ class RoomViewTest(TestCase):
         html = response.content.decode("utf8")
 
         self.assertIn(
-            '<input value="0" type="number" name="price" id="price" placeholder="Price" />',
-            html,
+            '<input value="0" type="number" name="price" id="price"', html,
         )
         self.assertIn(
-            '<input value="0" type="number" name="guests" id="guests" placeholder="Guests" />',
-            html,
+            '<input value="0" type="number" name="guests" id="guests"', html,
         )
         self.assertIn(
-            '<input value="0" type="number" name="bedrooms" id="bedrooms" placeholder="Bedrooms" />',
-            html,
+            '<input value="0" type="number" name="bedrooms" id="bedrooms"', html,
         )
         self.assertIn(
-            '<input value="0" type="number" name="beds" id="beds" placeholder="Beds" />',
-            html,
+            '<input value="0" type="number" name="beds" id="beds"', html,
         )
         self.assertIn(
-            '<input value="0" type="number" name="baths" id="baths" placeholder="Baths" />',
-            html,
+            '<input value="0" type="number" name="baths" id="baths"', html,
         )
 
     def test_view_rooms_search_num_param_set(self):
@@ -302,8 +297,8 @@ class RoomViewTest(TestCase):
         html = response.content.decode("utf8")
 
         for i in range(1, 4):
-            prefix = f'<input id="amenity_{i}" type="checkbox" name="amenities" value="{i}"\n'
-            suffix = "                    checked />"
+            prefix = f'<input id="amenity_{i}" type="checkbox" name="amenities"'
+            suffix = f' value="{i}"\n                    checked />'
             self.assertIn(
                 prefix + suffix, html,
             )
