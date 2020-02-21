@@ -13,11 +13,20 @@ class RoomViewTest(TestCase):
         """
         user = User.objects.create_user("test_user")
 
+        for i in range(4):
+            RoomType.objects.create(name=f"Room Type {i + 1}")
+
+        for i in range(10):
+            Amenity.objects.create(name=f"Amenity {i + 1}")
+            Facility.objects.create(name=f"Facility {i + 1}")
+
         for i in range(1, 24):
             if i == 23:
                 user = User.objects.get(id=1)
                 user.is_superhost = True
                 user.save()
+
+            room_type = RoomType.objects.get(id=1)
 
             Room.objects.create(
                 name=f"Test Room {i}",
@@ -34,14 +43,8 @@ class RoomViewTest(TestCase):
                 check_out=datetime(2019, 1, 2, 10, 30),
                 instant_book=True,
                 host=user,
+                room_type=room_type,
             )
-
-        for i in range(4):
-            RoomType.objects.create(name=f"Room Type {i + 1}")
-
-        for i in range(10):
-            Amenity.objects.create(name=f"Amenity {i + 1}")
-            Facility.objects.create(name=f"Facility {i + 1}")
 
     def test_view_rooms_home_view_default_page(self):
         """Rooms application HomeView test without pagination param
@@ -132,9 +135,13 @@ class RoomViewTest(TestCase):
         city = "seoul"
         response = self.client.get("/rooms/search/", {"city": city})
         html = response.content.decode("utf8")
+        rooms = Room.objects.all()
 
         self.assertIn("<title>Search | Airbnb</title>", html)
         self.assertIn('<input value="Seoul"', html)
+
+        for room in rooms:
+            self.assertIn(f"<h3>{room.name}</h3>", html)
 
     def test_view_rooms_search_default_city(self):
         """Room application search test with empty param
@@ -185,19 +192,27 @@ class RoomViewTest(TestCase):
         """Room application search view country option test
         Check country param "AF" option is selected
         """
-        response = self.client.get("/rooms/search/", {"country": "AF"})
+        response = self.client.get("/rooms/search/", {"country": "KR"})
         html = response.content.decode("utf8")
+        rooms = Room.objects.all()
 
-        self.assertIn('<option value="AF" selected>', html)
+        self.assertIn('<option value="KR" selected>', html)
+
+        for room in rooms:
+            self.assertIn(f"<h3>{room.name}</h3>", html)
 
     def test_view_rooms_search_room_types_options_set(self):
         """Room application search view room types option test
         Check room-type param "2" option is selected
         """
-        response = self.client.get("/rooms/search/", {"room-type": 2})
+        response = self.client.get("/rooms/search/", {"room-type": 1})
         html = response.content.decode("utf8")
+        rooms = Room.objects.all()
 
-        self.assertIn('<option value="2" selected>', html)
+        self.assertIn('<option value="1" selected>', html)
+
+        for room in rooms:
+            self.assertIn(f"<h3>{room.name}</h3>", html)
 
     def test_view_rooms_search_num_param_default(self):
         """Room application search view number params test
