@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import Http404
 from rooms.models import Room, RoomType, Amenity, Facility
+from rooms.forms import SearchForm
 from django_countries import countries
 
 
@@ -45,7 +46,7 @@ class RoomDetail(DetailView):
 
 
 def search(request):
-    """rooms aplication search method
+    """rooms application search method
     Display list of rooms searched by city
 
     Params
@@ -54,4 +55,6 @@ def search(request):
     Return
         rendered rooms/search.html
     """
-    return render(request, "rooms/search.html")
+    form = SearchForm()
+
+    return render(request, "rooms/search.html", {"form": form})

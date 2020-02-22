@@ -8,6 +8,7 @@
 <h2>Search!</h2>
 
 <form method="GET" action="{% url "rooms:search" %}">
+    {{ form.as_p }}
     <button>Search</button>
 </form>
 

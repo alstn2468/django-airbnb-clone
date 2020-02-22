@@ -143,25 +143,25 @@ class RoomViewTest(TestCase):
     #     for room in rooms:
     #         self.assertIn(f"<h3>{room.name}</h3>", html)
 
-    # def test_view_rooms_search_default_city(self):
-    #     """Room application search test with empty param
-    #     Check search param city is Anywhere
-    #     """
-    #     response = self.client.get("/rooms/search/")
-    #     html = response.content.decode("utf8")
+    def test_view_rooms_search_default_city(self):
+        """Room application search test with empty param
+        Check search param city is Anywhere
+        """
+        response = self.client.get("/rooms/search/")
+        html = response.content.decode("utf8")
 
-    #     self.assertIn("<title>Search | Airbnb</title>", html)
-    #     self.assertIn('<input value="Anywhere"', html)
+        self.assertIn("<title>Search | Airbnb</title>", html)
+        self.assertIn('<input type="text" name="city" value="Anywhere"', html)
 
-    # def test_view_rooms_search_empty_city(self):
-    #     """Room application search test city is empty str
-    #     Check search param city is Anywhere
-    #     """
-    #     response = self.client.get("/rooms/search/", {"city": ""})
-    #     html = response.content.decode("utf8")
+    def test_view_rooms_search_empty_city(self):
+        """Room application search test city is empty str
+        Check search param city is Anywhere
+        """
+        response = self.client.get("/rooms/search/", {"city": ""})
+        html = response.content.decode("utf8")
 
-    #     self.assertIn("<title>Search | Airbnb</title>", html)
-    #     self.assertIn('<input value="Anywhere"', html)
+        self.assertIn("<title>Search | Airbnb</title>", html)
+        self.assertIn('<input type="text" name="city" value="Anywhere"', html)
 
     # def test_view_rooms_search_country_options_default(self):
     #     """Room application search view django_countries option test
