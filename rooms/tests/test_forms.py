@@ -1,5 +1,6 @@
 from django.test import TestCase
-from rooms.models import RoomType
+from django import forms
+from rooms.models import RoomType, Amenity, Facility
 from rooms.forms import SearchForm
 
 
@@ -70,3 +71,39 @@ class SearchFormTest(TestCase):
         """
         form = SearchForm()
         self.assertFalse(form.fields["baths"].required)
+
+    def test_search_form_instant_book_field(self):
+        """Room application search form instant_book field test
+        Check instant_book field set up is right
+        """
+        form = SearchForm()
+        self.assertFalse(form.fields["instant_book"].required)
+
+    def test_search_form_is_superhost_field(self):
+        """Room application search form is_superhost field test
+        Check is_superhost field set up is right
+        """
+        form = SearchForm()
+        self.assertFalse(form.fields["is_superhost"].required)
+
+    def test_search_form_amenities_field(self):
+        """Room application search form amenities field test
+        Check amenities field set up is right
+        """
+        form = SearchForm()
+        amenities = Amenity.objects.all()
+        self.assertCountEqual(amenities, form.fields["amenities"].queryset)
+        self.assertIsInstance(
+            form.fields["amenities"].widget, forms.CheckboxSelectMultiple
+        )
+
+    def test_search_form_facilities_field(self):
+        """Room application search form facilities field test
+        Check facilities field set up is right
+        """
+        form = SearchForm()
+        facilities = Amenity.objects.all()
+        self.assertCountEqual(facilities, form.fields["facilities"].queryset)
+        self.assertIsInstance(
+            form.fields["facilities"].widget, forms.CheckboxSelectMultiple
+        )

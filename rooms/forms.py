@@ -1,5 +1,5 @@
 from django import forms
-from rooms.models import RoomType
+from rooms.models import RoomType, Amenity, Facility
 from django_countries.fields import CountryField
 
 
@@ -10,14 +10,18 @@ class SearchForm(forms.Form):
         forms.Form
 
     Field:
-        city      : CharField
-        country   : CountryField.formfield
-        room_type : ModelChoiceField (RoomType)
-        price     : IntegerField
-        guests    : IntegerField
-        bedrooms  : IntegerField
-        beds      : IntegerField
-        baths     : IntegerField
+        city         : CharField
+        country      : CountryField.formfield
+        room_type    : ModelChoiceField (RoomType)
+        price        : IntegerField
+        guests       : IntegerField
+        bedrooms     : IntegerField
+        beds         : IntegerField
+        baths        : IntegerField
+        instant_book : BooleanField
+        is_superhost : BooleanField
+        amenities    : ModelMultipleChoiceField (Amenity)
+        facilities   : ModelMultipleChoiceField (Facility)
     """
 
     city = forms.CharField(initial="Anywhere")
@@ -30,3 +34,11 @@ class SearchForm(forms.Form):
     bedrooms = forms.IntegerField(required=False)
     beds = forms.IntegerField(required=False)
     baths = forms.IntegerField(required=False)
+    instant_book = forms.BooleanField(required=False)
+    is_superhost = forms.BooleanField(required=False)
+    amenities = forms.ModelMultipleChoiceField(
+        queryset=Amenity.objects.all(), widget=forms.CheckboxSelectMultiple
+    )
+    facilities = forms.ModelMultipleChoiceField(
+        queryset=Facility.objects.all(), widget=forms.CheckboxSelectMultiple
+    )

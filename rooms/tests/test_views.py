@@ -209,3 +209,56 @@ class RoomViewTest(TestCase):
         html = response.content.decode("utf8")
 
         self.assertIn('<input type="number" name="baths" id="id_baths">', html)
+
+    def test_view_rooms_search_form_instant_book_default(self):
+        """Room application search view instant_book input test
+        Check instant_book field deafult input set up is right
+        """
+        response = self.client.get("/rooms/search/")
+        html = response.content.decode("utf8")
+
+        self.assertIn(
+            '<input type="checkbox" name="instant_book" id="id_instant_book">', html
+        )
+
+    def test_view_rooms_search_form_is_superhost_default(self):
+        """Room application search view is_superhost input test
+        Check is_superhost field deafult input set up is right
+        """
+        response = self.client.get("/rooms/search/")
+        html = response.content.decode("utf8")
+
+        self.assertIn(
+            '<input type="checkbox" name="is_superhost" id="id_is_superhost">', html
+        )
+
+    def test_view_rooms_search_form_amenities_deafult(self):
+        """Room application search view amenities input test
+        Check all amenities option created right
+        """
+        response = self.client.get("/rooms/search/")
+        html = response.content.decode("utf8")
+
+        amenities = Amenity.objects.all()
+
+        for idx, a in enumerate(amenities):
+            self.assertIn(
+                f'<input type="checkbox" name="amenities" value="{a.id}" id="id_amenities_{idx}">',
+                html,
+            )
+
+    def test_view_rooms_search_form_facilities_deafult(self):
+        """Room application search view facilities input test
+        Check all facilities option created right
+        """
+        response = self.client.get("/rooms/search/")
+        html = response.content.decode("utf8")
+
+        facilities = Facility.objects.all()
+
+        for idx, f in enumerate(facilities):
+            self.assertIn(
+                f'<input type="checkbox" name="facilities" value="{f.id}" id="id_facilities_{idx}">',
+                html,
+            )
+
