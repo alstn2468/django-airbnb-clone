@@ -1,5 +1,6 @@
 from django import forms
 from rooms.models import RoomType
+from django_countries.fields import CountryField
 
 
 class SearchForm(forms.Form):
@@ -9,10 +10,23 @@ class SearchForm(forms.Form):
         forms.Form
 
     Field:
-        city  : CharField
-        price : IntegerField()
+        city      : CharField
+        country   : CountryField.formfield
+        room_type : ModelChoiceField (RoomType)
+        price     : IntegerField
+        guests    : IntegerField
+        bedrooms  : IntegerField
+        beds      : IntegerField
+        baths     : IntegerField
     """
 
     city = forms.CharField(initial="Anywhere")
-    price = forms.IntegerField()
-    room_type = forms.ModelChoiceField(queryset=RoomType.objects.all())
+    country = CountryField(default="KR").formfield()
+    room_type = forms.ModelChoiceField(
+        required=False, empty_label="Any Kind", queryset=RoomType.objects.all()
+    )
+    price = forms.IntegerField(required=False)
+    guests = forms.IntegerField(required=False)
+    bedrooms = forms.IntegerField(required=False)
+    beds = forms.IntegerField(required=False)
+    baths = forms.IntegerField(required=False)
