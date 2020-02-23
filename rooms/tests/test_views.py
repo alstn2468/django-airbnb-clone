@@ -243,7 +243,8 @@ class RoomViewTest(TestCase):
 
         for idx, a in enumerate(amenities):
             self.assertIn(
-                f'<input type="checkbox" name="amenities" value="{a.id}" id="id_amenities_{idx}">',
+                '<input type="checkbox" name="amenities" '
+                + f'value="{a.id}" id="id_amenities_{idx}">',
                 html,
             )
 
@@ -258,7 +259,8 @@ class RoomViewTest(TestCase):
 
         for idx, f in enumerate(facilities):
             self.assertIn(
-                f'<input type="checkbox" name="facilities" value="{f.id}" id="id_facilities_{idx}">',
+                '<input type="checkbox" name="facilities" '
+                + f'value="{f.id}" id="id_facilities_{idx}">',
                 html,
             )
 
