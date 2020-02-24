@@ -161,4 +161,3 @@ class Room(AbstractTimeStamp):
             all_ratings += review.rating_average()
 
         return round(all_ratings / len(all_reviews), 2)
-

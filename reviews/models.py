@@ -52,4 +52,3 @@ class Review(AbstractTimeStamp):
         return round(average, 2)
 
     rating_average.short_description = "AVG"
-
