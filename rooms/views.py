@@ -1,5 +1,6 @@
 from django.views.generic import ListView, DetailView, View
 from django.shortcuts import render, redirect
+from django.core.paginator import Paginator
 from django.urls import reverse
 from django.http import Http404
 from rooms.models import Room
@@ -53,7 +54,6 @@ class SearchView(View):
 
     def get(self, request):
         country = request.GET.get("country")
-        rooms = None
 
         if country:
             form = SearchForm(request.GET)
@@ -111,7 +111,11 @@ class SearchView(View):
 
                 rooms = Room.objects.filter(**filter_args)
 
+                return render(
+                    request, "rooms/search.html", {"form": form, "rooms": rooms}
+                )
+
         else:
             form = SearchForm()
 
-        return render(request, "rooms/search.html", {"form": form, "rooms": rooms})
+        return render(request, "rooms/search.html", {"form": form})
