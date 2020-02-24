@@ -50,6 +50,9 @@ class RoomViewTest(TestCase):
             room.amenities.add(amenity)
             room.facilities.add(facility)
 
+            facility = Facility.objects.get(id=2)
+            room.facilities.add(facility)
+
     def test_view_rooms_home_view_default_page(self):
         """Rooms application HomeView test without pagination param
         Check HomeView HttpResponse content data contain right data
@@ -332,7 +335,7 @@ class RoomViewTest(TestCase):
         Check all rooms rendered at search.html
         """
         response = self.client.get(
-            "/rooms/search/", {"city": "Seoul", "country": "KR", "amenity": 1},
+            "/rooms/search/", {"city": "Seoul", "country": "KR", "amenities": [1]},
         )
         html = response.content.decode("utf8")
         rooms = Room.objects.all()
@@ -345,7 +348,7 @@ class RoomViewTest(TestCase):
         Check all rooms rendered at search.html
         """
         response = self.client.get(
-            "/rooms/search/", {"city": "Seoul", "country": "KR", "facilty": 1},
+            "/rooms/search/", {"city": "Seoul", "country": "KR", "facilities": [1, 2]},
         )
         html = response.content.decode("utf8")
         rooms = Room.objects.all()
