@@ -26,8 +26,10 @@ class RoomViewTest(TestCase):
                 user.save()
 
             room_type = RoomType.objects.get(id=1)
+            amenity = Amenity.objects.get(id=1)
+            facility = Facility.objects.get(id=1)
 
-            Room.objects.create(
+            room = Room.objects.create(
                 name=f"Test Room {i}",
                 description="Test Description",
                 country="KR",
@@ -44,6 +46,9 @@ class RoomViewTest(TestCase):
                 host=user,
                 room_type=room_type,
             )
+
+            room.amenities.add(amenity)
+            room.facilities.add(facility)
 
     def test_view_rooms_home_view_default_page(self):
         """Rooms application HomeView test without pagination param
@@ -265,7 +270,7 @@ class RoomViewTest(TestCase):
             )
 
     def test_view_rooms_search_success(self):
-        """Room application search view search result test
+        """Room application search view result test
         Check all rooms rendered at search.html except room 24
         """
         response = self.client.get(
@@ -288,7 +293,7 @@ class RoomViewTest(TestCase):
             self.assertIn(f"<h3>{room.name}</h3>", html)
 
     def test_view_rooms_search_suucess_is_superhost(self):
-        """Room application search view search result test
+        """Room application search view result test
         Check is_superhost True rooms rendered at search.html
         """
         response = self.client.get(
@@ -308,3 +313,42 @@ class RoomViewTest(TestCase):
         html = response.content.decode("utf8")
 
         self.assertIn("<h3>Test Room 23</h3>", html)
+
+    def test_view_rooms_search_success_room_type(self):
+        """Room application search view result test
+        Check all rooms rendered at search.html
+        """
+        response = self.client.get(
+            "/rooms/search/", {"city": "Seoul", "country": "KR", "room_type": 1},
+        )
+        html = response.content.decode("utf8")
+        rooms = Room.objects.all()
+
+        for room in rooms:
+            self.assertIn(f"<h3>{room.name}</h3>", html)
+
+    def test_view_rooms_search_success_amenity(self):
+        """Room application search view result test
+        Check all rooms rendered at search.html
+        """
+        response = self.client.get(
+            "/rooms/search/", {"city": "Seoul", "country": "KR", "amenity": 1},
+        )
+        html = response.content.decode("utf8")
+        rooms = Room.objects.all()
+
+        for room in rooms:
+            self.assertIn(f"<h3>{room.name}</h3>", html)
+
+    def test_view_rooms_search_success_facility(self):
+        """Room application search view result test
+        Check all rooms rendered at search.html
+        """
+        response = self.client.get(
+            "/rooms/search/", {"city": "Seoul", "country": "KR", "facilty": 1},
+        )
+        html = response.content.decode("utf8")
+        rooms = Room.objects.all()
+
+        for room in rooms:
+            self.assertIn(f"<h3>{room.name}</h3>", html)
