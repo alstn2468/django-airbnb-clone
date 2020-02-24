@@ -38,8 +38,9 @@ class RoomDetail(DetailView):
     """rooms application RoomDetail Class
     Display detail of room object
 
-    Inherit : DetailView
-    Model   : Room
+    Inherit             : DetailView
+    Model               : Room
+    Templates name      : rooms/room_detail.html
     """
 
     model = Room
@@ -50,6 +51,7 @@ class SearchView(View):
     Display list of rooms searched by city
 
     Inherit : View
+    Templates name      : rooms/search.html
     """
 
     def get(self, request):
