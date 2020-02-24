@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import resolve
-from rooms.views import RoomDetail, search
+from rooms.views import RoomDetail, SearchView
 
 
 class RoomsUrlTest(TestCase):
@@ -16,5 +16,5 @@ class RoomsUrlTest(TestCase):
         Check '/rooms/search/' pattern resolved function is search
         """
         found = resolve("/rooms/search/")
-        self.assertEqual(found.func, search)
+        self.assertEqual(found.func.view_class, SearchView)
 

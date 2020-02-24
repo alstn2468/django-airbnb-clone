@@ -9,9 +9,13 @@ class SearchFormTest(TestCase):
     def setUpTestData(self):
         """Run only once when running SearchFormTest
         Create 5 RoomType objects for search form test
+        Create 5 Amenity objects for search form test
+        Create 5 Facility objects for search form test
         """
         for i in range(5):
             RoomType.objects.create(name=f"Room Type {i + 1}")
+            Amenity.objects.create(name=f"Amenity {i + 1}")
+            Facility.objects.create(name=f"Facility {i + 1}")
 
     def test_search_form_city_field(self):
         """Room application search form city field test
@@ -96,14 +100,16 @@ class SearchFormTest(TestCase):
         self.assertIsInstance(
             form.fields["amenities"].widget, forms.CheckboxSelectMultiple
         )
+        self.assertFalse(form.fields["amenities"].required)
 
     def test_search_form_facilities_field(self):
         """Room application search form facilities field test
         Check facilities field set up is right
         """
         form = SearchForm()
-        facilities = Amenity.objects.all()
+        facilities = Facility.objects.all()
         self.assertCountEqual(facilities, form.fields["facilities"].queryset)
         self.assertIsInstance(
             form.fields["facilities"].widget, forms.CheckboxSelectMultiple
         )
+        self.assertFalse(form.fields["facilities"].required)

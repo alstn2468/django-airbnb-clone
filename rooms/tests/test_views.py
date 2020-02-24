@@ -34,10 +34,10 @@ class RoomViewTest(TestCase):
                 city="Seoul",
                 price=100,
                 address="Test Address",
-                guests=4,
-                beds=2,
-                bedrooms=1,
-                baths=1,
+                guests=6,
+                beds=3,
+                bedrooms=2,
+                baths=2,
                 check_in=datetime(2019, 1, 1, 9, 30),
                 check_out=datetime(2019, 1, 2, 10, 30),
                 instant_book=True,
@@ -232,7 +232,7 @@ class RoomViewTest(TestCase):
             '<input type="checkbox" name="is_superhost" id="id_is_superhost">', html
         )
 
-    def test_view_rooms_search_form_amenities_deafult(self):
+    def test_view_rooms_search_form_amenities_default(self):
         """Room application search view amenities input test
         Check all amenities option created right
         """
@@ -248,7 +248,7 @@ class RoomViewTest(TestCase):
                 html,
             )
 
-    def test_view_rooms_search_form_facilities_deafult(self):
+    def test_view_rooms_search_form_facilities_default(self):
         """Room application search view facilities input test
         Check all facilities option created right
         """
@@ -264,3 +264,47 @@ class RoomViewTest(TestCase):
                 html,
             )
 
+    def test_view_rooms_search_success(self):
+        """Room application search view search result test
+        Check all rooms rendered at search.html except room 24
+        """
+        response = self.client.get(
+            "/rooms/search/",
+            {
+                "city": "Seoul",
+                "country": "KR",
+                "price": 100,
+                "guests": 6,
+                "beds": 3,
+                "bedrooms": 2,
+                "baths": 2,
+                "instant_book": True,
+            },
+        )
+        html = response.content.decode("utf8")
+        rooms = Room.objects.all()
+
+        for room in rooms:
+            self.assertIn(f"<h3>{room.name}</h3>", html)
+
+    def test_view_rooms_search_suucess_is_superhost(self):
+        """Room application search view search result test
+        Check is_superhost True rooms rendered at search.html
+        """
+        response = self.client.get(
+            "/rooms/search/",
+            {
+                "city": "Seoul",
+                "country": "KR",
+                "price": 100,
+                "guests": 6,
+                "beds": 3,
+                "bedrooms": 2,
+                "baths": 2,
+                "instant_book": True,
+                "is_superhost": True,
+            },
+        )
+        html = response.content.decode("utf8")
+
+        self.assertIn("<h3>Test Room 23</h3>", html)

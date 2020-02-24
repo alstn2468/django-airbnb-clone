@@ -37,8 +37,12 @@ class SearchForm(forms.Form):
     instant_book = forms.BooleanField(required=False)
     is_superhost = forms.BooleanField(required=False)
     amenities = forms.ModelMultipleChoiceField(
-        queryset=Amenity.objects.all(), widget=forms.CheckboxSelectMultiple
+        required=False,
+        queryset=Amenity.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
     )
     facilities = forms.ModelMultipleChoiceField(
-        queryset=Facility.objects.all(), widget=forms.CheckboxSelectMultiple
+        required=False,
+        queryset=Facility.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
     )
