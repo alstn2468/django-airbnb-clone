@@ -22,6 +22,7 @@ class SearchFormTest(TestCase):
         Check city field set up is right
         """
         form = SearchForm()
+        self.assertTrue(form.fields["city"].__class__.__name__ == "CharField")
         self.assertTrue(form.fields["city"].initial == "Anywhere")
 
     def test_search_form_country_field(self):
@@ -38,6 +39,9 @@ class SearchFormTest(TestCase):
         form = SearchForm()
         room_types = RoomType.objects.all()
         self.assertFalse(form.fields["room_type"].required)
+        self.assertTrue(
+            form.fields["room_type"].__class__.__name__ == "ModelChoiceField"
+        )
         self.assertCountEqual(room_types, form.fields["room_type"].queryset)
         self.assertTrue(form.fields["room_type"].empty_label == "Any Kind")
 
@@ -46,6 +50,7 @@ class SearchFormTest(TestCase):
         Check price field set up is right
         """
         form = SearchForm()
+        self.assertTrue(form.fields["price"].__class__.__name__ == "IntegerField")
         self.assertFalse(form.fields["price"].required)
 
     def test_search_form_guests_field(self):
@@ -53,6 +58,7 @@ class SearchFormTest(TestCase):
         Check guests field set up is right
         """
         form = SearchForm()
+        self.assertTrue(form.fields["guests"].__class__.__name__ == "IntegerField")
         self.assertFalse(form.fields["guests"].required)
 
     def test_search_form_bedrooms_field(self):
@@ -60,6 +66,7 @@ class SearchFormTest(TestCase):
         Check bedrooms field set up is right
         """
         form = SearchForm()
+        self.assertTrue(form.fields["bedrooms"].__class__.__name__ == "IntegerField")
         self.assertFalse(form.fields["bedrooms"].required)
 
     def test_search_form_beds_field(self):
@@ -67,6 +74,7 @@ class SearchFormTest(TestCase):
         Check beds field set up is right
         """
         form = SearchForm()
+        self.assertTrue(form.fields["beds"].__class__.__name__ == "IntegerField")
         self.assertFalse(form.fields["beds"].required)
 
     def test_search_form_baths_field(self):
@@ -74,6 +82,7 @@ class SearchFormTest(TestCase):
         Check baths field set up is right
         """
         form = SearchForm()
+        self.assertTrue(form.fields["baths"].__class__.__name__ == "IntegerField")
         self.assertFalse(form.fields["baths"].required)
 
     def test_search_form_instant_book_field(self):
@@ -81,6 +90,9 @@ class SearchFormTest(TestCase):
         Check instant_book field set up is right
         """
         form = SearchForm()
+        self.assertTrue(
+            form.fields["instant_book"].__class__.__name__ == "BooleanField"
+        )
         self.assertFalse(form.fields["instant_book"].required)
 
     def test_search_form_is_superhost_field(self):
@@ -88,6 +100,9 @@ class SearchFormTest(TestCase):
         Check is_superhost field set up is right
         """
         form = SearchForm()
+        self.assertTrue(
+            form.fields["is_superhost"].__class__.__name__ == "BooleanField"
+        )
         self.assertFalse(form.fields["is_superhost"].required)
 
     def test_search_form_amenities_field(self):
@@ -97,6 +112,9 @@ class SearchFormTest(TestCase):
         form = SearchForm()
         amenities = Amenity.objects.all()
         self.assertCountEqual(amenities, form.fields["amenities"].queryset)
+        self.assertTrue(
+            form.fields["amenities"].__class__.__name__ == "ModelMultipleChoiceField"
+        )
         self.assertIsInstance(
             form.fields["amenities"].widget, forms.CheckboxSelectMultiple
         )
@@ -109,6 +127,9 @@ class SearchFormTest(TestCase):
         form = SearchForm()
         facilities = Facility.objects.all()
         self.assertCountEqual(facilities, form.fields["facilities"].queryset)
+        self.assertTrue(
+            form.fields["facilities"].__class__.__name__ == "ModelMultipleChoiceField"
+        )
         self.assertIsInstance(
             form.fields["facilities"].widget, forms.CheckboxSelectMultiple
         )
