@@ -1,5 +1,6 @@
 from django.views import View
 from django.shortcuts import render
+from users.forms import LoginForm
 
 
 class LoginView(View):
@@ -10,7 +11,9 @@ class LoginView(View):
     """
 
     def get(self, request):
-        return render(request, "users/login.html")
+        form = LoginForm()
+
+        return render(request, "users/login.html", {"form": form})
 
     def post(self, request):
-        pass
+        form = LoginForm(request.POST)
