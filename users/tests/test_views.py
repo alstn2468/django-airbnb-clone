@@ -26,7 +26,8 @@ class UserViewTest(TestCase):
 
         self.assertEqual(200, response.status_code)
         self.assertIn(
-            f'<input type="email" name="email" value="{data.email}" required id="id_email">',
+            '<input type="email" name="email" '
+            + f'value="{data["email"]}" required id="id_email">',
             html,
         )
 
