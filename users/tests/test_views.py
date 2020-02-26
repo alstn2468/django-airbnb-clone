@@ -18,10 +18,17 @@ class UserViewTest(TestCase):
 
     def test_view_users_login_view_post(self):
         """Users application LoginView post method test
-        Now LoginView post method didn't return HttpResponse it return None
+        Check LoginForm has user login input data except password
         """
-        with self.assertRaises(ValueError):
-            self.client.post("/users/login")
+        data = {"email": "test@test.test", "password": "test"}
+        response = self.client.post("/users/login", data)
+        html = response.content.decode("utf8")
+
+        self.assertEqual(200, response.status_code)
+        self.assertIn(
+            f'<input type="email" name="email" value="{data.email}" required id="id_email">',
+            html,
+        )
 
     def test_view_users_login_view_csrf_token(self):
         """Users application LoginView csrf_token test
