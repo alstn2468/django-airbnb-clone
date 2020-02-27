@@ -1,7 +1,15 @@
 from django.test import TestCase
+from users.models import User
 
 
 class UserViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        """Run only once when running UserViewTest
+        Create one test user has email
+        """
+        User.objects.create_user(username="test@test.com", password="testtest")
+
     def test_view_users_login_view_get(self):
         """Users application LoginView get method test
         Check LoginView HttpResponse content data contain right data
@@ -16,11 +24,11 @@ class UserViewTest(TestCase):
             '<input type="password" name="password" required id="id_password">', html
         )
 
-    def test_view_users_login_view_post(self):
+    def test_view_users_login_view_post_data_is_valid(self):
         """Users application LoginView post method test
         Check LoginForm has user login input data except password
         """
-        data = {"email": "test@test.test", "password": "test"}
+        data = {"email": "test@test.com", "password": "test"}
         response = self.client.post("/users/login", data)
         html = response.content.decode("utf8")
 
