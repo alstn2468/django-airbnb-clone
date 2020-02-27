@@ -20,6 +20,10 @@ class Review(AbstractTimeStamp):
         room          : Room Model (1:N)
         created_at    : DateTimeField
         updated_at    : DateTimeField
+
+    Method:
+        __str__ : return review - room
+        rating_average : return all int fields avgs (xxx.xx)
     """
 
     review = models.TextField()

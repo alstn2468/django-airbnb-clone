@@ -14,6 +14,10 @@ class List(AbstractTimeStamp):
         rooms      : Room Model (N:N)
         created_at : DateTimeField
         updated_at : DateTimeField
+
+    Method:
+        __str__     : return name
+        count_rooms : return rooms count
     """
 
     name = models.CharField(max_length=80)

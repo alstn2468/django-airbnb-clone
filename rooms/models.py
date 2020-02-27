@@ -13,6 +13,9 @@ class AbstractItem(AbstractTimeStamp):
         name       : CharField
         created_at : DateTimeField
         updated_at : DateTimeField
+
+    Method:
+        __str__ : return name
     """
 
     name = models.CharField(max_length=80, unique=True)
@@ -80,6 +83,9 @@ class Photo(AbstractTimeStamp):
         room       : Room Model (1:N)
         created_at : DateTimeField
         updated_at : DateTimeField
+
+    Method:
+        __str__ : return caption
     """
 
     caption = models.CharField(max_length=80)
@@ -117,6 +123,11 @@ class Room(AbstractTimeStamp):
         house_rules  : HouseRule model(N:N)
         created_at   : DateTimeField
         updated_at   : DateTimeField
+
+    Method:
+        __str__      : return name
+        save         : change capitalized city name and save
+        total_rating : return all reviews rating avg
     """
 
     name = models.CharField(max_length=140)

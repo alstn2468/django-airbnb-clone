@@ -12,6 +12,11 @@ class Conversation(AbstractTimeStamp):
         participants : User Model (N:N)
         created_at   : DateTimeField
         updated_at   : DateTimeField
+
+    Method:
+        __str__            : join all participants username
+        count_messages     : return messages count
+        count_participants : return participants count
     """
 
     participants = models.ManyToManyField(
@@ -46,6 +51,9 @@ class Message(AbstractTimeStamp):
         conversation : Conversation Model (1:N)
         created_at   : DateTimeField
         updated_at   : DateTimeField
+
+    Method:
+        __str__ : return user and message
     """
 
     message = models.TextField()

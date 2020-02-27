@@ -17,6 +17,11 @@ class Reservation(AbstractTimeStamp):
         room       : Room Model (1:N)
         created_at : DateTimeField
         updated_at : DateTimeField
+
+    Method:
+        __str__     : return room name - check in
+        in_progress : return reservation is progress
+        is_finished : return reservation is finished
     """
 
     STATUS_PENDING = "pending"
