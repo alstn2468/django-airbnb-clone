@@ -20,14 +20,18 @@ class LoginForm(forms.Form):
     email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
 
-    def clean_email(self):
+    def clean(self):
         email = self.cleaned_data.get("email")
+        password = self.cleaned_data.get("password")
 
         try:
-            User.objects.get(username=email)
-            return email
-        except User.DoesNotExist:
-            raise forms.ValidationError("User does not exist")
+            user = User.objects.get(username=email)
 
-    def clean_password(self):
-        pass
+            if user.check_password(password):
+                return self.cleaned_data
+
+            else:
+                self.add_error("password", forms.ValidationError("Password is wrong"))
+        except User.DoesNotExist:
+            self.add_error("email", forms.ValidationError("User does not exist"))
+
