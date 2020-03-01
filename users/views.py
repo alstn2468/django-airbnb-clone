@@ -1,6 +1,6 @@
 from django.views import View
 from django.shortcuts import render, redirect, reverse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from users.forms import LoginForm
 
 
@@ -9,6 +9,11 @@ class LoginView(View):
 
     Inherit             : View
     Templates name      : users/login.html
+
+    Method:
+        get  : rendering empty login form
+        post : login success redirect home
+               login fail render login page with form data
     """
 
     def get(self, request):
@@ -32,3 +37,8 @@ class LoginView(View):
 
         return render(request, "users/login.html", {"form": form})
 
+
+def log_out(request):
+    logout(request)
+
+    return redirect(reverse("core:home"))

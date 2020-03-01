@@ -33,6 +33,11 @@ class UserViewTest(TestCase):
 
         self.assertEqual(302, response.status_code)
 
+        response = self.client.get("")
+
+        html = response.content.decode("utf8")
+        self.assertIn('<a href="/users/logout">Logout</a>', html)
+
     def test_view_users_login_view_post_login_fail(self):
         """Users application LoginView post method test
         Check render login template when fail login process
@@ -57,3 +62,16 @@ class UserViewTest(TestCase):
             html,
         )
 
+    def test_view_users_login_view_post_log_out(self):
+        """Users application log_out post method test
+        Check success logout redirect core:home
+        """
+        data = {"email": "test@test.com", "password": "testtest"}
+        response = self.client.post("/users/login", data)
+        response = self.client.post("/users/logout")
+
+        self.assertEqual(302, response.status_code)
+
+        response = self.client.get("")
+        html = response.content.decode("utf8")
+        self.assertIn('<a href="/users/login">Login</a>', html)
