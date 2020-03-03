@@ -35,3 +35,27 @@ class LoginForm(forms.Form):
         except User.DoesNotExist:
             self.add_error("email", forms.ValidationError("User does not exist"))
 
+
+class SignUpForm(forms.Form):
+    """Users application signup form
+
+    Inherit:
+        forms.Form
+
+    Field:
+        first_name     : CharField
+        last_name      : CharField
+        email          : EmailField
+        password       : CharField
+        password_check : CharField
+
+    Method:
+    """
+
+    first_name = forms.CharField(max_length=80)
+    last_name = forms.CharField(max_length=80)
+    email = forms.EmailField()
+    password = forms.CharField(widget=forms.PasswordInput)
+    password_check = forms.CharField(
+        widget=forms.PasswordInput, label="Confirm Password"
+    )

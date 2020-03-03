@@ -75,3 +75,31 @@ class UserViewTest(TestCase):
         response = self.client.get("")
         html = response.content.decode("utf8")
         self.assertIn('<a href="/users/login">Login</a>', html)
+        self.assertIn('<a href="/users/signup">Sign up</a>', html)
+
+    def test_view_users_sign_up_view_get(self):
+        """Users application SignUpView test
+        Check SignUpView HttpResponse content data contain right data
+        """
+        response = self.client.get("/users/signup")
+        html = response.content.decode("utf8")
+
+        self.assertEqual(200, response.status_code)
+        self.assertIn("<title>Sign Up | Airbnb</title>", html)
+        self.assertIn(
+            '<input type="text" name="first_name" maxlength="80" required id="id_first_name">',
+            html,
+        )
+        self.assertIn(
+            '<input type="text" name="last_name" maxlength="80" required id="id_last_name">',
+            html,
+        )
+        self.assertIn('<input type="email" name="email" required id="id_email">', html)
+        self.assertIn(
+            '<input type="password" name="password" required id="id_password">', html
+        )
+        self.assertIn(
+            '<input type="password" name="password_check" required id="id_password_check">',
+            html,
+        )
+
