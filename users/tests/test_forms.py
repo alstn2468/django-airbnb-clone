@@ -30,7 +30,7 @@ class LoginFormTest(TestCase):
         self.assertIsInstance(form.fields["password"].widget, forms.PasswordInput)
 
     def test_login_form_clean_does_not_exist(self):
-        """Users appliation login form clean method test
+        """Users appliation login form clean method fail test
         Check LoginForm's user does not exist
         """
         form = LoginForm({"email": "error@test.com", "password": "testtest"})
@@ -38,7 +38,7 @@ class LoginFormTest(TestCase):
         self.assertIn("User does not exist", *form._errors.values())
 
     def test_login_form_clean_user_exist_password_wrong(self):
-        """Users appliation login form clean method test
+        """Users appliation login form clean method fail test
         Check LoginForm's password is wrong
         """
         form = LoginForm({"email": "test@test.com", "password": "wrong"})
@@ -46,7 +46,7 @@ class LoginFormTest(TestCase):
         self.assertIn("Password is wrong", *form._errors.values())
 
     def test_login_form_clean_is_valid_sucess(self):
-        """Users appliation login form clean method test
+        """Users appliation login form clean method success test
         Check LoginForm's clean method return exist user data
         """
         user = {"email": "test@test.com", "password": "testtest"}
@@ -64,7 +64,7 @@ class SignUpFormTest(TestCase):
         pass
 
     def test_sign_up_form_first_name_fields(self):
-        """User application sign up form fields test
+        """User application sign up form first name fields test
         Check SignUpForm first_name field set up is right
         """
         form = SignUpForm()
@@ -73,7 +73,7 @@ class SignUpFormTest(TestCase):
         self.assertTrue(form.fields["first_name"].max_length == 80)
 
     def test_sign_up_form_last_name_fields(self):
-        """User application sign up form fields test
+        """User application sign up form last name fields test
         Check SignUpForm last_name field set up is right
         """
         form = SignUpForm()
