@@ -59,3 +59,21 @@ class SignUpForm(forms.Form):
     password_check = forms.CharField(
         widget=forms.PasswordInput, label="Confirm Password"
     )
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+
+        try:
+            User.objects.get(username=email)
+            raise forms.ValidationError("User already exists with that email")
+        except User.DoesNotExist:
+            return email
+
+    def clean_password_check(self):
+        password = self.cleaned_data.get("password")
+        password_check = self.cleaned_data.get("password_check")
+
+        if password != password_check:
+            raise forms.ValidationError("Password confirmation does not match")
+
+        return password
