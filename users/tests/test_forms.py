@@ -182,3 +182,22 @@ class SignUpFormTest(TestCase):
 
         if form.is_valid():
             self.assertEqual("testtest", form.clean_password_check())
+
+    def test_sign_up_form_save_success(self):
+        """Users appliation sign up form save method success test
+        Check SignUpForm's save method create user object
+        """
+        form = SignUpForm(
+            {
+                "first_name": "test",
+                "last_name": "test",
+                "email": "test@test.com",
+                "password": "testtest",
+                "password_check": "testtest",
+            }
+        )
+
+        if form.is_valid():
+            self.assertIsNone(form.save())
+            self.assertIsNotNone(User.objects.get(username="test@test.com"))
+

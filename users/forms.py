@@ -50,6 +50,9 @@ class SignUpForm(forms.Form):
         password_check : CharField
 
     Method:
+        clean_email          : Check user exists with form email
+        check_password_check : Check password is equal to password_check
+        save                 : Create user object from cleaned_data
     """
 
     first_name = forms.CharField(max_length=80)
@@ -77,3 +80,17 @@ class SignUpForm(forms.Form):
             raise forms.ValidationError("Password confirmation does not match")
 
         return password
+
+    def save(self):
+        first_name = self.cleaned_data.get("first_name")
+        last_name = self.cleaned_data.get("last_name")
+        email = self.cleaned_data.get("email")
+        password = self.cleaned_data.get("password")
+
+        User.objects.create_user(
+            username=email,
+            email=email,
+            password=password,
+            first_name=first_name,
+            last_name=last_name,
+        )

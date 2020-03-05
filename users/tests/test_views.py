@@ -103,3 +103,37 @@ class UserViewTest(TestCase):
             html,
         )
 
+    def test_view_users_sign_up_view_post_success(self):
+        """Users application sign up view post method test
+        Check success create user and login then redirect home
+        """
+        data = {
+            "first_name": "test",
+            "last_name": "test",
+            "email": "testtest@test.com",
+            "password": "testtest",
+            "password_check": "testtest",
+        }
+        response = self.client.post("/users/signup", data)
+
+        self.assertEqual(302, response.status_code)
+
+        response = self.client.get("")
+        html = response.content.decode("utf8")
+
+        self.assertIn('<a href="/users/logout">Logout</a>', html)
+        self.assertIsNotNone(User.objects.get(username="testtest@test.com"))
+
+    def test_view_users_sign_up_view_post_fail(self):
+        """Users application sign up view post method test
+        Check fail to create user and raise four ValidationError
+        """
+        data = {
+            "email": "test@test.com",
+            "password": "testtest",
+            "password_check": "test",
+        }
+        response = self.client.post("/users/signup", data)
+        html = response.content.decode("utf8")
+
+        self.assertEqual(4, html.count("errorlist"))
