@@ -118,12 +118,12 @@ class UserModelTest(TestCase):
         user = User.objects.get(username="test_user_2")
         self.assertEqual(user.birth_date, now().date())
 
-    def test_user_language_blank(self):
-        """User model language field blank test
-        Check test_user_1's language is ""
+    def test_user_language_default(self):
+        """User model language field default test
+        Check test_user_1's language is LANGUAGE_KOREAN
         """
         user = User.objects.get(username="test_user_1")
-        self.assertEqual("", user.language)
+        self.assertEqual(User.LANGUAGE_KOREAN, user.language)
 
     def test_user_language_set(self):
         """User model language field set value test
@@ -132,12 +132,12 @@ class UserModelTest(TestCase):
         user = User.objects.get(username="test_user_2")
         self.assertEqual("en", user.language)
 
-    def test_user_currency_blank(self):
-        """User model currency field blank test
-        Check test_user_1's currency is ""
+    def test_user_currency_default(self):
+        """User model currency field default test
+        Check test_user_1's currency is CURRENCY_KRW
         """
         user = User.objects.get(username="test_user_1")
-        self.assertEqual("", user.currency)
+        self.assertEqual(User.CURRENCY_KRW, user.currency)
 
     def test_user_currency_set(self):
         """User model currency field set value test

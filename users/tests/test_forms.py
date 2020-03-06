@@ -71,8 +71,6 @@ class SignUpFormTest(TestCase):
         """
         form = SignUpForm()
         self.assertTrue(form.fields["first_name"].__class__.__name__ == "CharField")
-        self.assertTrue(form.fields["first_name"].required)
-        self.assertTrue(form.fields["first_name"].max_length == 80)
 
     def test_sign_up_form_last_name_fields(self):
         """User application sign up form last name fields test
@@ -80,8 +78,6 @@ class SignUpFormTest(TestCase):
         """
         form = SignUpForm()
         self.assertTrue(form.fields["last_name"].__class__.__name__ == "CharField")
-        self.assertTrue(form.fields["last_name"].required)
-        self.assertTrue(form.fields["last_name"].max_length == 80)
 
     def test_sign_up_form_email_field(self):
         """Users application sign up form email field test
@@ -89,7 +85,6 @@ class SignUpFormTest(TestCase):
         """
         form = SignUpForm()
         self.assertTrue(form.fields["email"].__class__.__name__ == "EmailField")
-        self.assertTrue(form.fields["email"].required)
 
     def test_sign_up_form_password_field(self):
         """Users application sign up form password field test
@@ -109,42 +104,6 @@ class SignUpFormTest(TestCase):
         self.assertTrue(form.fields["password_check"].required)
         self.assertTrue(form.fields["password_check"].label == "Confirm Password")
         self.assertIsInstance(form.fields["password_check"].widget, forms.PasswordInput)
-
-    def test_sign_up_form_clean_email_exist_user(self):
-        """Users appliation sign up form clean_email method fail test
-        Check SignUpForm's user aleready exist
-        """
-        form = SignUpForm(
-            {
-                "first_name": "test",
-                "last_name": "test",
-                "email": "exist@test.com",
-                "password": "testtest",
-                "password_check": "testtest",
-            }
-        )
-        self.assertFalse(form.is_valid())
-        self.assertIn(
-            "User already exists with that email",
-            chain.from_iterable(form._errors.values()),
-        )
-
-    def test_sign_up_form_clean_email_success(self):
-        """Users appliation sign up form clean_email method success test
-        Check SignUpForm's clean_email return email field data
-        """
-        form = SignUpForm(
-            {
-                "first_name": "test",
-                "last_name": "test",
-                "email": "test@test.com",
-                "password": "testtest",
-                "password_check": "testtest",
-            }
-        )
-
-        if form.is_valid():
-            self.assertEqual("test@test.com", form.clean_email())
 
     def test_sign_up_form_clean_password_check_confirm_fail(self):
         """Users appliation sign up form clean_password_check method fail test

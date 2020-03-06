@@ -36,28 +36,34 @@ class LoginForm(forms.Form):
             self.add_error("email", forms.ValidationError("User does not exist"))
 
 
-class SignUpForm(forms.Form):
+class SignUpForm(forms.ModelForm):
     """Users application signup form
 
     Inherit:
-        forms.Form
+        forms.ModelForm
+
+    Meta:
+        model  : User
+        fields : (first_name, last_name, email, password,)
 
     Field:
-        first_name     : CharField
-        last_name      : CharField
-        email          : EmailField
         password       : CharField
         password_check : CharField
 
     Method:
-        clean_email          : Check user exists with form email
-        check_password_check : Check password is equal to password_check
+        clean_email          : Check user exist witj email field data
+        clean_password_check : Check password is equal to password_check
         save                 : Create user object from cleaned_data
     """
 
-    first_name = forms.CharField(max_length=80)
-    last_name = forms.CharField(max_length=80)
-    email = forms.EmailField()
+    class Meta:
+        model = User
+        fields = (
+            "first_name",
+            "last_name",
+            "email",
+        )
+
     password = forms.CharField(widget=forms.PasswordInput)
     password_check = forms.CharField(
         widget=forms.PasswordInput, label="Confirm Password"
@@ -81,16 +87,12 @@ class SignUpForm(forms.Form):
 
         return password
 
-    def save(self):
-        first_name = self.cleaned_data.get("first_name")
-        last_name = self.cleaned_data.get("last_name")
+    def save(self, *args, **kwargs):
+        user = super().save(commit=False)
+
         email = self.cleaned_data.get("email")
         password = self.cleaned_data.get("password")
 
-        User.objects.create_user(
-            username=email,
-            email=email,
-            password=password,
-            first_name=first_name,
-            last_name=last_name,
-        )
+        user.username = email
+        user.set_password(password)
+        user.save()
