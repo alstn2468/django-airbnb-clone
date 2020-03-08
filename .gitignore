@@ -197,3 +197,10 @@ Temporary Items
 # End of https://www.gitignore.io/api/macos,python,django
 .vscode/
 uploads/
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
