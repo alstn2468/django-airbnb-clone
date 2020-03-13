@@ -22,13 +22,15 @@ class UserModelTest(TestCase):
         Setting all fields except avatar field
 
         Fields :
-            id           : 2
-            username     : test_user_2
-            bio          : test_bio
-            birth_date   : now date
-            language     : en
-            currency     : usd
-            is_superhost : True
+            id              : 2
+            username        : test_user_2
+            bio             : test_bio
+            birth_date      : now date
+            language        : en
+            currency        : usd
+            is_superhost    : True
+            email_confirmed : True
+            email_secret    : test
         """
         User.objects.create_user(
             username="test_user_2",
@@ -38,6 +40,8 @@ class UserModelTest(TestCase):
             language=User.LANGUAGE_ENGLISH,
             currency=User.CURRENCY_USD,
             is_superhost=True,
+            email_confirmed=True,
+            email_secret="test",
         )
 
     def test_user_create_success(self):
@@ -159,3 +163,38 @@ class UserModelTest(TestCase):
         """
         user = User.objects.get(username="test_user_2")
         self.assertTrue(user.is_superhost)
+
+    def test_user_email_confirmed_default(self):
+        """User model email_confirmed field default value test
+        Check test_user_1's email_confirmed is False
+        """
+        user = User.objects.get(username="test_user_1")
+        self.assertFalse(user.email_confirmed)
+
+    def test_user_email_confirmed_set(self):
+        """User model email_confirmed field set value test
+        Check test_user_2's email_confirmed is True
+        """
+        user = User.objects.get(username="test_user_2")
+        self.assertTrue(user.email_confirmed)
+
+    def test_user_email_secret_default(self):
+        """User model email_secret field default value test
+        Check test_user_1's email_secret is empty string
+        """
+        user = User.objects.get(username="test_user_1")
+        self.assertEqual("", user.email_secret)
+
+    def test_user_email_secret_set(self):
+        """User model email_secret field set value test
+        Check test_user_2's email_secret is "test"
+        """
+        user = User.objects.get(username="test_user_2")
+        self.assertEqual("test", user.email_secret)
+
+    def test_user_verify_email_return_none(self):
+        """User model verify_email method test
+        Now verify_email doesn't have any logic then return None
+        """
+        user = User.objects.get(username="test_user_1")
+        self.assertIsNone(user.verify_email())
