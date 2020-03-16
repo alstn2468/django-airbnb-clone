@@ -1,5 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.core.mail import send_mail
+from django.conf import settings
+import uuid
 
 
 class User(AbstractUser):
@@ -9,15 +12,15 @@ class User(AbstractUser):
         AbstractUser
 
     Fields:
-        avatar          : ImageField
-        gender          : CharField
-        bio             : TextField
-        birth_date      : DateField
-        language        : CharField
-        currency        : CharField
-        is_superhost    : BooleanField
-        email_confirmed : BooleanField
-        email_secret    : CharField
+        avatar         : ImageField
+        gender         : CharField
+        bio            : TextField
+        birth_date     : DateField
+        language       : CharField
+        currency       : CharField
+        is_superhost   : BooleanField
+        email_verified : BooleanField
+        email_secret   : CharField
 
     Methods:
         verify_email : Send an email for verify user
@@ -54,8 +57,19 @@ class User(AbstractUser):
         choices=CURRENCY_CHOICES, max_length=3, blank=True, default=CURRENCY_KRW
     )
     is_superhost = models.BooleanField(default=False)
-    email_confirmed = models.BooleanField(default=False)
-    email_secret = models.CharField(max_length=120, default="", blank=True)
+    email_verified = models.BooleanField(default=False)
+    email_secret = models.CharField(max_length=20, default="", blank=True)
 
     def verify_email(self):
-        pass
+        if not self.email_verified:
+            secret = uuid.uuid4().hex[:20]
+            self.email_secret = secret
+            send_mail(
+                "Verify Aribnb Account",
+                f"Verify account, this is your secret: {secret}",
+                settings.EMAIL_FROM,
+                [self.email],
+                fail_silently=False,
+            )
+            return True
+        return False

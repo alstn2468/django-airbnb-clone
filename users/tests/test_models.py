@@ -29,7 +29,7 @@ class UserModelTest(TestCase):
             language        : en
             currency        : usd
             is_superhost    : True
-            email_confirmed : True
+            email_verified : True
             email_secret    : test
         """
         User.objects.create_user(
@@ -40,7 +40,7 @@ class UserModelTest(TestCase):
             language=User.LANGUAGE_ENGLISH,
             currency=User.CURRENCY_USD,
             is_superhost=True,
-            email_confirmed=True,
+            email_verified=True,
             email_secret="test",
         )
 
@@ -164,19 +164,19 @@ class UserModelTest(TestCase):
         user = User.objects.get(username="test_user_2")
         self.assertTrue(user.is_superhost)
 
-    def test_user_email_confirmed_default(self):
-        """User model email_confirmed field default value test
-        Check test_user_1's email_confirmed is False
+    def test_user_email_verified_default(self):
+        """User model email_verified field default value test
+        Check test_user_1's email_verified is False
         """
         user = User.objects.get(username="test_user_1")
-        self.assertFalse(user.email_confirmed)
+        self.assertFalse(user.email_verified)
 
-    def test_user_email_confirmed_set(self):
-        """User model email_confirmed field set value test
-        Check test_user_2's email_confirmed is True
+    def test_user_email_verified_set(self):
+        """User model email_verified field set value test
+        Check test_user_2's email_verified is True
         """
         user = User.objects.get(username="test_user_2")
-        self.assertTrue(user.email_confirmed)
+        self.assertTrue(user.email_verified)
 
     def test_user_email_secret_default(self):
         """User model email_secret field default value test
@@ -192,9 +192,16 @@ class UserModelTest(TestCase):
         user = User.objects.get(username="test_user_2")
         self.assertEqual("test", user.email_secret)
 
-    def test_user_verify_email_return_none(self):
+    def test_user_verify_email_return_true(self):
         """User model verify_email method test
-        Now verify_email doesn't have any logic then return None
+        Now verify_email return True when unverified user call ths method
         """
         user = User.objects.get(username="test_user_1")
-        self.assertIsNone(user.verify_email())
+        self.assertTrue(user.verify_email())
+
+    def test_user_verify_email_return_false(self):
+        """User model verify_email method test
+        Now verify_email return False when verified user call this method
+        """
+        user = User.objects.get(username="test_user_2")
+        self.assertFalse(user.verify_email())

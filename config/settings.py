@@ -143,3 +143,4 @@ EMAIL_HOST = "smtp.mailgun.org"
 EMAIL_PORT = "587"
 EMAIL_HOST_USER = os.environ.get("MAIL_GUN_USERNAME")
 EMAIL_HOST_PASSWORD = os.environ.get("MAIL_GUN_PASSWORD")
+EMAIL_FROM = "no-reply@sandbox8cf3408edf9c45d1a02812f96952fc5e.mailgun.org"
