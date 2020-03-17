@@ -65,7 +65,7 @@ class User(AbstractUser):
             secret = uuid.uuid4().hex[:20]
             self.email_secret = secret
             send_mail(
-                "Verify Aribnb Account",
+                "Verify Airbnb Account",
                 f"Verify account, this is your secret: {secret}",
                 settings.EMAIL_FROM,
                 [self.email],

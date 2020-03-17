@@ -1,7 +1,11 @@
 from django.test import TestCase
 from django.db import IntegrityError
 from django.utils.timezone import now
+from django.test import override_settings
+from django.conf import settings
+from django.core import mail
 from users.models import User
+from unittest import mock
 import tempfile
 
 
@@ -14,8 +18,9 @@ class UserModelTest(TestCase):
         Fields :
             id       : 1
             username : test_user_1
+            email    : alstn2468@gmail.com
         """
-        User.objects.create_user("test_user_1")
+        User.objects.create_user(username="test_user_1", email="alstn2468@gmail.com")
 
     def setUp(self):
         """Run every test function
@@ -192,12 +197,22 @@ class UserModelTest(TestCase):
         user = User.objects.get(username="test_user_2")
         self.assertEqual("test", user.email_secret)
 
+    @override_settings(EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend")
     def test_user_verify_email_return_true(self):
         """User model verify_email method test
         Now verify_email return True when unverified user call ths method
         """
         user = User.objects.get(username="test_user_1")
-        self.assertTrue(user.verify_email())
+        with mock.patch("uuid.uuid4") as uuid4:
+            uuid4.return_value = mock.Mock(hex="a" * 20)
+            self.assertTrue(User.verify_email(user))
+            self.assertEqual(len(mail.outbox), 1)
+            self.assertEqual(mail.outbox[0].subject, "Verify Airbnb Account")
+            self.assertEqual(mail.outbox[0].to, [user.email])
+            self.assertEqual(mail.outbox[0].from_email, settings.EMAIL_FROM)
+            self.assertEqual(
+                mail.outbox[0].body, f"Verify account, this is your secret: {'a' * 20}",
+            )
 
     def test_user_verify_email_return_false(self):
         """User model verify_email method test
