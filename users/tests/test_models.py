@@ -210,8 +210,8 @@ class UserModelTest(TestCase):
             self.assertEqual(mail.outbox[0].subject, "Verify Airbnb Account")
             self.assertEqual(mail.outbox[0].to, [user.email])
             self.assertEqual(mail.outbox[0].from_email, settings.EMAIL_FROM)
-            self.assertEqual(
-                mail.outbox[0].body, f"Verify account, this is your secret: {'a' * 20}",
+            self.assertIn(
+                "Hello, to verify your account click here", mail.outbox[0].body,
             )
 
     def test_user_verify_email_return_false(self):
