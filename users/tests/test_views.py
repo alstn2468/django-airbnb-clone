@@ -154,6 +154,7 @@ class UserViewTest(TestCase):
 
         user = User.objects.get(email_secret="a" * 20)
         self.assertTrue(user.email_verified)
+        self.assertEqual("", user.email_secret)
 
     def test_complete_verification_fail(self):
         """Users application complete_verifiation view fail test

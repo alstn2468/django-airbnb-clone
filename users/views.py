@@ -73,6 +73,7 @@ def complete_verification(request, key):
     try:
         user = User.objects.get(email_secret=key)
         user.email_verified = True
+        user.email_secret = ""
         user.save()
         # To do : add succes message
     except User.DoesNotExist:
