@@ -159,4 +159,3 @@ class SignUpFormTest(TestCase):
         if form.is_valid():
             self.assertIsNone(form.save())
             self.assertIsNotNone(User.objects.get(username="test@test.com"))
-

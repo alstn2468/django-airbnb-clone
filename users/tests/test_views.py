@@ -1,5 +1,6 @@
 from django.test import TestCase
 from users.models import User
+from unittest import mock
 
 
 class UserViewTest(TestCase):
@@ -135,3 +136,30 @@ class UserViewTest(TestCase):
         html = response.content.decode("utf8")
 
         self.assertEqual(2, html.count("errorlist"))
+
+    def test_complete_verification_success(self):
+        """Users application complete_verifiation view success test
+        Check user object's email_verified field is changed to True
+        """
+        user = User.objects.get(username="test@test.com")
+        with mock.patch("uuid.uuid4") as uuid4:
+            uuid4.return_value = mock.Mock(hex="a" * 20)
+            self.assertTrue(User.verify_email(user))
+
+        user = User.objects.get(email_secret="a" * 20)
+        self.assertFalse(user.email_verified)
+
+        response = self.client.post(f"/users/verify/{'a' * 20}")
+        self.assertEqual(302, response.status_code)
+
+        user = User.objects.get(email_secret="a" * 20)
+        self.assertTrue(user.email_verified)
+
+    def test_complete_verification_fail(self):
+        """Users application complete_verifiation view fail test
+        Check complete_verification raise DoesNotExist exception
+        """
+        with self.assertRaises(User.DoesNotExist):
+            response = self.client.post(f"/users/verify/{'b' * 20}")
+            self.assertEqual(302, response.status_code)
+            self.assertIsNone(User.objects.get(email_secret="b" * 20))

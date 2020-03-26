@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import resolve
-from users.views import LoginView, log_out, SignUpView
+from users.views import LoginView, log_out, SignUpView, complete_verification
 
 
 class UsersUrlTest(TestCase):
@@ -24,3 +24,10 @@ class UsersUrlTest(TestCase):
         """
         found = resolve("/users/signup")
         self.assertEqual(found.func.view_class, SignUpView)
+
+    def test_url_resolves_to_complete_verification(self):
+        """User application '/users/verify/<str:secret>' pattern urls test
+        Check '/users/verify' pattern resolved function is complete_verification
+        """
+        found = resolve("/users/verify/secret")
+        self.assertEqual(found.func, complete_verification)
