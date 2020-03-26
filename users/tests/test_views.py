@@ -152,7 +152,7 @@ class UserViewTest(TestCase):
         response = self.client.post(f"/users/verify/{'a' * 20}")
         self.assertEqual(302, response.status_code)
 
-        user = User.objects.get(email_secret="a" * 20)
+        user = User.objects.get(username="test@test.com")
         self.assertTrue(user.email_verified)
         self.assertEqual("", user.email_secret)
 
