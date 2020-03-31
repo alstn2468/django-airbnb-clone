@@ -1,6 +1,13 @@
 from django.test import TestCase
 from django.urls import resolve
-from users.views import LoginView, log_out, SignUpView, complete_verification
+from users.views import (
+    LoginView,
+    log_out,
+    SignUpView,
+    complete_verification,
+    github_login,
+    github_callback,
+)
 
 
 class UsersUrlTest(TestCase):
@@ -31,3 +38,17 @@ class UsersUrlTest(TestCase):
         """
         found = resolve("/users/verify/secret")
         self.assertEqual(found.func, complete_verification)
+
+    def test_url_resolves_to_github_login(self):
+        """User applictaion '/users/login/github' pattern urls test
+        Check '/users/login/github' pattern resolved function is github_login
+        """
+        found = resolve("/users/login/github")
+        self.assertEqual(found.func, github_login)
+
+    def test_url_resolves_to_github_callback(self):
+        """User applictaion '/users/login/github/callback' pattern urls test
+        Check '/users/login/github/callback' pattern resolved function is github_callback
+        """
+        found = resolve("/users/login/github/callback")
+        self.assertEqual(found.func, github_callback)

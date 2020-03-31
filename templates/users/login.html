@@ -8,6 +8,9 @@
 {% block content %}
 
 <form method="POST" action="{% url 'users:login' %}">
+
+    {% include "partials/social_login.html" %}
+
     {% csrf_token %}
     {{ form.as_p }}
     <button>Login</button>

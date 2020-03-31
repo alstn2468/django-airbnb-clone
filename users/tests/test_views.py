@@ -164,3 +164,17 @@ class UserViewTest(TestCase):
             response = self.client.post(f"/users/verify/{'b' * 20}")
             self.assertEqual(302, response.status_code)
             self.assertIsNone(User.objects.get(email_secret="b" * 20))
+
+    def test_github_login(self):
+        """Users application github_login view test
+        Check github_login redirect to Authorization callback url
+        """
+        response = self.client.get("/users/login/github")
+        self.assertEqual(302, response.status_code)
+
+    def test_github_login_callback(self):
+        """Users application github_login_callback view test
+        Check github_login_callback return None
+        """
+        with self.assertRaises(ValueError):
+            self.client.get("/users/login/github/callback")
