@@ -26,6 +26,7 @@ class UserAdmin(BaseUserAdmin):
                     "language",
                     "currency",
                     "is_superhost",
+                    "login_method",
                 )
             },
         ),
@@ -45,4 +46,5 @@ class UserAdmin(BaseUserAdmin):
         "is_superhost",
         "is_staff",
         "is_superuser",
+        "login_method",
     )
