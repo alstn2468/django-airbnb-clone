@@ -34,8 +34,9 @@ class UserModelTest(TestCase):
             language        : en
             currency        : usd
             is_superhost    : True
-            email_verified : True
+            email_verified  : True
             email_secret    : test
+            login_method    : LOGIN_GITHUB
         """
         User.objects.create_user(
             username="test_user_2",
@@ -47,6 +48,7 @@ class UserModelTest(TestCase):
             is_superhost=True,
             email_verified=True,
             email_secret="test",
+            login_method=User.LOGIN_GITHUB,
         )
 
     def test_user_create_success(self):
@@ -196,6 +198,20 @@ class UserModelTest(TestCase):
         """
         user = User.objects.get(username="test_user_2")
         self.assertEqual("test", user.email_secret)
+
+    def test_user_login_method_default(self):
+        """User model login_method field default value test
+        Check test_user_1's login_method is LOGIN_EMAIL
+        """
+        user = User.objects.get(username="test_user_1")
+        self.assertEqual(User.LOGIN_EMAIL, user.login_method)
+
+    def test_user_login_method_set(self):
+        """User model login_method field set value test
+        Check test_user_2's login_method is LOGIN_GITHUB
+        """
+        user = User.objects.get(username="test_user_2")
+        self.assertEqual(User.LOGIN_GITHUB, user.login_method)
 
     @override_settings(EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend")
     def test_user_verify_email_return_true(self):
