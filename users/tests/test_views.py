@@ -176,5 +176,5 @@ class UserViewTest(TestCase):
         """Users application github_login_callback view test
         Check github_login_callback return None
         """
-        with self.assertRaises(ValueError):
-            self.client.get("/users/login/github/callback")
+        response = self.client.get("/users/login/github/callback")
+        self.assertEqual(302, response.status_code)

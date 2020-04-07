@@ -6,6 +6,7 @@ from users.forms import LoginForm, SignUpForm
 from users.models import User
 
 import os
+import requests
 
 
 class LoginView(FormView):
@@ -96,4 +97,19 @@ def github_login(request):
 
 
 def github_callback(request):
-    pass
+    code = request.GET.get("code", None)
+    client_id = os.environ.get("GITHUB_CLIENT_ID")
+    client_secret = os.environ.get("GITHUB_CLIENT_SECRET")
+
+    if code is not None:
+        response = requests.post(
+            "https://github.com/login/oauth/access_token",
+            data={
+                "client_id": client_id,
+                "client_secret": client_secret,
+                "code": code,
+            },
+            headers={"Accept": "application/json"},
+        )
+
+    return redirect(reverse("core:home"))
