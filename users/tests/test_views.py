@@ -3,6 +3,16 @@ from users.models import User
 from unittest import mock
 
 
+def mocked_requests_post(*args, **kwargs):
+    class MockResponse:
+        def __init__(self, json_data, status_code):
+            self.json_data = json_data
+            self.status_code = status_code
+
+    if args[0] == "https://github.com/login/oauth/access_token":
+        return MockResponse({"key1": "value1"}, 200)
+
+
 class UserViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -172,9 +182,17 @@ class UserViewTest(TestCase):
         response = self.client.get("/users/login/github")
         self.assertEqual(302, response.status_code)
 
-    def test_github_login_callback(self):
-        """Users application github_login_callback view test
-        Check github_login_callback return None
+    def test_github_callback_code_is_none(self):
+        """Users application github_callback view not has code test
+        Check github_callback redirect to home
         """
         response = self.client.get("/users/login/github/callback")
+        self.assertEqual(302, response.status_code)
+
+    @mock.patch("requests.post", side_effect=mocked_requests_post)
+    def test_github_callback_code_is_not_none(self, mock_get):
+        """Users application github_callback view has code test
+        Check github_callback redirect to home
+        """
+        response = self.client.get("/users/login/github/callback?code=testtest")
         self.assertEqual(302, response.status_code)
