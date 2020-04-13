@@ -10,7 +10,7 @@ def mocked_requests_post(*args, **kwargs):
             self.status_code = status_code
 
     if args[0] == "https://github.com/login/oauth/access_token":
-        return MockResponse({"key1": "value1"}, 200)
+        return MockResponse({"code": "testcode"}, 200)
 
 
 class UserViewTest(TestCase):
