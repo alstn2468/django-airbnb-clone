@@ -9,6 +9,15 @@ def mocked_requests_post(*args, **kwargs):
             self.json_data = json_data
             self.status_code = status_code
 
+        def json(self):
+            return self.json_data
+
+        def get(self, key, default=None):
+            if key not in self.json_data:
+                return default
+
+            return self.json_data[key]
+
     if args[0] == "https://github.com/login/oauth/access_token":
         return MockResponse({"code": "testcode"}, 200)
 
