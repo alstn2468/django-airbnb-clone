@@ -111,5 +111,37 @@ def github_callback(request):
             },
             headers={"Accept": "application/json"},
         )
+        result_json = response.json()
+        error = result_json.get("error", None)
+
+        if error:
+            return redirect(reverse("users:login"))
+
+        access_token = result_json.get("access_token")
+        api_request = requests.get(
+            "https://api.github.com/user",
+            headers={
+                "Authorization": f"token {access_token}",
+                "Accept": "application/json",
+            },
+        )
+        profile_json = api_request.json()
+        username = profile_json.get("login", None)
+
+        if not username:
+            return redirect(reverse("users:login"))
+
+        name = profile_json.get("name")
+        email = profile_json.get("email")
+        bio = profile_json.get("bio")
+        user = User.objects.get(email=email)
+
+        if user:
+            return redirect(reverse("users:login"))
+
+        user = User.objects.create(
+            username=email, first_name=name, bio=bio, email=email
+        )
+        login(request, user)
 
     return redirect(reverse("core:home"))

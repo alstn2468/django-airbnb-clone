@@ -3,23 +3,42 @@ from users.models import User
 from unittest import mock
 
 
-def mocked_requests_post(*args, **kwargs):
-    class MockResponse:
-        def __init__(self, json_data, status_code):
-            self.json_data = json_data
-            self.status_code = status_code
+class MockResponse:
+    def __init__(self, json_data, status_code):
+        self.json_data = json_data
+        self.status_code = status_code
 
-        def json(self):
-            return self.json_data
+    def json(self):
+        return self.json_data
 
-        def get(self, key, default=None):
-            if key not in self.json_data:
-                return default
+    def get(self, key, default=None):
+        if key not in self.json_data:
+            return default
 
-            return self.json_data[key]
+        return self.json_data[key]
 
+
+def mocked_requests_token(*args, **kwargs):
     if args[0] == "https://github.com/login/oauth/access_token":
-        return MockResponse({"code": "testcode"}, 200)
+        return MockResponse({"access_token": "test_access_token"}, 200)
+
+
+def mocked_requests_profile(*args, **kwargs):
+    if args[0] == "https://api.github.com/user":
+        return MockResponse(
+            {
+                "login": "test_user",
+                "name": "test_user",
+                "email": "test@test.com",
+                "bio": "this is test user",
+            },
+            200,
+        )
+
+
+def mocked_requests_error(*args, **kwargs):
+    if args[0] == "https://github.com/login/oauth/access_token":
+        return MockResponse({"error": "error"}, 200)
 
 
 class UserViewTest(TestCase):
@@ -28,7 +47,9 @@ class UserViewTest(TestCase):
         """Run only once when running UserViewTest
         Create one test user has email
         """
-        User.objects.create_user(username="test@test.com", password="testtest")
+        User.objects.create_user(
+            username="test@test.com", email="test@test.com", password="testtest"
+        )
 
     def test_view_users_login_view_get(self):
         """Users application LoginView get method test
@@ -176,7 +197,7 @@ class UserViewTest(TestCase):
         self.assertEqual("", user.email_secret)
 
     def test_complete_verification_fail(self):
-        """Users application complete_verifiation view fail test
+        """Users application complete_verification view fail test
         Check complete_verification raise DoesNotExist exception
         """
         with self.assertRaises(User.DoesNotExist):
@@ -198,10 +219,19 @@ class UserViewTest(TestCase):
         response = self.client.get("/users/login/github/callback")
         self.assertEqual(302, response.status_code)
 
-    @mock.patch("requests.post", side_effect=mocked_requests_post)
-    def test_github_callback_code_is_not_none(self, mock_get):
-        """Users application github_callback view has code test
-        Check github_callback redirect to home
+    @mock.patch("requests.post", side_effect=mocked_requests_token)
+    @mock.patch("requests.get", side_effect=mocked_requests_profile)
+    def test_github_callback_has_user_profile(self, mock_post, mock_get):
+        """Users application github_callback view has user profile test
+        Check github_callback redirect to login when already have an account
+        """
+        response = self.client.get("/users/login/github/callback?code=testtest")
+        self.assertEqual(302, response.status_code)
+
+    @mock.patch("requests.post", side_effect=mocked_requests_error)
+    def test_github_callback_has_error(self, mock_get):
+        """Users application github_callback view has error test
+        Check github_callback redirect to home when has error at result_json
         """
         response = self.client.get("/users/login/github/callback?code=testtest")
         self.assertEqual(302, response.status_code)
