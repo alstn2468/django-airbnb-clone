@@ -1,5 +1,7 @@
 from django.test import TestCase
+from django.shortcuts import reverse
 from users.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from unittest import mock
 
 
@@ -23,7 +25,7 @@ def mocked_requests_token(*args, **kwargs):
         return MockResponse({"access_token": "test_access_token"}, 200)
 
 
-def mocked_requests_profile(*args, **kwargs):
+def mocked_requests_exist_profile(*args, **kwargs):
     if args[0] == "https://api.github.com/user":
         return MockResponse(
             {
@@ -34,6 +36,24 @@ def mocked_requests_profile(*args, **kwargs):
             },
             200,
         )
+
+
+def mocked_requests_noneexist_profile(*args, **kwargs):
+    if args[0] == "https://api.github.com/user":
+        return MockResponse(
+            {
+                "login": "test",
+                "name": "test",
+                "email": "testtest@test.com",
+                "bio": "this is test user",
+            },
+            200,
+        )
+
+
+def mocked_requests_no_login(*args, **kwargs):
+    if args[0] == "https://api.github.com/user":
+        return MockResponse({}, 200)
 
 
 def mocked_requests_error(*args, **kwargs):
@@ -218,20 +238,50 @@ class UserViewTest(TestCase):
         """
         response = self.client.get("/users/login/github/callback")
         self.assertEqual(302, response.status_code)
+        self.assertEqual(response.url, reverse("core:home"))
+
+    @mock.patch("requests.post", side_effect=mocked_requests_error)
+    def test_github_callback_has_error(self, mock_get):
+        """Users application github_callback view has error test
+        Check github_callback redirect to login when has error at result_json
+        """
+        response = self.client.get("/users/login/github/callback?code=testtest")
+        self.assertEqual(302, response.status_code)
+        self.assertEqual(response.url, reverse("users:login"))
 
     @mock.patch("requests.post", side_effect=mocked_requests_token)
-    @mock.patch("requests.get", side_effect=mocked_requests_profile)
-    def test_github_callback_has_user_profile(self, mock_post, mock_get):
+    @mock.patch("requests.get", side_effect=mocked_requests_no_login)
+    def test_github_callback_is_no_username(self, mock_post, mock_get):
+        """Users application github_callback view username is None
+        Check github_callback redirect to login when username is None
+        """
+        response = self.client.get("/users/login/github/callback?code=testtest")
+        self.assertEqual(302, response.status_code)
+        self.assertEqual(response.url, reverse("users:login"))
+
+    @mock.patch("requests.post", side_effect=mocked_requests_token)
+    @mock.patch("requests.get", side_effect=mocked_requests_noneexist_profile)
+    def test_github_callback_noneexist_profile(self, mock_post, mock_get):
+        """Users application github_callback view has user profile test
+        Check github_callback create user with login and redirect to home
+        """
+        response = self.client.get("/users/login/github/callback?code=testtest")
+        self.assertEqual(302, response.status_code)
+        self.assertEqual(response.url, reverse("core:home"))
+
+        user = User.objects.get(username="testtest@test.com")
+
+        self.assertIsNotNone(user)
+        self.assertEqual(user.first_name, "test")
+        self.assertEqual(user.bio, "this is test user")
+        self.assertEqual(user.email, "testtest@test.com")
+
+    @mock.patch("requests.post", side_effect=mocked_requests_token)
+    @mock.patch("requests.get", side_effect=mocked_requests_exist_profile)
+    def test_github_callback_exist_profile(self, mock_post, mock_get):
         """Users application github_callback view has user profile test
         Check github_callback redirect to login when already have an account
         """
         response = self.client.get("/users/login/github/callback?code=testtest")
         self.assertEqual(302, response.status_code)
-
-    @mock.patch("requests.post", side_effect=mocked_requests_error)
-    def test_github_callback_has_error(self, mock_get):
-        """Users application github_callback view has error test
-        Check github_callback redirect to home when has error at result_json
-        """
-        response = self.client.get("/users/login/github/callback?code=testtest")
-        self.assertEqual(302, response.status_code)
+        self.assertEqual(response.url, reverse("users:login"))

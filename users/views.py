@@ -2,6 +2,7 @@ from django.views.generic import FormView
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, reverse
 from django.contrib.auth import authenticate, login, logout
+from django.core.exceptions import ObjectDoesNotExist
 from users.forms import LoginForm, SignUpForm
 from users.models import User
 
@@ -134,14 +135,15 @@ def github_callback(request):
         name = profile_json.get("name")
         email = profile_json.get("email")
         bio = profile_json.get("bio")
-        user = User.objects.get(email=email)
 
-        if user:
+        try:
+            User.objects.get(email=email)
             return redirect(reverse("users:login"))
 
-        user = User.objects.create(
-            username=email, first_name=name, bio=bio, email=email
-        )
-        login(request, user)
+        except ObjectDoesNotExist:
+            user = User.objects.create(
+                username=email, first_name=name, bio=bio, email=email
+            )
+            login(request, user)
 
     return redirect(reverse("core:home"))
