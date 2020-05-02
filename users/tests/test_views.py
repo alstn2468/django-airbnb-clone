@@ -13,12 +13,6 @@ class MockResponse:
     def json(self):
         return self.json_data
 
-    def get(self, key, default=None):
-        if key not in self.json_data:
-            return default
-
-        return self.json_data[key]
-
 
 def mocked_requests_token(*args, **kwargs):
     if args[0] == "https://github.com/login/oauth/access_token":
