@@ -228,11 +228,11 @@ class UserViewTest(TestCase):
 
     def test_github_callback_code_is_none(self):
         """Users application github_callback view not has code test
-        Check github_callback redirect to home
+        Check github_callback redirect to login when code is None
         """
         response = self.client.get("/users/login/github/callback")
         self.assertEqual(302, response.status_code)
-        self.assertEqual(response.url, reverse("core:home"))
+        self.assertEqual(response.url, reverse("users:login"))
 
     @mock.patch("requests.post", side_effect=mocked_requests_error)
     def test_github_callback_has_error(self, mock_get):
@@ -256,7 +256,7 @@ class UserViewTest(TestCase):
     @mock.patch("requests.post", side_effect=mocked_requests_token)
     @mock.patch("requests.get", side_effect=mocked_requests_noneexist_profile)
     def test_github_callback_noneexist_profile(self, mock_post, mock_get):
-        """Users application github_callback view has user profile test
+        """Users application github_callback view hasn't user profile test
         Check github_callback create user with login and redirect to home
         """
         response = self.client.get("/users/login/github/callback?code=testtest")
