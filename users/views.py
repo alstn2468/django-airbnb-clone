@@ -2,7 +2,6 @@ from django.views.generic import FormView
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, reverse
 from django.contrib.auth import authenticate, login, logout
-from django.core.exceptions import ObjectDoesNotExist
 from users.forms import LoginForm, SignUpForm
 from users.models import User
 
@@ -142,16 +141,25 @@ def github_callback(request):
             bio = profile_json.get("bio")
 
             try:
-                User.objects.get(email=email)
-                return redirect(reverse("users:login"))
+                user = User.objects.get(email=email)
 
-            except ObjectDoesNotExist:
+                if user.login_method != User.LOGIN_GITHUB:
+                    raise GithubException()
+
+            except User.DoesNotExist:
                 user = User.objects.create(
-                    username=email, first_name=name, bio=bio, email=email
+                    username=email,
+                    first_name=name,
+                    bio=bio,
+                    email=email,
+                    login_method=User.LOGIN_GITHUB,
                 )
-                login(request, user)
+                user.set_unusable_password()
+                user.save()
 
-                return redirect(reverse("core:home"))
+            login(request, user)
+
+            return redirect(reverse("core:home"))
 
         raise GithubException()
     except GithubException:

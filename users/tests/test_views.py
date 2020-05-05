@@ -1,7 +1,6 @@
 from django.test import TestCase
 from django.shortcuts import reverse
 from users.models import User
-from django.core.exceptions import ObjectDoesNotExist
 from unittest import mock
 
 
@@ -19,7 +18,7 @@ def mocked_requests_token(*args, **kwargs):
         return MockResponse({"access_token": "test_access_token"}, 200)
 
 
-def mocked_requests_exist_profile(*args, **kwargs):
+def mocked_requests_exist_github_profile(*args, **kwargs):
     if args[0] == "https://api.github.com/user":
         return MockResponse(
             {
@@ -45,6 +44,19 @@ def mocked_requests_noneexist_profile(*args, **kwargs):
         )
 
 
+def mocked_requests_exist_not_github_profile(*args, **kwargs):
+    if args[0] == "https://api.github.com/user":
+        return MockResponse(
+            {
+                "login": "kakao_user",
+                "name": "kakao_user",
+                "email": "kakao@kakao.com",
+                "bio": "this is kakao user",
+            },
+            200,
+        )
+
+
 def mocked_requests_no_login(*args, **kwargs):
     if args[0] == "https://api.github.com/user":
         return MockResponse({}, 200)
@@ -62,7 +74,17 @@ class UserViewTest(TestCase):
         Create one test user has email
         """
         User.objects.create_user(
-            username="test@test.com", email="test@test.com", password="testtest"
+            username="test@test.com",
+            email="test@test.com",
+            password="testtest",
+            login_method=User.LOGIN_GITHUB,
+        )
+        User.objects.create_user(
+            username="kakao@kakao.com",
+            email="kakao@kakao.com",
+            bio="this is kakao user",
+            first_name="kakao_user",
+            login_method=User.LOGIN_KAKAO,
         )
 
     def test_view_users_login_view_get(self):
@@ -255,7 +277,7 @@ class UserViewTest(TestCase):
 
     @mock.patch("requests.post", side_effect=mocked_requests_token)
     @mock.patch("requests.get", side_effect=mocked_requests_noneexist_profile)
-    def test_github_callback_noneexist_profile(self, mock_post, mock_get):
+    def test_github_callback_noneexist_github_profile(self, mock_post, mock_get):
         """Users application github_callback view hasn't user profile test
         Check github_callback create user with login and redirect to home
         """
@@ -269,13 +291,24 @@ class UserViewTest(TestCase):
         self.assertEqual(user.first_name, "test")
         self.assertEqual(user.bio, "this is test user")
         self.assertEqual(user.email, "testtest@test.com")
+        self.assertEqual(user.login_method, User.LOGIN_GITHUB)
 
     @mock.patch("requests.post", side_effect=mocked_requests_token)
-    @mock.patch("requests.get", side_effect=mocked_requests_exist_profile)
-    def test_github_callback_exist_profile(self, mock_post, mock_get):
-        """Users application github_callback view has user profile test
-        Check github_callback redirect to login when already have an account
+    @mock.patch("requests.get", side_effect=mocked_requests_exist_not_github_profile)
+    def test_github_callback_not_github_profile(self, mock_post, mock_get):
+        """Users application github_callback view user's login method test
+        Check github_callback redirect to login when user's login method not Github
         """
         response = self.client.get("/users/login/github/callback?code=testtest")
         self.assertEqual(302, response.status_code)
         self.assertEqual(response.url, reverse("users:login"))
+
+    @mock.patch("requests.post", side_effect=mocked_requests_token)
+    @mock.patch("requests.get", side_effect=mocked_requests_exist_github_profile)
+    def test_github_callback_exist_github_profile(self, mock_post, mock_get):
+        """Users application github_callback view has user profile test
+        Check github_callback redirect to home when already have an account
+        """
+        response = self.client.get("/users/login/github/callback?code=testtest")
+        self.assertEqual(302, response.status_code)
+        self.assertEqual(response.url, reverse("core:home"))
