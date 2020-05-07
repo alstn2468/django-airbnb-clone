@@ -293,6 +293,9 @@ class UserViewTest(TestCase):
         self.assertEqual(user.email, "testtest@test.com")
         self.assertEqual(user.login_method, User.LOGIN_GITHUB)
 
+        response = self.client.get("/")
+        self.assertEqual(response.context[0]["user"], user)
+
     @mock.patch("requests.post", side_effect=mocked_requests_token)
     @mock.patch("requests.get", side_effect=mocked_requests_exist_not_github_profile)
     def test_github_callback_not_github_profile(self, mock_post, mock_get):
@@ -312,3 +315,8 @@ class UserViewTest(TestCase):
         response = self.client.get("/users/login/github/callback?code=testtest")
         self.assertEqual(302, response.status_code)
         self.assertEqual(response.url, reverse("core:home"))
+
+        user = User.objects.get(username="test@test.com")
+g
+        response = self.client.get("/")
+        self.assertEqual(response.context[0]["user"], user)
