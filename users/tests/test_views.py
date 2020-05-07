@@ -317,6 +317,6 @@ class UserViewTest(TestCase):
         self.assertEqual(response.url, reverse("core:home"))
 
         user = User.objects.get(username="test@test.com")
-g
+
         response = self.client.get("/")
         self.assertEqual(response.context[0]["user"], user)
