@@ -93,7 +93,7 @@ def github_login(request):
     query_string = (
         f"?client_id={client_id}" + f"&redirect_url={redirect_url}" + "&scope=read:user"
     )
-    return redirect(f"https://github.com/login/oauth/authorize" + query_string)
+    return redirect("https://github.com/login/oauth/authorize" + query_string)
 
 
 class GithubException(Exception):
@@ -163,4 +163,41 @@ def github_callback(request):
 
         raise GithubException()
     except GithubException:
+        return redirect(reverse("users:login"))
+
+
+def kakao_login(request):
+    client_id = os.environ.get("KAKAO_API_KEY")
+    redirect_uri = "http://127.0.0.1:8000/users/login/kakao/callback"
+    kakao_url = "https://kauth.kakao.com/oauth/authorize"
+    query_string = (
+        f"?client_id={client_id}&redirect_uri={redirect_uri}&response_type=code"
+    )
+
+    return redirect(kakao_url + query_string)
+
+
+class KakaoException(Exception):
+    pass
+
+
+def kakao_callback(request):
+    try:
+        code = request.GET.get("code", None)
+
+        if not code:
+            raise KakaoException()
+
+        client_id = os.environ.get("KAKAO_API_KEY")
+        redirect_uri = "http://127.0.0.1:8000/users/login/kakao/callback"
+        data = {
+            "grant_type": "authorization_code",
+            "client_id": client_id,
+            "redirect_uri": redirect_uri,
+            "code": code,
+        }
+        token_response = requests.post("https://kauth.kakao.com/oauth/token", data=data)
+
+        return redirect(reverse("core:home"))
+    except KakaoException:
         return redirect(reverse("users:login"))

@@ -7,6 +7,8 @@ from users.views import (
     complete_verification,
     github_login,
     github_callback,
+    kakao_login,
+    kakao_callback,
 )
 
 
@@ -52,3 +54,17 @@ class UsersUrlTest(TestCase):
         """
         found = resolve("/users/login/github/callback")
         self.assertEqual(found.func, github_callback)
+
+    def test_url_resolves_to_kakao_login(self):
+        """User applictaion '/users/login/kakao' pattern urls test
+        Check '/users/login/kakao' pattern resolved function is kakao_login
+        """
+        found = resolve("/users/login/kakao")
+        self.assertEqual(found.func, kakao_login)
+
+    def test_url_resolves_to_kakao_callback(self):
+        """User applictaion '/users/login/kakao/callback' pattern urls test
+        Check '/users/login/kakao/callback' pattern resolved function is kakao_callback
+        """
+        found = resolve("/users/login/kakao/callback")
+        self.assertEqual(found.func, kakao_callback)

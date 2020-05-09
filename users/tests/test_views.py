@@ -17,6 +17,9 @@ def mocked_requests_token(*args, **kwargs):
     if args[0] == "https://github.com/login/oauth/access_token":
         return MockResponse({"access_token": "test_access_token"}, 200)
 
+    elif args[0] == "https://kauth.kakao.com/oauth/token":
+        return MockResponse({"access_token": "test_access_token"}, 200)
+
 
 def mocked_requests_exist_github_profile(*args, **kwargs):
     if args[0] == "https://api.github.com/user":
@@ -247,6 +250,7 @@ class UserViewTest(TestCase):
         """
         response = self.client.get("/users/login/github")
         self.assertEqual(302, response.status_code)
+        self.assertIn("https://github.com/login/oauth/authorize", response.url)
 
     def test_github_callback_code_is_none(self):
         """Users application github_callback view not has code test
@@ -320,3 +324,28 @@ class UserViewTest(TestCase):
 
         response = self.client.get("/")
         self.assertEqual(response.context[0]["user"], user)
+
+    def test_kakao_login(self):
+        """Users application kakao_login view test
+        Check kakao_login redirect to Authorization callback url
+        """
+        response = self.client.get("/users/login/kakao")
+        self.assertEqual(302, response.status_code)
+        self.assertIn("https://kauth.kakao.com/oauth/authorize", response.url)
+
+    def test_kakao_callback_code_is_none(self):
+        """Users application kakao_callback view not has code test
+        Check kakao_callback redirect to login when code is None
+        """
+        response = self.client.get("/users/login/kakao/callback")
+        self.assertEqual(302, response.status_code)
+        self.assertEqual(response.url, reverse("users:login"))
+
+    @mock.patch("requests.post", side_effect=mocked_requests_token)
+    def test_kakao_callback_code_is_not_none(self, mock_post):
+        """Users application kakao_callback view has code test
+        Check kakao_callback redirect to home when code is not None
+        """
+        response = self.client.get("/users/login/kakao/callback?code=testtest")
+        self.assertEqual(302, response.status_code)
+        self.assertEqual(response.url, reverse("core:home"))
