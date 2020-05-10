@@ -197,6 +197,27 @@ def kakao_callback(request):
             "code": code,
         }
         token_response = requests.post("https://kauth.kakao.com/oauth/token", data=data)
+        token_json = token_response.json()
+        error = token_json.get("error", None)
+
+        if error:
+            raise KakaoException()
+
+        access_token = token_json.get("access_token")
+        headers = {
+            "Authorization": f"Bearer {access_token}",
+            "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
+        }
+        data = {
+            "property_keys": [
+                "properties.nickname",
+                "kakao_account.profile",
+                "kakao_account.email",
+            ]
+        }
+        profile_response = requests.post(
+            "https://kapi.kakao.com/v2/user/me", data=data, headers=headers
+        )
 
         return redirect(reverse("core:home"))
     except KakaoException:

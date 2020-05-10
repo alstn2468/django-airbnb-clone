@@ -21,7 +21,7 @@ def mocked_requests_token(*args, **kwargs):
         return MockResponse({"access_token": "test_access_token"}, 200)
 
 
-def mocked_requests_exist_github_profile(*args, **kwargs):
+def mocked_requests_exist_oauth_profile(*args, **kwargs):
     if args[0] == "https://api.github.com/user":
         return MockResponse(
             {
@@ -47,7 +47,7 @@ def mocked_requests_noneexist_profile(*args, **kwargs):
         )
 
 
-def mocked_requests_exist_not_github_profile(*args, **kwargs):
+def mocked_requests_exist_not_oauth_profile(*args, **kwargs):
     if args[0] == "https://api.github.com/user":
         return MockResponse(
             {
@@ -67,6 +67,9 @@ def mocked_requests_no_login(*args, **kwargs):
 
 def mocked_requests_error(*args, **kwargs):
     if args[0] == "https://github.com/login/oauth/access_token":
+        return MockResponse({"error": "error"}, 200)
+
+    elif args[0] == "https://kauth.kakao.com/oauth/token":
         return MockResponse({"error": "error"}, 200)
 
 
@@ -263,7 +266,7 @@ class UserViewTest(TestCase):
     @mock.patch("requests.post", side_effect=mocked_requests_error)
     def test_github_callback_has_error(self, mock_get):
         """Users application github_callback view has error test
-        Check github_callback redirect to login when has error at result_json
+        Check github_callback redirect to login when has error at token_json
         """
         response = self.client.get("/users/login/github/callback?code=testtest")
         self.assertEqual(302, response.status_code)
@@ -301,7 +304,7 @@ class UserViewTest(TestCase):
         self.assertEqual(response.context[0]["user"], user)
 
     @mock.patch("requests.post", side_effect=mocked_requests_token)
-    @mock.patch("requests.get", side_effect=mocked_requests_exist_not_github_profile)
+    @mock.patch("requests.get", side_effect=mocked_requests_exist_not_oauth_profile)
     def test_github_callback_not_github_profile(self, mock_post, mock_get):
         """Users application github_callback view user's login method test
         Check github_callback redirect to login when user's login method not Github
@@ -311,7 +314,7 @@ class UserViewTest(TestCase):
         self.assertEqual(response.url, reverse("users:login"))
 
     @mock.patch("requests.post", side_effect=mocked_requests_token)
-    @mock.patch("requests.get", side_effect=mocked_requests_exist_github_profile)
+    @mock.patch("requests.get", side_effect=mocked_requests_exist_oauth_profile)
     def test_github_callback_exist_github_profile(self, mock_post, mock_get):
         """Users application github_callback view has user profile test
         Check github_callback redirect to home when already have an account
@@ -349,3 +352,12 @@ class UserViewTest(TestCase):
         response = self.client.get("/users/login/kakao/callback?code=testtest")
         self.assertEqual(302, response.status_code)
         self.assertEqual(response.url, reverse("core:home"))
+
+    @mock.patch("requests.post", side_effect=mocked_requests_error)
+    def test_kakao_callback_has_error(self, mock_get):
+        """Users application kakao_callback view has error test
+        Check kakao_callback redirect to login when has error at token_json
+        """
+        response = self.client.get("/users/login/kakao/callback?code=testtest")
+        self.assertEqual(302, response.status_code)
+        self.assertEqual(response.url, reverse("users:login"))
