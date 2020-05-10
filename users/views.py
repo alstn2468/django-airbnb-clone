@@ -152,6 +152,7 @@ def github_callback(request):
                     first_name=name,
                     bio=bio,
                     email=email,
+                    email_verified=True,
                     login_method=User.LOGIN_GITHUB,
                 )
                 user.set_unusable_password()
@@ -208,16 +209,38 @@ def kakao_callback(request):
             "Authorization": f"Bearer {access_token}",
             "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
         }
-        data = {
-            "property_keys": [
-                "properties.nickname",
-                "kakao_account.profile",
-                "kakao_account.email",
-            ]
-        }
-        profile_response = requests.post(
-            "https://kapi.kakao.com/v2/user/me", data=data, headers=headers
+        profile_response = requests.get(
+            "https://kapi.kakao.com/v2/user/me", headers=headers
         )
+
+        profile_json = profile_response.json()
+        email = profile_json.get("kakao_account").get("email", None)
+
+        if not email:
+            raise KakaoException()
+
+        properties = profile_json.get("properties")
+        nickname = properties.get("nickname")
+        profile_image = properties.get("profile_image", None)
+
+        try:
+            user = User.objects.get(email=email)
+
+            if user.login_method != User.LOGIN_KAKAO:
+                raise KakaoException()
+
+        except User.DoesNotExist:
+            user = User.objects.create(
+                username=email,
+                first_name=nickname,
+                email=email,
+                email_verified=True,
+                login_method=User.LOGIN_KAKAO,
+            )
+            user.set_unusable_password()
+            user.save()
+
+        login(request, user)
 
         return redirect(reverse("core:home"))
     except KakaoException:

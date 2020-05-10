@@ -33,6 +33,18 @@ def mocked_requests_exist_oauth_profile(*args, **kwargs):
             200,
         )
 
+    elif args[0] == "https://kapi.kakao.com/v2/user/me":
+        return MockResponse(
+            {
+                "kakao_account": {"email": "kakao@kakao.com",},
+                "properties": {
+                    "nickname": "kakao_user",
+                    "profile_image": "test_profile_image_url.com",
+                },
+            },
+            200,
+        )
+
 
 def mocked_requests_noneexist_profile(*args, **kwargs):
     if args[0] == "https://api.github.com/user":
@@ -42,6 +54,18 @@ def mocked_requests_noneexist_profile(*args, **kwargs):
                 "name": "test",
                 "email": "testtest@test.com",
                 "bio": "this is test user",
+            },
+            200,
+        )
+
+    elif args[0] == "https://kapi.kakao.com/v2/user/me":
+        return MockResponse(
+            {
+                "kakao_account": {"email": "testtest@test.com",},
+                "properties": {
+                    "nickname": "test",
+                    "profile_image": "test_profile_image_url.com",
+                },
             },
             200,
         )
@@ -59,10 +83,25 @@ def mocked_requests_exist_not_oauth_profile(*args, **kwargs):
             200,
         )
 
+    elif args[0] == "https://kapi.kakao.com/v2/user/me":
+        return MockResponse(
+            {
+                "kakao_account": {"email": "test@test.com",},
+                "properties": {
+                    "nickname": "test_user",
+                    "profile_image": "test_profile_image_url.com",
+                },
+            },
+            200,
+        )
 
-def mocked_requests_no_login(*args, **kwargs):
+
+def mocked_requests_no_user_data(*args, **kwargs):
     if args[0] == "https://api.github.com/user":
         return MockResponse({}, 200)
+
+    elif args[0] == "https://kapi.kakao.com/v2/user/me":
+        return MockResponse({"kakao_account": {}}, 200)
 
 
 def mocked_requests_error(*args, **kwargs):
@@ -273,7 +312,7 @@ class UserViewTest(TestCase):
         self.assertEqual(response.url, reverse("users:login"))
 
     @mock.patch("requests.post", side_effect=mocked_requests_token)
-    @mock.patch("requests.get", side_effect=mocked_requests_no_login)
+    @mock.patch("requests.get", side_effect=mocked_requests_no_user_data)
     def test_github_callback_is_no_username(self, mock_post, mock_get):
         """Users application github_callback view username is None
         Check github_callback redirect to login when username is None
@@ -299,6 +338,7 @@ class UserViewTest(TestCase):
         self.assertEqual(user.bio, "this is test user")
         self.assertEqual(user.email, "testtest@test.com")
         self.assertEqual(user.login_method, User.LOGIN_GITHUB)
+        self.assertTrue(user.email_verified)
 
         response = self.client.get("/")
         self.assertEqual(response.context[0]["user"], user)
@@ -344,15 +384,6 @@ class UserViewTest(TestCase):
         self.assertEqual(302, response.status_code)
         self.assertEqual(response.url, reverse("users:login"))
 
-    @mock.patch("requests.post", side_effect=mocked_requests_token)
-    def test_kakao_callback_code_is_not_none(self, mock_post):
-        """Users application kakao_callback view has code test
-        Check kakao_callback redirect to home when code is not None
-        """
-        response = self.client.get("/users/login/kakao/callback?code=testtest")
-        self.assertEqual(302, response.status_code)
-        self.assertEqual(response.url, reverse("core:home"))
-
     @mock.patch("requests.post", side_effect=mocked_requests_error)
     def test_kakao_callback_has_error(self, mock_get):
         """Users application kakao_callback view has error test
@@ -361,3 +392,59 @@ class UserViewTest(TestCase):
         response = self.client.get("/users/login/kakao/callback?code=testtest")
         self.assertEqual(302, response.status_code)
         self.assertEqual(response.url, reverse("users:login"))
+
+    @mock.patch("requests.post", side_effect=mocked_requests_token)
+    @mock.patch("requests.get", side_effect=mocked_requests_no_user_data)
+    def test_kakao_callback_is_no_email(self, mock_post, mock_get):
+        """Users application kakao_callback view has code test
+        Check kakao_callback redirect to login when email is None
+        """
+        response = self.client.get("/users/login/kakao/callback?code=testtest")
+        self.assertEqual(302, response.status_code)
+        self.assertEqual(response.url, reverse("users:login"))
+
+    @mock.patch("requests.post", side_effect=mocked_requests_token)
+    @mock.patch("requests.get", side_effect=mocked_requests_noneexist_profile)
+    def test_kakao_callback_noneexist_kakao_profile(self, mock_post, mock_get):
+        """Users application kakao_callback view hasn't user profile test
+        Check kakao_callback create user with login and redirect to home
+        """
+        response = self.client.get("/users/login/kakao/callback?code=testtest")
+        self.assertEqual(302, response.status_code)
+        self.assertEqual(response.url, reverse("core:home"))
+
+        user = User.objects.get(username="testtest@test.com")
+
+        self.assertIsNotNone(user)
+        self.assertEqual(user.first_name, "test")
+        self.assertEqual(user.email, "testtest@test.com")
+        self.assertEqual(user.login_method, User.LOGIN_KAKAO)
+        self.assertTrue(user.email_verified)
+
+        response = self.client.get("/")
+        self.assertEqual(response.context[0]["user"], user)
+
+    @mock.patch("requests.post", side_effect=mocked_requests_token)
+    @mock.patch("requests.get", side_effect=mocked_requests_exist_not_oauth_profile)
+    def test_kakao_callback_not_kakao_profile(self, mock_post, mock_get):
+        """Users application kakao_callback view user's login method test
+        Check kakao_callback redirect to login when user's login method not kakao
+        """
+        response = self.client.get("/users/login/kakao/callback?code=testtest")
+        self.assertEqual(302, response.status_code)
+        self.assertEqual(response.url, reverse("users:login"))
+
+    @mock.patch("requests.post", side_effect=mocked_requests_token)
+    @mock.patch("requests.get", side_effect=mocked_requests_exist_oauth_profile)
+    def test_kakao_callback_exist_kakao_profile(self, mock_post, mock_get):
+        """Users application kakao_callback view has user profile test
+        Check kakao_callback redirect to home when already have an account
+        """
+        response = self.client.get("/users/login/kakao/callback?code=testtest")
+        self.assertEqual(302, response.status_code)
+        self.assertEqual(response.url, reverse("core:home"))
+
+        user = User.objects.get(username="kakao@kakao.com")
+
+        response = self.client.get("/")
+        self.assertEqual(response.context[0]["user"], user)
