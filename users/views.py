@@ -2,6 +2,7 @@ from django.views.generic import FormView
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, reverse
 from django.contrib.auth import authenticate, login, logout
+from django.core.files.base import ContentFile
 from users.forms import LoginForm, SignUpForm
 from users.models import User
 
@@ -139,6 +140,7 @@ def github_callback(request):
             name = profile_json.get("name")
             email = profile_json.get("email")
             bio = profile_json.get("bio")
+            avatar_url = profile_json.get("avatar_url", None)
 
             try:
                 user = User.objects.get(email=email)
@@ -157,6 +159,13 @@ def github_callback(request):
                 )
                 user.set_unusable_password()
                 user.save()
+
+                if avatar_url:
+                    photo_response = requests.get(avatar_url)
+                    user.avatar.save(
+                        f"pk-{user.pk}-{name}-avatar",
+                        ContentFile(photo_response.content),
+                    )
 
             login(request, user)
 
@@ -239,6 +248,13 @@ def kakao_callback(request):
             )
             user.set_unusable_password()
             user.save()
+
+            if profile_image:
+                photo_response = requests.get(profile_image)
+                user.avatar.save(
+                    f"pk-{user.pk}-{nickname}-avatar",
+                    ContentFile(photo_response.content),
+                )
 
         login(request, user)
 

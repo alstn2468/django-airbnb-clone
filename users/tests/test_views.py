@@ -5,9 +5,10 @@ from unittest import mock
 
 
 class MockResponse:
-    def __init__(self, json_data, status_code):
+    def __init__(self, json_data, status_code, content=None):
         self.json_data = json_data
         self.status_code = status_code
+        self.content = content
 
     def json(self):
         return self.json_data
@@ -54,6 +55,7 @@ def mocked_requests_noneexist_profile(*args, **kwargs):
                 "name": "test",
                 "email": "testtest@test.com",
                 "bio": "this is test user",
+                "avatar_url": "test_profile_image_url.com",
             },
             200,
         )
@@ -69,6 +71,9 @@ def mocked_requests_noneexist_profile(*args, **kwargs):
             },
             200,
         )
+
+    elif args[0] == "test_profile_image_url.com":
+        return MockResponse({}, 200, "test_profile_image_url.com")
 
 
 def mocked_requests_exist_not_oauth_profile(*args, **kwargs):
@@ -339,6 +344,7 @@ class UserViewTest(TestCase):
         self.assertEqual(user.email, "testtest@test.com")
         self.assertEqual(user.login_method, User.LOGIN_GITHUB)
         self.assertTrue(user.email_verified)
+        self.assertIn(f"pk-{user.pk}-{user.first_name}-avatar", user.avatar.url)
 
         response = self.client.get("/")
         self.assertEqual(response.context[0]["user"], user)
@@ -420,6 +426,7 @@ class UserViewTest(TestCase):
         self.assertEqual(user.email, "testtest@test.com")
         self.assertEqual(user.login_method, User.LOGIN_KAKAO)
         self.assertTrue(user.email_verified)
+        self.assertIn(f"pk-{user.pk}-{user.first_name}-avatar", user.avatar.url)
 
         response = self.client.get("/")
         self.assertEqual(response.context[0]["user"], user)
