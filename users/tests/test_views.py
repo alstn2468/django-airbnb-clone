@@ -221,10 +221,11 @@ class UserViewTest(TestCase):
         )
         self.assertIn('<input type="email" name="email"', html)
         self.assertIn(
-            '<input type="password" name="password" required id="id_password">', html
+            '<input type="password" name="password" autocomplete="new-password" required id="id_password">',
+            html,
         )
         self.assertIn(
-            '<input type="password" name="password_check" required id="id_password_check">',
+            '<input type="password" name="password_check" autocomplete="new-password" required id="id_password_check">',
             html,
         )
 
@@ -236,10 +237,10 @@ class UserViewTest(TestCase):
             "first_name": "test",
             "last_name": "test",
             "email": "testtest@test.com",
-            "password": "testtest",
-            "password_check": "testtest",
+            "password": "pwdsuccess@",
+            "password_check": "pwdsuccess@",
         }
-        response = self.client.post("/users/signup", data)
+        response = self.client.post("/users/signup", data=data)
 
         self.assertEqual(302, response.status_code)
 

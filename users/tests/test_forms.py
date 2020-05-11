@@ -134,17 +134,35 @@ class SignUpFormTest(TestCase):
                 "first_name": "test",
                 "last_name": "test",
                 "email": "test@test.com",
-                "password": "testtest",
-                "password_check": "testtest",
+                "password": "pwdsuccess@",
+                "password_check": "pwdsuccess@",
             }
         )
 
         if form.is_valid():
-            self.assertEqual("testtest", form.clean_password_check())
+            self.assertEqual("pwdsuccess@", form.clean_password_check())
 
     def test_sign_up_form_save_success(self):
         """Users appliation sign up form save method success test
         Check SignUpForm's save method create user object
+        """
+        form = SignUpForm(
+            {
+                "first_name": "test",
+                "last_name": "test",
+                "email": "test@test.com",
+                "password": "pwdsuccess@",
+                "password_check": "pwdsuccess@",
+            }
+        )
+
+        if form.is_valid():
+            self.assertIsNone(form.save())
+            self.assertIsNotNone(User.objects.get(username="test@test.com"))
+
+    def test_sign_up_form_validate_password_fail(self):
+        """Users appliation sign up form save method fail test
+        Check SignUpForm's validate_password method raise ValidationError
         """
         form = SignUpForm(
             {
@@ -156,6 +174,5 @@ class SignUpFormTest(TestCase):
             }
         )
 
-        if form.is_valid():
-            self.assertIsNone(form.save())
-            self.assertIsNotNone(User.objects.get(username="test@test.com"))
+        self.assertFalse(form.is_valid())
+        self.assertIsNotNone(form.errors)

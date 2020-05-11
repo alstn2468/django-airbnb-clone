@@ -79,7 +79,7 @@ def complete_verification(request, key):
         user.email_verified = True
         user.email_secret = ""
         user.save()
-        # To do : add succes message
+        # To do : add success message
     except User.DoesNotExist:
         # To do : add error message
         pass

@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth import password_validation
 from users.models import User
 
 
@@ -64,9 +65,17 @@ class SignUpForm(forms.ModelForm):
             "email",
         )
 
-    password = forms.CharField(widget=forms.PasswordInput)
+    password = forms.CharField(
+        label="Password",
+        strip=False,
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
+        help_text=password_validation.password_validators_help_text_html(),
+    )
     password_check = forms.CharField(
-        widget=forms.PasswordInput, label="Confirm Password"
+        label="Confirm Password",
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
+        strip=False,
+        help_text="Enter the same password as before, for verification.",
     )
 
     def clean_email(self):
@@ -85,7 +94,11 @@ class SignUpForm(forms.ModelForm):
         if password != password_check:
             raise forms.ValidationError("Password confirmation does not match")
 
-        return password
+        try:
+            password_validation.validate_password(password, self.instance)
+            return password
+        except forms.ValidationError as error:
+            self.add_error("password", error)
 
     def save(self, *args, **kwargs):
         user = super().save(commit=False)
