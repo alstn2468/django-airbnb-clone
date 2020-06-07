@@ -1,0 +1,22 @@
+{
+    "name": "django_airbnb_clone",
+    "version": "1.0.0",
+    "description": "[![CircleCI](https://circleci.com/gh/alstn2468/Django_Airbnb_Clone.svg?style=svg)](https://circleci.com/gh/alstn2468/Django_Airbnb_Clone) [![codecov](https://codecov.io/gh/alstn2468/Django_Airbnb_Clone/branch/master/graph/badge.svg)](https://codecov.io/gh/alstn2468/Django_Airbnb_Clone) [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)<br> [![Python Version](https://img.shields.io/github/pipenv/locked/python-version/alstn2468/Django_Airbnb_Clone)](https://shields.io/) [![Django Version](https://img.shields.io/github/pipenv/locked/dependency-version/alstn2468/Django_Airbnb_Clone/django)](https://shields.io/) [![Generic badge](https://img.shields.io/github/languages/top/alstn2468/Django_Airbnb_Clone)](https://shields.io/)",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/alstn2468/Django_Airbnb_Clone.git"
+    },
+    "scripts": {
+        "css": "gulp"
+    },
+    "homepage": "https://github.com/alstn2468/Django_Airbnb_Clone#readme",
+    "dependencies": {
+        "autoprefixer": "^9.8.0",
+        "gulp": "^4.0.2",
+        "gulp-csso": "^4.0.1",
+        "gulp-postcss": "^8.0.0",
+        "gulp-sass": "^4.1.0",
+        "node-sass": "^4.14.1",
+        "tailwindcss": "^1.4.6"
+    }
+}
