@@ -1,9 +1,8 @@
-<a href='{% url "core:home" %}'>Airbnb</a>
-<ul>
+<ul class="flex items-center text-sm font-semibold">
     {% if user.is_authenticated %}
-    <li><a href="{% url "users:logout" %}">Logout</a></li>
+    <li class="ml-8"><a href="{% url "users:logout" %}">Logout</a></li>
     {% else %}
-    <li><a href="{% url "users:login" %}">Login</a></li>
-    <li><a href="{% url "users:signup" %}">Sign up</a></li>
+    <li class="ml-8"><a href="{% url "users:login" %}">Login</a></li>
+    <li class="ml-8"><a href="{% url "users:signup" %}">Sign up</a></li>
     {% endif %}
 </ul>
