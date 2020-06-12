@@ -1,8 +1,8 @@
 <ul class="flex items-center text-sm font-semibold">
     {% if user.is_authenticated %}
-    <li class="ml-8"><a href="{% url "users:logout" %}">Logout</a></li>
+    <li class="ml-8 border-b-2 border-white hover:border-blue-400"><a href="{% url "users:logout" %}">Logout</a></li>
     {% else %}
-    <li class="ml-8"><a href="{% url "users:login" %}">Login</a></li>
-    <li class="ml-8"><a href="{% url "users:signup" %}">Sign up</a></li>
+    <li class="ml-8 border-b-2 border-white hover:border-blue-400"><a href="{% url "users:login" %}">Login</a></li>
+    <li class="ml-8 border-b-2 border-white hover:border-blue-400"><a href="{% url "users:signup" %}">Sign up</a></li>
     {% endif %}
 </ul>

@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
+
+.search-box {
+    transition: all 0.2s linear;
+    background: url("/static/img/search-box-icon.svg") no-repeat;
+    background-position: 10px 10px;
+    background-size: 20px 20px;
+
+    &:hover {
+        background-position: 7px 7px;
+        background-size: 23px 23px;
+    }
+}
+
 @tailwind utilities;

@@ -12,14 +12,14 @@
 
 <body class="text-gray-700">
     <header class="container max-w-full flex items-center justify-between px-6 h-20 border-b border-gray-400">
-        <div class="flex items-center">
+        <div class="flex items-center w-1/3">
             <a href='{% url "core:home" %}' class="mr-6">
                 <img class="w-8" src="{% static 'img/logo.png' %}" />
             </a>
 
             {% block search-bar %}
-            <form method=" GET" action="{% url "rooms:search" %}">
-                <input class="border px-2 py-1 rounded-sm" name="city" placeholder="Search by City" />
+            <form method=" GET" action="{% url "rooms:search" %}" class="w-9/12">
+                <input class="search-box border px-5 py-2 pl-10 text-nm font-medium text-gray-900 placeholder-gray-600 w-full rounded-sm shadow-md hover:shadow-lg focus:outline-none" name="city" placeholder="Search by City" />
             </form>
             {% endblock search-bar %}
         </div>
