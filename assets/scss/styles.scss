@@ -8,8 +8,17 @@
     background-size: 20px 20px;
 
     &:hover {
-        background-position: 7px 7px;
-        background-size: 23px 23px;
+        background-size: 21px 21px;
+    }
+}
+
+.nav-link {
+    @apply ml-8 border-b-2 border-white h-full flex items-center;
+    a {
+        @apply py-10 px-5;
+    }
+    &:hover {
+        @apply border-gray-600;
     }
 }
 
