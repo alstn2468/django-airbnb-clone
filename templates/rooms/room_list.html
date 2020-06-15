@@ -4,22 +4,25 @@
 {% block page_name %}HOME{% endblock page_name %}
 
 {% block content %}
-<div class="container rounded-xl mx-auto h-50vh mt-32 mb-24 bg-cover bg-center"
-    style="background-image:url({% static "img/main-container.jpg" %})">
-</div>
-{% for room in object_list %}
-<a href=' {% url "rooms:detail" room.pk %}'>
-    <h4>{{ room }} / ${{ room.price }}</h4>
-</a>
-{% endfor %}
+<div class="container mx-auto">
+    <div class="rounded-xl h-50vh mt-32 mb-24 bg-cover bg-center -mx-40"
+        style="background-image:url({% static "img/main-container.jpg" %})">
+    </div>
 
-<h5>
-    {% if page_obj.has_previous %}
-    <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
-    {% endif %}
-    Page {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
-    {% if page_obj.has_next %}
-    <a href="?page={{ page_obj.next_page_number }}">Next</a>
-    {% endif %}
-</h5>
+    <div class="flex flex-wrap -mx-40">
+        {% for room in object_list %}
+        {% include 'partials/room_card.html' with room=room %}
+        {% endfor %}
+    </div>
+
+    <h5>
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+        Page {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Next</a>
+        {% endif %}
+    </h5>
+</div>
 {% endblock content %}

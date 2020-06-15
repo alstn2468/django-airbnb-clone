@@ -128,6 +128,7 @@ class Room(AbstractTimeStamp):
         __str__      : return name
         save         : change capitalized city name and save
         total_rating : return all reviews rating avg
+        first_photo  : return room's first photo file url
     """
 
     name = models.CharField(max_length=140)
@@ -172,3 +173,12 @@ class Room(AbstractTimeStamp):
             all_ratings += review.rating_average()
 
         return round(all_ratings / len(all_reviews), 2)
+
+    def first_photo(self):
+        try:
+            (photo,) = self.photos.all()[:1]
+
+        except Exception:
+            return None
+
+        return photo.file.url

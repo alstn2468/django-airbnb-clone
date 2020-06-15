@@ -59,16 +59,10 @@ class RoomViewTest(TestCase):
         """
         response = self.client.get("/")
         html = response.content.decode("utf8")
+
         self.assertEqual(200, response.status_code)
-
-        rooms = Room.objects.all().order_by("created_at")[:10]
-
         self.assertIn("<title>HOME | Airbnb</title>", html)
         self.assertIn('<a href="?page=2">Next</a>', html)
-
-        for room in rooms:
-            self.assertIn(f"<a href='/rooms/{room.id}'>", html)
-            self.assertIn(f"<h4>{room} / ${room.price}</h4>", html)
 
     def test_view_rooms_home_view_next_page(self):
         """Rooms application HomeView view test with pagination param
@@ -76,16 +70,10 @@ class RoomViewTest(TestCase):
         """
         response = self.client.get("/", {"page": 2})
         html = response.content.decode("utf8")
+
         self.assertEqual(200, response.status_code)
-
-        rooms = Room.objects.all().order_by("created_at")[10:24]
-
         self.assertIn("<title>HOME | Airbnb</title>", html)
         self.assertIn('<a href="?page=1">Previous</a>', html)
-
-        for room in rooms:
-            self.assertIn(f"<a href='/rooms/{room.id}'>", html)
-            self.assertIn(f"<h4>{room} / ${room.price}</h4>", html)
 
     def test_view_rooms_home_view_invalid_page(self):
         """Rooms application HomeView test page param is invalid page

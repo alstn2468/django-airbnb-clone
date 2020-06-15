@@ -323,7 +323,7 @@ class RoomModelTest(TestCase):
                 check_in=(i % 5 + 1),
                 value=(i % 5 + 1),
                 user=user,
-                room=room
+                room=room,
             )
             total_avg += review.rating_average()
             review_cnt += 1
@@ -364,6 +364,27 @@ class RoomModelTest(TestCase):
         )
 
         self.assertEqual("Seoul", room.city)
+
+    def test_room_first_photo(self):
+        """Room model first_photo method test
+        Check Room model's first_photo return first photo file url
+        """
+        room = Room.objects.get(id=1)
+        temp_photo = tempfile.NamedTemporaryFile(suffix=".jpg").name
+
+        photo = Photo(caption="Test Caption", file=temp_photo, room=room)
+
+        photo.save()
+
+        self.assertEqual(photo.file.url, room.first_photo())
+
+    def test_room_first_photo_photo_is_empty(self):
+        """Room model first_photo method empty photo test
+        Check Room model's first_photo return None
+        """
+        room = Room.objects.get(id=1)
+
+        self.assertIsNone(room.first_photo())
 
 
 class RoomTypeModelTest(TestCase):
@@ -678,7 +699,7 @@ class ItemAdminTest(TestCase):
                 check_out=datetime(2019, 1, 2, 10, 30),
                 instant_book=True,
                 host=user,
-                room_type=room_type
+                room_type=room_type,
             )
 
         self.assertEqual(10, ItemAdmin.used_by(ItemAdmin, room_type))
@@ -755,5 +776,3 @@ class PhotoAdminTest(TestCase):
         expected_value = mark_safe(f'<img width="50px" src="{photo.file.url}" />')
 
         self.assertEqual(expected_value, PhotoAdmin.get_thumbnail(PhotoAdmin, photo))
-
-
