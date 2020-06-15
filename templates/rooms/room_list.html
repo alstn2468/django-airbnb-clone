@@ -1,10 +1,14 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block page_name %}HOME{% endblock page_name %}
 
 {% block content %}
+<div class="container rounded-xl mx-auto h-50vh mt-32 mb-24 bg-cover bg-center"
+    style="background-image:url({% static "img/main-container.jpg" %})">
+</div>
 {% for room in object_list %}
-<a href='{% url "rooms:detail" room.pk %}'>
+<a href=' {% url "rooms:detail" room.pk %}'>
     <h4>{{ room }} / ${{ room.price }}</h4>
 </a>
 {% endfor %}
