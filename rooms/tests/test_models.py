@@ -77,7 +77,7 @@ class RoomModelTest(TestCase):
         """
         room = Room.objects.get(id=1)
         self.assertEqual("Test Description 1", room.description)
-        self.assertEqual("대한민국", room.country.name)
+        self.assertEqual("South Korea", room.country.name)
         self.assertEqual("Seoul", room.city)
         self.assertEqual(100, room.price)
         self.assertEqual("Test Address", room.address)

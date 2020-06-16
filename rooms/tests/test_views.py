@@ -62,7 +62,7 @@ class RoomViewTest(TestCase):
 
         self.assertEqual(200, response.status_code)
         self.assertIn("<title>HOME | Airbnb</title>", html)
-        self.assertIn('<a href="?page=2">Next</a>', html)
+        self.assertIn('href="?page=2"', html)
 
     def test_view_rooms_home_view_next_page(self):
         """Rooms application HomeView view test with pagination param
@@ -73,7 +73,7 @@ class RoomViewTest(TestCase):
 
         self.assertEqual(200, response.status_code)
         self.assertIn("<title>HOME | Airbnb</title>", html)
-        self.assertIn('<a href="?page=1">Previous</a>', html)
+        self.assertIn('href="?page=1"', html)
 
     def test_view_rooms_home_view_invalid_page(self):
         """Rooms application HomeView test page param is invalid page
