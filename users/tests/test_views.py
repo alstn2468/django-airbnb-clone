@@ -163,7 +163,7 @@ class UserViewTest(TestCase):
         response = self.client.get("")
 
         html = response.content.decode("utf8")
-        self.assertIn('<a href="/users/logout">Logout</a>', html)
+        self.assertIn('href="/users/logout"', html)
 
     def test_view_users_login_view_post_login_fail(self):
         """Users application LoginView post method test
@@ -201,8 +201,8 @@ class UserViewTest(TestCase):
 
         response = self.client.get("")
         html = response.content.decode("utf8")
-        self.assertIn('<a href="/users/login">Login</a>', html)
-        self.assertIn('<a href="/users/signup">Sign up</a>', html)
+        self.assertIn('href="/users/login"', html)
+        self.assertIn('href="/users/signup"', html)
 
     def test_view_users_sign_up_view_get(self):
         """Users application SignUpView test
@@ -247,7 +247,7 @@ class UserViewTest(TestCase):
         response = self.client.get("")
         html = response.content.decode("utf8")
 
-        self.assertIn('<a href="/users/logout">Logout</a>', html)
+        self.assertIn('href="/users/logout"', html)
         self.assertIsNotNone(User.objects.get(username="testtest@test.com"))
 
     def test_view_users_sign_up_view_post_fail(self):
