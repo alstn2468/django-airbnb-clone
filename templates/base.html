@@ -11,20 +11,21 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css">
 </head>
 
-<body class="text-gray-700 mt-16 font-light text-sm lg:text-base md:text-base lg:mt-24 md:mt-24">
+<body class="text-gray-700 mt-16 font-light text-sm md:text-base md:mt-24">
     <header class="container max-w-full inset-0 flex items-center 
-    justify-between px-2 h-12 border-b border-gray-400 fixed bg-white lg:h-20 lg:px-6 md:h-20 md:px-6">
-        <div class="flex items-center w-5/6 lg:w-1/3 md:w-1/3">
-            <a href='{% url "core:home" %}' class="m-3 lg:m-6 md:m-6">
+    justify-between px-2 h-12 border-b border-gray-400 fixed bg-white md:h-20 md:px-6">
+        <div class="flex items-center w-5/6 md:w-1/3">
+            <a href='{% url "core:home" %}' class="m-2 md:m-6">
                 <img class="w-6 lg:w-8 md:w-8" src="{% static 'img/logo.png' %}" />
             </a>
 
             {% block search-bar %}
-            <form method=" GET" action="{% url "rooms:search" %}" class="w-9/12">
-                <input class="search-box border px-5 py-2 pl-10 
-                text-sm font-medium text-gray-900 placeholder-gray-600 
-                w-full rounded-sm shadow-md hover:shadow-lg focus:outline-none lg:text-nm md:text-nm" name="city"
-                    placeholder="Search by City" />
+            <form method=" GET" action="{% url "rooms:search" %}" class="w-10/12">
+                <input
+                    class="search-box border px-5 py-1 pl-8 bg-left-sm bg-sm
+                text-sm font-medium text-gray-900 placeholder-gray-600
+                w-full rounded-sm shadow-md hover:shadow-lg focus:outline-none md:py-2 md:pl-10 md:bg-left-lg md:bg-lg md:text-nm"
+                    name="city" placeholder="Search by City" />
             </form>
             {% endblock search-bar %}
         </div>

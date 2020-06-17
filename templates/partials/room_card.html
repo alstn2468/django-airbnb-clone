@@ -1,20 +1,21 @@
-<div class="w-1/2 mb-4 px-2 overflow-hidden lg:w-1/4 lg:mb-10 md:w-1/4 md:mb-10">
+<div class="w-1/2 mb-3 px-2 overflow-hidden md:w-1/4 md:mb-10">
     <a href={% url 'rooms:detail' room.pk %}>
-        <div class="w-full h-32 bg-cover bg-center rounded-lg mb-2 lg:h-64 md:h-64"
+        <div class="w-full h-32 bg-cover bg-center rounded-lg mb-2 md:h-64"
             style="background-image: url({{ room.first_photo }});">
         </div>
-        <div class="flex justify-between mb-2 truncate">
-            <div class="w-4/5 overflow-hidden flex">
+        <div class="flex justify-between mb-1 truncate md:mb-2">
+            <div class="w-4/5 overflow-hidden flex items-center">
                 {% if room.host.is_superhost %}
                 <span
-                    class="uppercase border-black border rounded py-px px-1 font-semibold text-xs text-black mr-2">superhost</span>
+                    class="uppercase border-black border rounded py-0 px-1 font-semibold text-xs text-black mr-1 md:py-px md:mr-2">superhost</span>
                 {% endif %}
-                <span class="text-sm text-gray-600 block truncate">{{ room.city }} · {{ room.country.name }}</span>
+                <span class="text-xs text-gray-600 block truncate md:text-sm">{{ room.city }} ·
+                    {{ room.country.name }}</span>
             </div>
             <span class="text-sm flex items-center">
                 <i class="fas fa-star text-red-500 text-xs mr-1"></i>{{ room.total_rating }}
             </span>
         </div>
-        <span class="text-black w-11/12 block truncate">{{ room.name }}</span>
+        <span class="text-black w-11/12 block truncate text-xs md:text-base">{{ room.name }}</span>
     </a>
 </div>

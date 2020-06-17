@@ -4,12 +4,6 @@
 .search-box {
     transition: all 0.2s linear;
     background: url("/static/img/search-box-icon.svg") no-repeat;
-    background-position: 10px 10px;
-    background-size: 20px 20px;
-
-    &:hover {
-        background-size: 21px 21px;
-    }
 }
 
 .nav-link {

@@ -10,6 +10,16 @@ module.exports = {
             borderRadius: {
                 xl: "1.5rem",
             },
+            backgroundSize: {
+                sm: "16px 16px",
+                md: "20px 20px",
+                lg: "22px 22px",
+                xl: "24px 24px",
+            },
+            backgroundPosition: {
+                "left-sm": "7px 7px",
+                "left-lg": "10px 7px",
+            },
         },
     },
     variants: {},
