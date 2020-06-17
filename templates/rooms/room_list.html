@@ -4,18 +4,18 @@
 {% block page_name %}HOME{% endblock page_name %}
 
 {% block content %}
-<div class="container mx-auto pb-10">
-    <div class="rounded-xl h-50vh mt-32 mb-24 bg-cover bg-center -mx-40"
+<div class="container mx-auto pb-4 lg:pb-10 md:pb-10">
+    <div class="rounded-xl h-25vh mt-16 mb-6 bg-cover bg-center -mx-40 lg:mt-32 lg:mb-24 lg:h-50vh md:mt-32 md:mb-24 md:h-50vh"
         style="background-image:url({% static "img/main-container.jpg" %})">
     </div>
 
-    <div class="flex flex-wrap -mx-40 -mb-1">
+    <div class="flex flex-wrap -mb-1 lg:-mx-40 md:-mx-40">
         {% for room in object_list %}
         {% include 'partials/room_card.html' with room=room %}
         {% endfor %}
     </div>
 
-    <div class="flex items-center justify-center container">
+    <div class="flex items-center justify-center container mt-2 lg:mt-0 md:mt-0">
         <a {% if page_obj.has_previous %} href="?page={{ page_obj.previous_page_number }}" class="text-teal-500 visible"
             {% else %} class="invisible" {% endif %}>
             <i class="fas fa-arrow-left fa-lg"></i>
