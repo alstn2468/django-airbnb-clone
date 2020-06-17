@@ -20,6 +20,9 @@ module.exports = {
                 "left-sm": "7px 7px",
                 "left-lg": "10px 7px",
             },
+            colors: {
+                kakao: "#ffeb00",
+            },
         },
     },
     variants: {},

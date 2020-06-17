@@ -1,6 +1,15 @@
-<div>
-    <a href="{% url 'users:github-login' %}">Continue With Github</a>
-</div>
-<div>
-    <a href="{% url 'users:kakao-login' %}">Continue With Kakao</a>
+{% load static %}
+<div class="flex flex-col w-full items-center">
+    <a href="{% url 'users:github-login' %}" class="w-11/12 border border-gray-800 
+        font-bold text-gray-800 mb-2 text-center rounded-md bg-transparent hover:bg-gray-800 hover:text-white
+        transition-all duration-200 ease-linear py-3 md:mb-3 md:w-10/12 md:py-5">
+        <i class="fab fa-github fa-lg pr-1 -ml-1"></i>
+        Continue With Github
+    </a>
+    <a href="{% url 'users:kakao-login' %}" class="w-11/12 border border-gray-800  
+        font-bold text-gray-800  mb-2 text-center rounded-md bg-transparent hover:border-kakao hover:bg-kakao hover:text-black
+        transition-all duration-200 ease-linear py-3 md:mb-3 md:w-10/12 md:py-5">
+        <i class="fas fa-comment fa-lg pr-1 -ml-1"></i>
+        Continue With Kakao
+    </a>
 </div>
