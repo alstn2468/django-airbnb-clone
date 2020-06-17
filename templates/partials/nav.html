@@ -1,14 +1,17 @@
-<ul class="flex items-center text-sm font-medium h-full">
+<ul class="flex items-center text-xs font-medium h-full mr-1 md:text-md md:mr-6 lg:text-md lg:mr-6">
     {% if user.is_authenticated %}
-    <li class="nav-link">
-        <a href="{% url "users:logout" %}">Logout</a>
+    <li class="nav-link md:ml-6 lg:ml-6">
+        <a href="{% url "users:logout" %}"
+            class="w-12 text-center md:w-16 lg:w-16 md:py-10 lg:py-10 md:px-5 lg:px-5">Logout</a>
     </li>
     {% else %}
-    <li class="nav-link">
-        <a href="{% url "users:login" %}">Login</a>
+    <li class="nav-link md:ml-6 lg:ml-6">
+        <a href="{% url "users:login" %}"
+            class="w-12 text-center md:w-16 lg:w-16 md:py-10 lg:py-10 md:px-5 lg:px-5">Login</a>
     </li>
-    <li class="nav-link">
-        <a href="{% url "users:signup" %}">Sign up</a>
+    <li class="nav-link md:ml-6 lg:ml-6">
+        <a href="{% url "users:signup" %}"
+            class="w-12 text-center md:w-16 lg:w-16 md:py-10 lg:py-10 md:px-5 lg:px-5r">Sign Up</a>
     </li>
     {% endif %}
 </ul>
