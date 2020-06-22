@@ -12,10 +12,10 @@
 
     {% include "partials/social_login.html" %}
 
-    <form method="POST" action="{% url 'users:login' %}">
+    <form method="POST" action="{% url 'users:login' %}" class="btn-wrapper">
         {% csrf_token %}
         {{ form.as_p }}
-        <button>Login</button>
+        <button class="btn login-button mt-5">Login</button>
     </form>
 </div>
 

@@ -18,4 +18,30 @@
     }
 }
 
+.btn {
+    @apply w-11/12 border border-gray-800 font-bold text-gray-800 mb-2 text-center rounded-md py-2;
+}
+
+.login-button {
+    transition: box-shadow 0.2s ease;
+    @apply bg-airbnb border-airbnb text-white;
+}
+
+.login-button:hover {
+    box-shadow: 0 0 0 4px #ffffff,
+        0 0 0 5px #717171,
+        0 0 0 6px rgba(255, 255, 255, 0.5)
+}
+
+.btn-wrapper {
+    @apply flex flex-col w-full items-center
+}
+
+@screen md {
+    .btn {
+        @apply mb-3 w-10/12 py-3;
+    }
+}
+
+
 @tailwind utilities;

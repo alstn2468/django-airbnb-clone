@@ -22,6 +22,7 @@ module.exports = {
             },
             colors: {
                 kakao: "#ffeb00",
+                airbnb: "rgb(255, 90, 95)",
             },
         },
     },
