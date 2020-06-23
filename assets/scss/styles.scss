@@ -28,20 +28,31 @@
 }
 
 .login-button:hover {
-    box-shadow: 0 0 0 4px #ffffff,
-        0 0 0 5px #717171,
-        0 0 0 6px rgba(255, 255, 255, 0.5)
+    box-shadow: 0 0 0 4px #ffffff, 0 0 0 5px #717171,
+        0 0 0 6px rgba(255, 255, 255, 0.5);
+}
+
+input {
+    @apply rounded-sm py-2 font-light text-sm w-11/12 text-left border border-gray-600 px-3;
+    @apply transition-all duration-300;
+
+    &:focus {
+        @apply outline-none border-teal-600;
+    }
 }
 
 .btn-wrapper {
-    @apply flex flex-col w-full items-center
+    @apply flex flex-col w-full items-center;
 }
 
 @screen md {
     .btn {
         @apply mb-3 w-10/12 py-3;
     }
-}
 
+    input {
+        @apply w-10/12 text-lg px-5 py-3;
+    }
+}
 
 @tailwind utilities;

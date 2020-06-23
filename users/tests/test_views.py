@@ -146,10 +146,8 @@ class UserViewTest(TestCase):
 
         self.assertEqual(200, response.status_code)
         self.assertIn("<title>Log In | Airbnb</title>", html)
-        self.assertIn('<input type="email" name="email" required id="id_email">', html)
-        self.assertIn(
-            '<input type="password" name="password" required id="id_password">', html
-        )
+        self.assertIn('<input type="email" name="email"', html)
+        self.assertIn('<input type="password" name="password"', html)
 
     def test_view_users_login_view_post_login_success(self):
         """Users application LoginView post method test

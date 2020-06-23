@@ -14,8 +14,9 @@
 
     <form method="POST" action="{% url 'users:login' %}" class="btn-wrapper">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button class="btn login-button mt-5">Login</button>
+        <input type="email" name="email" placeholder="Email" required autocomplete="off" class="mb-2 md:mb-3" />
+        <input type="password" name="password" placeholder="Password" required class="mb-3" />
+        <button class="btn login-button mt-3">Login</button>
     </form>
 </div>
 
