@@ -33,16 +33,27 @@
 }
 
 input {
+    background-repeat: no-repeat;
+    background-position: 96%;
+    background-size: 16px 16px;
     @apply rounded-sm py-2 font-light text-sm w-11/12 text-left border border-gray-600 px-3;
     @apply transition-all duration-300;
 
     &:focus {
-        @apply outline-none border-teal-600;
+        @apply outline-none border-teal-400;
     }
 }
 
 .btn-wrapper {
     @apply flex flex-col w-full items-center;
+}
+
+input.email {
+    background-image: url("/static/img/email-input-icon.svg");
+}
+
+input.password {
+    background-image: url("/static/img/password-input-icon.svg");
 }
 
 @screen md {
@@ -51,6 +62,8 @@ input {
     }
 
     input {
+        background-position: 97%;
+        background-size: 19px 19px;
         @apply w-10/12 text-lg px-5 py-3;
     }
 }

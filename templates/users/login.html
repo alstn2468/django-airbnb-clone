@@ -14,10 +14,18 @@
 
     <form method="POST" action="{% url 'users:login' %}" class="btn-wrapper">
         {% csrf_token %}
-        <input type="email" name="email" placeholder="Email" required autocomplete="off" class="mb-2 md:mb-3" />
-        <input type="password" name="password" placeholder="Password" required class="mb-3" />
+        <input type="email" name="email" placeholder="Email address" required autocomplete="off"
+            class="email mb-2 md:mb-3" />
+        <input type="password" name="password" placeholder="Password" required class="password mb-3" />
         <button class="btn login-button mt-3">Login</button>
     </form>
+
+    <div class="h-px w-11/12 bg-gray-400 md:w-10/12 mt-1 mb-2 md:mb-3"></div>
+
+    <div class="w-11/12 float-left md:w-10/12">
+        <span class="mr-1">Don't have an account?</span>
+        <a href="{% url 'users:signup' %}" class="text-teal-500 font-bold hover:underline">Sign up</a>
+    </div>
 </div>
 
 {% endblock content %}
