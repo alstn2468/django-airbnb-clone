@@ -7,13 +7,21 @@
 
 {% block content %}
 
-<form method="POST" action="{% url 'users:signup' %}">
+<div
+    class="container mx-auto mt-6 mb-4 flex flex-col items-center border py-8 px-6 border-gray-400 w-10/12 xl:w-1/4 lg:w-5/12 md:w-1/2 md:my-10">
 
     {% include "partials/social_login.html" %}
 
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button>Sign Up</button>
-</form>
+    <form method="POST" action="{% url 'users:signup' %}" class="btn-wrapper">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn login-button mt-3">Sign Up</button>
+    </form>
+
+    <div class="w-11/12 float-left md:w-10/12">
+        <span class="mr-1">Do you have an account?</span>
+        <a href="{% url 'users:login' %}" class="text-teal-500 font-bold hover:underline">Login</a>
+    </div>
+</div>
 
 {% endblock content %}
