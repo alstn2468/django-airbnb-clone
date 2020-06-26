@@ -19,7 +19,9 @@ class LoginForm(forms.Form):
     """
 
     email = forms.EmailField(
-        widget=forms.EmailInput(attrs={"placeholder": "Email", "class": "email"})
+        widget=forms.EmailInput(
+            attrs={"placeholder": "Email", "class": "email", "autocomplete": "off"}
+        )
     )
     password = forms.CharField(
         widget=forms.PasswordInput(
@@ -70,16 +72,39 @@ class SignUpForm(forms.ModelForm):
             "last_name",
             "email",
         )
+        widgets = {
+            "first_name": forms.TextInput(
+                attrs={"autocomplete": "off", "placeholder": "First Name"}
+            ),
+            "last_name": forms.TextInput(
+                attrs={"autocomplete": "off", "placeholder": "Last Name"}
+            ),
+            "email": forms.EmailInput(
+                attrs={"placeholder": "Email", "class": "email", "autocomplete": "off"}
+            ),
+        }
 
     password = forms.CharField(
         label="Password",
         strip=False,
-        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
+        widget=forms.PasswordInput(
+            attrs={
+                "autocomplete": "new-password",
+                "placeholder": "Password",
+                "class": "password",
+            }
+        ),
         help_text=password_validation.password_validators_help_text_html(),
     )
     password_check = forms.CharField(
         label="Confirm Password",
-        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
+        widget=forms.PasswordInput(
+            attrs={
+                "autocomplete": "new-password",
+                "placeholder": "Confirm Password",
+                "class": "password-check",
+            }
+        ),
         strip=False,
         help_text="Enter the same password as before, for verification.",
     )

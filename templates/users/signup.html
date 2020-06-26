@@ -14,7 +14,11 @@
 
     <form method="POST" action="{% url 'users:signup' %}" class="btn-wrapper">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form.first_name }}
+        {{ form.last_name }}
+        {{ form.email }}
+        {{ form.password }}
+        {{ form.password_check }}
         <button class="btn login-button mt-3">Sign Up</button>
     </form>
 

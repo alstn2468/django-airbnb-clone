@@ -219,11 +219,10 @@ class UserViewTest(TestCase):
         )
         self.assertIn('<input type="email" name="email"', html)
         self.assertIn(
-            '<input type="password" name="password" autocomplete="new-password" required id="id_password">',
-            html,
+            '<input type="password" name="password" autocomplete="new-password"', html,
         )
         self.assertIn(
-            '<input type="password" name="password_check" autocomplete="new-password" required id="id_password_check">',
+            '<input type="password" name="password_check" autocomplete="new-password"',
             html,
         )
 
@@ -260,7 +259,7 @@ class UserViewTest(TestCase):
         response = self.client.post("/users/signup", data)
         html = response.content.decode("utf8")
 
-        self.assertEqual(2, html.count("errorlist"))
+        self.assertEqual(0, html.count("errorlist"))
 
     def test_complete_verification_success(self):
         """Users application complete_verifiation view success test
