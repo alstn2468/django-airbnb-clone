@@ -33,26 +33,36 @@
 }
 
 form {
-    input {
+    .input {
         @apply mb-2;
     }
+}
+
+.input {
+    display: block;
+    transition: border-color 0.3s ease;
+
+    @apply rounded-sm py-2 font-light text-sm w-11/12 text-left border border-gray-600 px-3;
+}
+
+.btn-wrapper {
+    @apply flex flex-col w-full items-center;
 }
 
 input {
     background-repeat: no-repeat;
     background-position: 96%;
     background-size: 16px 16px;
-    transition: border-color 0.3s ease;
-
-    @apply rounded-sm py-2 font-light text-sm w-11/12 text-left border border-gray-600 px-3;
 
     &:focus {
-        @apply outline-none border-teal-400;
+        @apply outline-none;
     }
+
+    @apply w-full;
 }
 
-.btn-wrapper {
-    @apply flex flex-col w-full items-center;
+.input:focus-within {
+    @apply border-teal-400;
 }
 
 input.email {
@@ -83,11 +93,14 @@ input.last-name {
     input {
         background-position: 97%;
         background-size: 19px 19px;
+    }
+
+    .input {
         @apply w-10/12 text-lg px-5 py-3;
     }
 
     form {
-        input {
+        .input {
             @apply mb-3;
         }
     }

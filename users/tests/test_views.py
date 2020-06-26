@@ -259,7 +259,7 @@ class UserViewTest(TestCase):
         response = self.client.post("/users/signup", data)
         html = response.content.decode("utf8")
 
-        self.assertEqual(0, html.count("errorlist"))
+        self.assertEqual(2, html.count("has_error"))
 
     def test_complete_verification_success(self):
         """Users application complete_verifiation view success test

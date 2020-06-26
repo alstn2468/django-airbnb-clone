@@ -14,13 +14,21 @@
 
     <form method="POST" action="{% url 'users:signup' %}" class="btn-wrapper">
         {% csrf_token %}
-        {{ form.first_name }}
-        {{ form.last_name }}
-        {{ form.email }}
-        {{ form.password }}
-        {{ form.password_check }}
+
+        {% if form.none_field_errors %}
+        {% for error in form.none_field_errors %}
+        <div class="text-red-700 font-medium text-sm">{{ error }}</div>
+        {% endfor %}
+        {% endif %}
+
+        {% for field in form %}
+        {% include 'partials/form_input.html' with field=field %}
+        {% endfor %}
+
         <button class="btn login-button mt-3">Sign Up</button>
     </form>
+
+    <div class="h-px w-11/12 bg-gray-400 md:w-10/12 mt-1 mb-2 md:mb-3"></div>
 
     <div class="w-11/12 float-left md:w-10/12">
         <span class="mr-1">Do you have an account?</span>
