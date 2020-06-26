@@ -12,15 +12,7 @@
 
     {% include "partials/social_login.html" %}
 
-    <form method="POST" action="{% url 'users:login' %}" class="btn-wrapper">
-        {% csrf_token %}
-
-        {% for field in form %}
-        {% include 'partials/form_input.html' with field=field %}
-        {% endfor %}
-
-        <button class="btn login-button mt-3">Login</button>
-    </form>
+    {% include "mixins/auth/auth_form.html" with form=form cta="Login" %}
 
     <div class="h-px w-11/12 bg-gray-400 md:w-10/12 mt-1 mb-2 md:mb-3"></div>
 

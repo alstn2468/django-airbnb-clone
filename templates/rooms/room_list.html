@@ -11,7 +11,7 @@
 
     <div class="flex flex-wrap -mb-1 md:-mx-40">
         {% for room in object_list %}
-        {% include 'partials/room_card.html' with room=room %}
+        {% include 'mixins/room_card.html' with room=room %}
         {% endfor %}
     </div>
 

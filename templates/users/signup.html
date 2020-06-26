@@ -12,21 +12,7 @@
 
     {% include "partials/social_login.html" %}
 
-    <form method="POST" action="{% url 'users:signup' %}" class="btn-wrapper">
-        {% csrf_token %}
-
-        {% if form.none_field_errors %}
-        {% for error in form.none_field_errors %}
-        <div class="text-red-700 font-medium text-sm">{{ error }}</div>
-        {% endfor %}
-        {% endif %}
-
-        {% for field in form %}
-        {% include 'partials/form_input.html' with field=field %}
-        {% endfor %}
-
-        <button class="btn login-button mt-3">Sign Up</button>
-    </form>
+    {% include "mixins/auth/auth_form.html" with form=form cta="Sign Up" %}
 
     <div class="h-px w-11/12 bg-gray-400 md:w-10/12 mt-1 mb-2 md:mb-3"></div>
 

@@ -1,0 +1,16 @@
+<form method="POST" class="btn-wrapper">
+
+    {% if form.none_field_errors %}
+    {% for error in form.none_field_errors %}
+    <div class="text-red-700 font-medium text-sm">{{ error }}</div>
+    {% endfor %}
+    {% endif %}
+
+    {% csrf_token %}
+
+    {% for field in form %}
+    {% include 'mixins/auth/form_input.html' with field=field %}
+    {% endfor %}
+
+    <button class="btn auth-button mt-3">{{ cta }}</button>
+</form>
