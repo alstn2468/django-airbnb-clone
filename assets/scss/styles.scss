@@ -66,6 +66,14 @@ input.password-check {
     background-image: url("/static/img/password-check-input-icon.svg");
 }
 
+input.first-name {
+    background-image: url("/static/img/first-name-icon.svg");
+}
+
+input.last-name {
+    background-image: url("/static/img/last-name-icon.svg");
+}
+
 @screen md {
     .btn {
         @apply mb-3 w-10/12 py-3;

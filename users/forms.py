@@ -74,10 +74,18 @@ class SignUpForm(forms.ModelForm):
         )
         widgets = {
             "first_name": forms.TextInput(
-                attrs={"autocomplete": "off", "placeholder": "First Name"}
+                attrs={
+                    "autocomplete": "off",
+                    "placeholder": "First Name",
+                    "class": "first-name",
+                }
             ),
             "last_name": forms.TextInput(
-                attrs={"autocomplete": "off", "placeholder": "Last Name"}
+                attrs={
+                    "autocomplete": "off",
+                    "placeholder": "Last Name",
+                    "class": "last-name",
+                }
             ),
             "email": forms.EmailInput(
                 attrs={"placeholder": "Email", "class": "email", "autocomplete": "off"}
