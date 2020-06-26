@@ -42,8 +42,9 @@ input {
     background-repeat: no-repeat;
     background-position: 96%;
     background-size: 16px 16px;
+    transition: border-color 0.3s ease;
+
     @apply rounded-sm py-2 font-light text-sm w-11/12 text-left border border-gray-600 px-3;
-    @apply transition-all duration-300;
 
     &:focus {
         @apply outline-none border-teal-400;
