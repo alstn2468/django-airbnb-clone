@@ -18,8 +18,14 @@ class LoginForm(forms.Form):
         clean_password : pass
     """
 
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={"placeholder": "Email", "class": "email"})
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={"placeholder": "Password", "class": "password"}
+        )
+    )
 
     def clean(self):
         email = self.cleaned_data.get("email")
