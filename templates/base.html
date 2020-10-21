@@ -12,6 +12,7 @@
 </head>
 
 <body class="text-gray-700 mt-16 font-light text-sm md:text-base md:mt-24">
+    {% include "partials/messages.html" %}
     <header class="container max-w-full inset-0 flex items-center 
     justify-between px-2 h-12 border-b border-gray-400 fixed bg-white md:h-20 md:px-6">
         <div class="flex items-center w-5/6 md:w-1/3">
@@ -35,7 +36,6 @@
 
     {% block content %}{% endblock content %}
 
-    {% include "partials/messages.html" %}
     {% include "partials/footer.html" %}
 </body>
 
