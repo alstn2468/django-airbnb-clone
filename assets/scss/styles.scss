@@ -2,108 +2,144 @@
 @tailwind components;
 
 .search-box {
-    transition: all 0.2s linear;
-    background: url("/static/img/search-box-icon.svg") no-repeat;
+  transition: all 0.2s linear;
+  background: url('/static/img/search-box-icon.svg') no-repeat;
 }
 
 .nav-link {
-    @apply ml-2 border-b-2 border-white h-full flex items-center;
+  @apply ml-2 border-b-2 border-white h-full flex items-center;
 
-    a {
-        @apply py-3 px-0;
-    }
+  a {
+    @apply py-3 px-0;
+  }
 
-    &:hover {
-        @apply border-gray-600;
-    }
+  &:hover {
+    @apply border-gray-600;
+  }
 }
 
 .btn {
-    @apply w-11/12 border border-gray-800 font-bold text-gray-800 mb-2 text-center rounded-md py-2;
+  @apply w-11/12 border border-gray-800 font-bold text-gray-800 mb-2 text-center rounded-md py-2;
 }
 
 .auth-button {
-    transition: box-shadow 0.2s ease;
-    @apply bg-airbnb border-airbnb text-white;
+  transition: box-shadow 0.2s ease;
+  @apply bg-airbnb border-airbnb text-white;
 }
 
 .auth-button:hover {
-    box-shadow: 0 0 0 4px #ffffff, 0 0 0 5px #717171,
-        0 0 0 6px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 0 4px #ffffff, 0 0 0 5px #717171,
+    0 0 0 6px rgba(255, 255, 255, 0.5);
 }
 
 form {
-    .input {
-        @apply mb-2;
-    }
+  .input {
+    @apply mb-2;
+  }
 }
 
 .input {
-    display: block;
-    transition: border-color 0.3s ease;
+  display: block;
+  transition: border-color 0.3s ease;
 
-    @apply rounded-sm py-2 font-light text-sm w-11/12 text-left border border-gray-600 px-3;
+  @apply rounded-sm py-2 font-light text-sm w-11/12 text-left border border-gray-600 px-3;
 }
 
 .btn-wrapper {
-    @apply flex flex-col w-full items-center;
+  @apply flex flex-col w-full items-center;
 }
 
 input {
-    background-repeat: no-repeat;
-    background-position: 96%;
-    background-size: 16px 16px;
+  background-repeat: no-repeat;
+  background-position: 96%;
+  background-size: 16px 16px;
 
-    &:focus {
-        @apply outline-none;
-    }
+  &:focus {
+    @apply outline-none;
+  }
 
-    @apply w-full;
+  @apply w-full;
 }
 
 .input:focus-within {
-    @apply border-teal-400;
+  @apply border-teal-400;
 }
 
 input.email {
-    background-image: url("/static/img/email-input-icon.svg");
+  background-image: url('/static/img/email-input-icon.svg');
 }
 
 input.password {
-    background-image: url("/static/img/password-input-icon.svg");
+  background-image: url('/static/img/password-input-icon.svg');
 }
 
 input.password-check {
-    background-image: url("/static/img/password-check-input-icon.svg");
+  background-image: url('/static/img/password-check-input-icon.svg');
 }
 
 input.first-name {
-    background-image: url("/static/img/first-name-icon.svg");
+  background-image: url('/static/img/first-name-icon.svg');
 }
 
 input.last-name {
-    background-image: url("/static/img/last-name-icon.svg");
+  background-image: url('/static/img/last-name-icon.svg');
 }
 
 @screen md {
-    .btn {
-        @apply mb-3 w-10/12 py-3;
-    }
+  .btn {
+    @apply mb-3 w-10/12 py-3;
+  }
 
-    input {
-        background-position: 97%;
-        background-size: 19px 19px;
-    }
+  input {
+    background-position: 97%;
+    background-size: 19px 19px;
+  }
 
+  .input {
+    @apply w-10/12 text-lg px-5 py-3;
+  }
+
+  form {
     .input {
-        @apply w-10/12 text-lg px-5 py-3;
+      @apply mb-3;
     }
+  }
+}
 
-    form {
-        .input {
-            @apply mb-3;
-        }
-    }
+@keyframes messageFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  5% {
+    opacity: 1;
+    transform: translateY(50px);
+  }
+  95% {
+    opacity: 1;
+    transform: translateY(50px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+}
+
+.message {
+  animation: messageFadeIn 5s ease-in-out forwards;
+
+  &.error {
+    @apply bg-red-600;
+  }
+  &.info {
+    @apply bg-blue-500;
+  }
+  &.success {
+    @apply bg-green-500;
+  }
+  &.warning {
+    @apply bg-yellow-400;
+  }
 }
 
 @tailwind utilities;
