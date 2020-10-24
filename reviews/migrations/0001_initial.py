@@ -7,26 +7,31 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Review',
+            name="Review",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('review', models.TextField()),
-                ('accuracy', models.IntegerField()),
-                ('communication', models.IntegerField()),
-                ('cleanliness', models.IntegerField()),
-                ('location', models.IntegerField()),
-                ('check_in', models.IntegerField()),
-                ('value', models.IntegerField()),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("review", models.TextField()),
+                ("accuracy", models.IntegerField()),
+                ("communication", models.IntegerField()),
+                ("cleanliness", models.IntegerField()),
+                ("location", models.IntegerField()),
+                ("check_in", models.IntegerField()),
+                ("value", models.IntegerField()),
             ],
-            options={
-                'abstract': False,
-            },
+            options={"abstract": False,},
         ),
     ]

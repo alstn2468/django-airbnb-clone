@@ -135,4 +135,3 @@ class ReviewModelTest(TestCase):
         )
 
         self.assertEqual(avg, review.rating_average())
-

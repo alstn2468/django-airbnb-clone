@@ -17,4 +17,3 @@ class RoomsUrlTest(TestCase):
         """
         found = resolve("/rooms/search/")
         self.assertEqual(found.func.view_class, SearchView)
-

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block page_name %}Profile{% endblock page_name %}
+
+{% block search-bar %}
+{% endblock search-bar %}
+
+{% block content %}
+
+<div
+    class="container mx-auto mt-6 mb-4 flex flex-col items-center border py-8 px-6 border-gray-400 w-10/12 xl:w-1/4 lg:w-5/12 md:w-1/2 md:my-10">
+
+    {{ user_obj.first_name }}
+
+</div>
+
+{% endblock content %}

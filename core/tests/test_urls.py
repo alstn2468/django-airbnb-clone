@@ -10,4 +10,3 @@ class CoreUrlTest(TestCase):
         """
         found = resolve("/")
         self.assertEqual(found.func.view_class, HomeView)
-

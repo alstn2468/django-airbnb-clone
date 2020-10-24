@@ -24,4 +24,3 @@ class Command(BaseCommand):
         except Exception as e:
             self.stdout.write(self.style.ERROR(f"■ {e}"))
             self.stdout.write(self.style.ERROR("■ FAIL CREATE USERS"))
-

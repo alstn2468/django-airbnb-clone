@@ -8,95 +8,140 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Amenity',
+            name="Amenity",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('name', models.CharField(max_length=80)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("name", models.CharField(max_length=80)),
             ],
-            options={
-                'verbose_name_plural': 'Amenities',
-            },
+            options={"verbose_name_plural": "Amenities",},
         ),
         migrations.CreateModel(
-            name='Facility',
+            name="Facility",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('name', models.CharField(max_length=80)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("name", models.CharField(max_length=80)),
             ],
-            options={
-                'verbose_name_plural': 'Facilities',
-            },
+            options={"verbose_name_plural": "Facilities",},
         ),
         migrations.CreateModel(
-            name='HouseRule',
+            name="HouseRule",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('name', models.CharField(max_length=80)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("name", models.CharField(max_length=80)),
             ],
-            options={
-                'verbose_name': 'House Rule',
-            },
+            options={"verbose_name": "House Rule",},
         ),
         migrations.CreateModel(
-            name='Photo',
+            name="Photo",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('caption', models.CharField(max_length=80)),
-                ('file', models.ImageField(upload_to='room_photos')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("caption", models.CharField(max_length=80)),
+                ("file", models.ImageField(upload_to="room_photos")),
             ],
-            options={
-                'abstract': False,
-            },
+            options={"abstract": False,},
         ),
         migrations.CreateModel(
-            name='RoomType',
+            name="RoomType",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('name', models.CharField(max_length=80)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("name", models.CharField(max_length=80)),
             ],
-            options={
-                'verbose_name': 'Room Type',
-            },
+            options={"verbose_name": "Room Type",},
         ),
         migrations.CreateModel(
-            name='Room',
+            name="Room",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('name', models.CharField(max_length=140)),
-                ('description', models.TextField()),
-                ('country', django_countries.fields.CountryField(max_length=2)),
-                ('city', models.CharField(max_length=80)),
-                ('price', models.IntegerField()),
-                ('address', models.CharField(max_length=140)),
-                ('guests', models.IntegerField()),
-                ('beds', models.IntegerField()),
-                ('bedrooms', models.IntegerField()),
-                ('baths', models.IntegerField()),
-                ('check_in', models.TimeField()),
-                ('check_out', models.TimeField()),
-                ('instant_book', models.BooleanField(default=False)),
-                ('amenities', models.ManyToManyField(blank=True, related_name='rooms', to='rooms.Amenity')),
-                ('facilities', models.ManyToManyField(blank=True, related_name='rooms', to='rooms.Facility')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("name", models.CharField(max_length=140)),
+                ("description", models.TextField()),
+                ("country", django_countries.fields.CountryField(max_length=2)),
+                ("city", models.CharField(max_length=80)),
+                ("price", models.IntegerField()),
+                ("address", models.CharField(max_length=140)),
+                ("guests", models.IntegerField()),
+                ("beds", models.IntegerField()),
+                ("bedrooms", models.IntegerField()),
+                ("baths", models.IntegerField()),
+                ("check_in", models.TimeField()),
+                ("check_out", models.TimeField()),
+                ("instant_book", models.BooleanField(default=False)),
+                (
+                    "amenities",
+                    models.ManyToManyField(
+                        blank=True, related_name="rooms", to="rooms.Amenity"
+                    ),
+                ),
+                (
+                    "facilities",
+                    models.ManyToManyField(
+                        blank=True, related_name="rooms", to="rooms.Facility"
+                    ),
+                ),
             ],
-            options={
-                'abstract': False,
-            },
+            options={"abstract": False,},
         ),
     ]

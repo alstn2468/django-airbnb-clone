@@ -9,7 +9,7 @@
 </div>
 
 <div>
-    <h2>By : {{ room.host.username }}
+    <h2>By : <a href="{{ room.host.get_absolute_url }}">{{ room.host.username }}<a/>
         {% if room.host.is_superhost %}
         (superhost)
         {% endif %}
