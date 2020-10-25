@@ -4,6 +4,7 @@ from users.views import (
     LoginView,
     log_out,
     SignUpView,
+    UserProfileView,
     complete_verification,
     github_login,
     github_callback,
@@ -68,3 +69,10 @@ class UsersUrlTest(TestCase):
         """
         found = resolve("/users/login/kakao/callback")
         self.assertEqual(found.func, kakao_callback)
+
+    def test_url_resolves_to_user_profile_view(self):
+        """User application '/users/1' pattern urls test
+        Check '/users/1' pattern resolved class is UserProfileView
+        """
+        found = resolve("/users/1")
+        self.assertEqual(found.func.view_class, UserProfileView)

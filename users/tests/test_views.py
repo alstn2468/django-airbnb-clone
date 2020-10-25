@@ -127,6 +127,7 @@ class UserViewTest(TestCase):
             username="test@test.com",
             email="test@test.com",
             password="testtest",
+            first_name="test",
             login_method=User.LOGIN_GITHUB,
         )
         User.objects.create_user(
@@ -453,3 +454,16 @@ class UserViewTest(TestCase):
 
         response = self.client.get("/")
         self.assertEqual(response.context[0]["user"], user)
+        
+    def test_user_profile_view(self):
+        """Users application UserProfileView test
+        Check UserProfileView HttpResponse content data contain right data
+        """
+        user = User.objects.get(pk=1)
+
+        response = self.client.get("/users/1")
+        html = response.content.decode("utf8")
+
+        self.assertEqual(200, response.status_code)
+        self.assertIn("<title>Profile | Airbnb</title>", html)
+        self.assertIn(user.first_name, html)

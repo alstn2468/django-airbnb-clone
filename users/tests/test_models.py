@@ -236,3 +236,10 @@ class UserModelTest(TestCase):
         """
         user = User.objects.get(username="test_user_2")
         self.assertFalse(user.verify_email())
+
+    def test_user_get_absolute_url(self):
+        """User model get_absolute_url method test
+        User object's get_absolute_url method return profile url
+        """
+        user = User.objects.get(pk=1)
+        self.assertEqual(user.get_absolute_url(), '/users/1')
