@@ -17,14 +17,12 @@
 
     <div class="flex items-center">
         <span class="text-3xl mt-1">{{ user_obj.first_name }}</span>
-        {% if user_obj.superhost %}
+        {% if user_obj.is_superhost %}
         <i class="fas fa-check-circle text-teal-400 ml-1"></i>
         {% endif %}
     </div>
 
-    <span class="text-lg">{{user.bio}}</span>
-
-    <a href="#" class="btn">Edit Profile</a>
+    <span class="text-lg">{{ user.bio }}</span>
 
     <a href="#" class="btn">Edit Profile</a>
 
