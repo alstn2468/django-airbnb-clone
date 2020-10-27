@@ -465,5 +465,5 @@ class UserViewTest(TestCase):
         html = response.content.decode("utf8")
 
         self.assertEqual(200, response.status_code)
-        self.assertIn("<title>Profile | Airbnb</title>", html)
+        self.assertIn(f"<title>{user.first_name}'s Profile | Airbnb</title>", html)
         self.assertIn(user.first_name, html)
