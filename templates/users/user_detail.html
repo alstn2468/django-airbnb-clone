@@ -1,31 +1,38 @@
 {% extends "base.html" %}
 
-{% block page_name %}{{ user_obj.first_name }}'s Profile{% endblock page_name %}
-
-{% block search-bar %}
-{% endblock search-bar %}
+{% block page_title %}
+    {{ user_obj.first_name }}'s Profile
+{% endblock page_title %}
 
 {% block content %}
+<div class="min-h-75vh">
+    <div class="container lg:w-5/12 md:w-1/2 xl:w-1/4 mx-auto my-10 flex flex-col items-center border p-6 border-gray-400">
+    
+        {% include "mixins/user_avatar.html" with user=user_obj %}
 
-<div
-    class="container mx-auto mt-6 mb-4 
-        flex flex-col items-center border 
-        py-8 px-6 border-gray-400 
-        w-10/12 xl:w-1/4 lg:w-5/12 md:w-1/2 md:my-10">
+        <div class="flex items-center">
+            <span class="text-3xl mt-1">{{ user_obj.first_name }}</span>
+            {% if user_obj.is_superhost %}
+            <i class="fas fa-check-circle text-teal-400 ml-1"></i>
+            {% endif %}
+        </div>
 
-    {% include "mixins/user_avatar.html" with user=user_obj %}
+        <span class="text-lg mb-5">{{ user.bio }}</span>
 
-    <div class="flex items-center">
-        <span class="text-3xl mt-1">{{ user_obj.first_name }}</span>
-        {% if user_obj.is_superhost %}
-        <i class="fas fa-check-circle text-teal-400 ml-1"></i>
+        {% if user == user_obj %}
+        <a href="#" class="btn-link">Edit Profile</a>
         {% endif %}
+            
     </div>
-
-    <span class="text-lg">{{ user.bio }}</span>
-
-    <a href="#" class="btn">Edit Profile</a>
-
+    {% if user_obj.rooms.count > 0 %}
+        <h3 class="mb-12 text-2xl text-center">{{ user_obj.first_name  }}'s Rooms</h3>
+        <div class="container mx-auto pb-10 ">
+            <div class="flex flex-wrap -mx-40 mb-10">
+                {% for room in user_obj.rooms.all  %}
+                    {% include 'mixins/room_card.html' with room=room %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
 </div>
-
 {% endblock content %}

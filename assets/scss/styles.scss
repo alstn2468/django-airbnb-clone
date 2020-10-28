@@ -22,6 +22,10 @@
   @apply w-11/12 border border-gray-800 font-bold text-gray-800 mb-2 text-center rounded-md py-2;
 }
 
+.btn-link {
+  @apply text-center py-3 rounded-lg font-light text-lg w-full text-white bg-red-500;
+}
+
 .auth-button {
   transition: box-shadow 0.2s ease;
   @apply bg-airbnb border-airbnb text-white;
