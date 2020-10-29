@@ -4,6 +4,7 @@ from users.views import (
     log_out,
     SignUpView,
     UserProfileView,
+    UpdateProfileView,
     complete_verification,
     github_login,
     github_callback,
@@ -22,5 +23,6 @@ urlpatterns = [
     path("logout", log_out, name="logout"),
     path("signup", SignUpView.as_view(), name="signup"),
     path("verify/<str:key>", complete_verification, name="complete_verfication"),
+    path("update", UpdateProfileView.as_view(), name="update"),
     path("<int:pk>", UserProfileView.as_view(), name="profile"),
 ]

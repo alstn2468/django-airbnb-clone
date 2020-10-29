@@ -1,4 +1,4 @@
-from django.views.generic import FormView, DetailView
+from django.views.generic import FormView, DetailView, UpdateView
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, reverse
 from django.contrib import messages
@@ -278,3 +278,26 @@ class UserProfileView(DetailView):
 
     model = User
     context_object_name = "user_obj"
+
+
+class UpdateProfileView(UpdateView):
+    """users application UpdateProfileView class
+
+    Inherit       : UpdateView
+    template_name : "users/update_profile.html"
+    """
+    model = User
+    template_name = "users/update_profile.html"
+    fields = (
+        "first_name",
+        "last_name",
+        "avatar",
+        "gender",
+        "bio",
+        "birth_date",
+        "language",
+        "currency",
+    )
+
+    def get_object(self, queryset=None):
+        return self.request.user

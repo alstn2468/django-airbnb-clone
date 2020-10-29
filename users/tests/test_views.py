@@ -454,7 +454,7 @@ class UserViewTest(TestCase):
 
         response = self.client.get("/")
         self.assertEqual(response.context[0]["user"], user)
-        
+
     def test_user_profile_view(self):
         """Users application UserProfileView test
         Check UserProfileView HttpResponse content data contain right data
@@ -467,3 +467,19 @@ class UserViewTest(TestCase):
         self.assertEqual(200, response.status_code)
         self.assertIn(f"<title>{user.first_name}'s Profile | Airbnb</title>", html)
         self.assertIn(user.first_name, html)
+
+    def test_user_update_profile_view(self):
+        """Users application UserProfileView test
+        Check UserProfileView HttpResponse content data contain right data
+        """
+        login = self.client.login(username="test@test.com", password="testtest")
+
+        self.assertTrue(login)
+
+        response = self.client.get("/users/update")
+        html = response.content.decode("utf8")
+
+        self.assertEqual(200, response.status_code)
+        self.assertIn("<title>Update Profile | Airbnb</title>", html)
+        self.assertIn('value="test"', html)
+        self.assertIn("Update profile</button>", html)
