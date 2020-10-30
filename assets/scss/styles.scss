@@ -53,16 +53,29 @@ form {
   @apply flex flex-col w-full items-center;
 }
 
+textarea {
+  resize: none;
+  height: 100px;
+}
+
+select {
+  height: 50px;
+}
+
+input,
+textarea,
+select {
+  @apply rounded-sm font-light text-lg w-full text-left border border-gray-600;
+
+  &:focus {
+    @apply outline-none border-teal-500;
+  }
+}
+
 input {
   background-repeat: no-repeat;
   background-position: 96%;
   background-size: 16px 16px;
-
-  &:focus {
-    @apply outline-none;
-  }
-
-  @apply w-full;
 }
 
 .input:focus-within {
