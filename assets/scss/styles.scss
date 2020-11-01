@@ -78,6 +78,15 @@ input {
   background-size: 16px 16px;
 }
 
+textarea {
+  resize: none;
+  height: 100px;
+}
+
+select {
+  height: 50px;
+}
+
 .input:focus-within {
   @apply border-teal-400;
 }
