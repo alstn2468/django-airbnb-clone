@@ -5,6 +5,7 @@ from users.views import (
     SignUpView,
     UserProfileView,
     UpdateProfileView,
+    UpdatePasswordView,
     complete_verification,
     github_login,
     github_callback,
@@ -24,5 +25,6 @@ urlpatterns = [
     path("signup", SignUpView.as_view(), name="signup"),
     path("verify/<str:key>", complete_verification, name="complete_verfication"),
     path("update", UpdateProfileView.as_view(), name="update"),
+    path("update-passwod/", UpdatePasswordView.as_view(), name="password"),
     path("<int:pk>", UserProfileView.as_view(), name="profile"),
 ]
