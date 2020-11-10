@@ -1,5 +1,7 @@
 from django.test import TestCase
 from django.urls import resolve
+from users.models import User
+from django.test.client import Client
 from users.views import (
     LoginView,
     log_out,
