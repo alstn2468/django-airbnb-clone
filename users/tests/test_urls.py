@@ -6,6 +6,7 @@ from users.views import (
     SignUpView,
     UserProfileView,
     UpdateProfileView,
+    UpdatePasswordView,
     complete_verification,
     github_login,
     github_callback,
@@ -79,8 +80,15 @@ class UsersUrlTest(TestCase):
         self.assertEqual(found.func.view_class, UserProfileView)
 
     def test_url_resolves_to_update_profile_view(self):
-        """User application '/update-profile' pattern urls test
-        Check '/users/1' pattern resolved class is UpddteProfileView
+        """User application '/update' pattern urls test
+        Check '/users/update' pattern resolved class is UpdateProfileView
         """
         found = resolve("/users/update")
         self.assertEqual(found.func.view_class, UpdateProfileView)
+
+    def test_url_resolves_to_update_password_view(self):
+        """User application '/update-password' pattern urls test
+        Check '/users/update-password' pattern resolved class is UpdatePasswordView
+        """
+        found = resolve("/users/update-password")
+        self.assertEqual(found.func.view_class, UpdatePasswordView)
