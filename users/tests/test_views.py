@@ -469,8 +469,8 @@ class UserViewTest(TestCase):
         self.assertIn(user.first_name, html)
 
     def test_user_update_profile_view(self):
-        """Users application UserProfileView test
-        Check UserProfileView HttpResponse content data contain right data
+        """Users application UpdateProfileView test
+        Check UpdateProfileView HttpResponse content data contain right data
         """
         login = self.client.login(username="test@test.com", password="testtest")
 
@@ -483,3 +483,19 @@ class UserViewTest(TestCase):
         self.assertIn("<title>Update Profile | Airbnb</title>", html)
         self.assertIn('value="test"', html)
         self.assertIn("Update profile</button>", html)
+
+
+    def test_user_update_Password_view(self):
+        """Users application UpdatePasswordView test
+        Check UpdatePasswordView HttpResponse content data contain right data
+        """
+        login = self.client.login(username="test@test.com", password="testtest")
+
+        self.assertTrue(login)
+
+        response = self.client.get("/users/update-password")
+        html = response.content.decode("utf8")
+
+        self.assertEqual(200, response.status_code)
+        self.assertIn("<title>Update Password | Airbnb</title>", html)
+        self.assertIn("Update Password</button>", html)
