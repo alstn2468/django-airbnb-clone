@@ -1,21 +1,23 @@
 from django.contrib.auth.views import PasswordChangeView
 from django.views.generic import FormView, DetailView, UpdateView
+from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, reverse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.core.files.base import ContentFile
 from users.forms import LoginForm, SignUpForm
+from users.mixins import LoggedOutOnlyView
 from users.models import User
 
 import os
 import requests
 
 
-class LoginView(FormView):
+class LoginView(LoggedOutOnlyView, FormView):
     """users application LoginView class
 
-    Inherit       : FormView
+    Inherit       : LoggedOutOnlyView, FormView
     template_name : "users/login.html"
     form_class    : LoginForm
     success_url   : reverse_lazy("core:home")
@@ -47,10 +49,10 @@ def log_out(request):
     return redirect(reverse("core:home"))
 
 
-class SignUpView(FormView):
+class SignUpView(LoggedOutOnlyView, FormView):
     """users application SignUpView class
 
-    Inherit       : FormView
+    Inherit       : LoggedOutOnlyView, FormView
     template_name : users/signup.html
     form_class    : SignUpForm
     success_url   : reverse_lazy("core:home")
@@ -273,7 +275,7 @@ def kakao_callback(request):
 class UserProfileView(DetailView):
     """users application UserProfileView class
 
-    Inherit       : DetailView
+    Inherit       :  DetailView
     template_name : "users/user_detail.html"
     """
 
@@ -281,10 +283,10 @@ class UserProfileView(DetailView):
     context_object_name = "user_obj"
 
 
-class UpdateProfileView(UpdateView):
+class UpdateProfileView(SuccessMessageMixin, UpdateView):
     """users application UpdateProfileView class
 
-    Inherit       : UpdateView
+    Inherit       : SuccessMessageMixin, UpdateView
     template_name : "users/update_profile.html"
     """
     model = User
@@ -298,15 +300,37 @@ class UpdateProfileView(UpdateView):
         "language",
         "currency",
     )
+    success_message = "Profile Updated"
 
     def get_object(self, queryset=None):
         return self.request.user
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=form_class)
+        form.fields["first_name"].widget.attrs = {"placeholder": "First name"}
+        form.fields["last_name"].widget.attrs = {"placeholder": "Last name"}
+        form.fields["bio"].widget.attrs = {"placeholder": "Bio"}
+        form.fields["birth_date"].widget.attrs = {"placeholder": "Birthdate"}
+        return form
 
-class UpdatePasswordView(PasswordChangeView):
+
+class UpdatePasswordView(SuccessMessageMixin, PasswordChangeView):
     """users application UpdatePasswordView class
 
     Inherit       : PasswordChangeView
     template_name : "users/update_password.html"
     """
     template_name = "users/update_password.html"
+    success_message = "Password Updated"
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=form_class)
+        form.fields["old_password"].widget.attrs = {"placeholder": "Current password"}
+        form.fields["new_password1"].widget.attrs = {"placeholder": "New password"}
+        form.fields["new_password2"].widget.attrs = {
+            "placeholder": "Confirm new password"
+        }
+        return form
+
+    def get_success_url(self):
+        return self.request.user.get_absolute_url()

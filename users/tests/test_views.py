@@ -484,8 +484,7 @@ class UserViewTest(TestCase):
         self.assertIn('value="test"', html)
         self.assertIn("Update profile</button>", html)
 
-
-    def test_user_update_Password_view(self):
+    def test_user_update_password_view(self):
         """Users application UpdatePasswordView test
         Check UpdatePasswordView HttpResponse content data contain right data
         """
@@ -499,3 +498,28 @@ class UserViewTest(TestCase):
         self.assertEqual(200, response.status_code)
         self.assertIn("<title>Update Password | Airbnb</title>", html)
         self.assertIn("Update Password</button>", html)
+
+    def test_user_update_password_view_get_absolute_url(self):
+        """Users application UpdatePasswordView get_absolute_url test
+        Check UpdatePasswordView's get_absolute_url equal user's get_absolute_url
+        """
+        login = self.client.login(username="test@test.com", password="testtest")
+
+        self.assertTrue(login)
+
+        form_data = {
+            "old_password": "testtest",
+            "new_password1": "testdjangoapp@",
+            "new_password2": "testdjangoapp@",
+        }
+
+        response = self.client.post('/users/update-password', form_data)
+
+        user = User.objects.get(username="test@test.com")
+
+        self.assertRedirects(
+            response,
+            user.get_absolute_url(),
+            status_code=302,
+            target_status_code=200
+        )
