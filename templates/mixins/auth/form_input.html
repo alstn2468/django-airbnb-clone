@@ -1,4 +1,4 @@
-<div class="input {% if field.errors %}has_error{% endif %}">
+<div class="input {{ field.name }} {% if field.errors %}has_error{% endif %}">
     {{ field }}
     {% if field.errors %}
     {% for error in field.errors %}

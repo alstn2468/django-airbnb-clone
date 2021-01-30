@@ -45,8 +45,15 @@ form {
 .input {
   display: block;
   transition: border-color 0.3s ease;
+  background-repeat: no-repeat;
+  background-position: 96%;
+  background-size: 16px 16px;
 
-  @apply rounded-sm py-2 font-light text-sm w-11/12 text-left border border-gray-600 px-3;
+  @apply rounded-sm py-2 font-light text-sm w-11/12 px-3 border border-gray-600;
+
+  &:focus {
+    @apply outline-none border-teal-500;
+  }
 }
 
 .btn-wrapper {
@@ -65,17 +72,16 @@ select {
 input,
 textarea,
 select {
-  @apply rounded-sm font-light text-lg w-full text-left border border-gray-600;
+  @apply rounded-sm font-light text-lg w-full text-left border-none;
 
   &:focus {
-    @apply outline-none border-teal-500;
+    @apply outline-none;
   }
 }
 
 input {
-  background-repeat: no-repeat;
-  background-position: 96%;
-  background-size: 16px 16px;
+  background-color: transparent;
+  font-size: 16px;
 }
 
 textarea {
@@ -91,23 +97,23 @@ select {
   @apply border-teal-400;
 }
 
-input.email {
+.input.email {
   background-image: url('/static/img/email-input-icon.svg');
 }
 
-input.password {
+.input.password {
   background-image: url('/static/img/password-input-icon.svg');
 }
 
-input.password-check {
+.input.password-check {
   background-image: url('/static/img/password-check-input-icon.svg');
 }
 
-input.first-name {
+.input.first-name {
   background-image: url('/static/img/first-name-icon.svg');
 }
 
-input.last-name {
+.input.last-name {
   background-image: url('/static/img/last-name-icon.svg');
 }
 
@@ -116,12 +122,9 @@ input.last-name {
     @apply mb-3 w-10/12 py-3;
   }
 
-  input {
+  .input {
     background-position: 97%;
     background-size: 19px 19px;
-  }
-
-  .input {
     @apply w-10/12 text-lg px-5 py-3;
   }
 
