@@ -13,8 +13,13 @@ class UserMixinsTest(TestCase):
             username="test@test.com",
             email="test@test.com",
             password="testtest",
-            first_name="test",
             login_method=User.LOGIN_EMAIL,
+        )
+        User.objects.create_user(
+            username="kakao@kakao.com",
+            email="kakao@kakao.com",
+            password="testtest",
+            login_method=User.LOGIN_KAKAO,
         )
 
     def test_logged_out_only_view_sucess(self):
@@ -28,10 +33,31 @@ class UserMixinsTest(TestCase):
         """User application LoggedOutOnlyView no permission test
         Can't access login page and redirected to home when logged in
         """
-        data = {"email": "test@test.com", "password": "testtest"}
-        response = self.client.post("/users/login", data)
-        self.assertEqual(302, response.status_code)
+        login = self.client.login(username="test@test.com", password="testtest")
+
+        self.assertTrue(login)
 
         response = self.client.get("/users/login")
+        self.assertEqual(302, response.status_code)
+        self.assertEqual(reverse("core:home"), response.url)
+
+    def test_email_login_only_view_sucess(self):
+        """User application EmailLoginOnlyView success test
+        Can access update password page with email logged in user
+        """
+        login = self.client.login(username="test@test.com", password="testtest")
+        self.assertTrue(login)
+
+        response = self.client.get("/users/update-password")
+        self.assertEqual(200, response.status_code)
+
+    def test_email_login_only_view_fail(self):
+        """User application EmailLoginOnlyView fail test
+        Can access update password page with kakoa logged in user
+        """
+        login = self.client.login(username="kakao@kakao.com", password="testtest")
+        self.assertTrue(login)
+
+        response = self.client.get("/users/update-password")
         self.assertEqual(302, response.status_code)
         self.assertEqual(reverse("core:home"), response.url)

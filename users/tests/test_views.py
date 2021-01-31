@@ -124,6 +124,13 @@ class UserViewTest(TestCase):
         Create one test user has email
         """
         User.objects.create_user(
+            username="email@test.com",
+            email="email@test.com",
+            password="testtest",
+            first_name="test",
+            login_method=User.LOGIN_EMAIL,
+        )
+        User.objects.create_user(
             username="test@test.com",
             email="test@test.com",
             password="testtest",
@@ -459,8 +466,12 @@ class UserViewTest(TestCase):
         """Users application UserProfileView test
         Check UserProfileView HttpResponse content data contain right data
         """
-        user = User.objects.get(pk=1)
+        data = {"email": "email@test.com", "password": "testtest"}
+        response = self.client.post("/users/login", data)
 
+        self.assertEqual(302, response.status_code)
+
+        user = User.objects.get(pk=1)
         response = self.client.get("/users/1")
         html = response.content.decode("utf8")
 
@@ -488,7 +499,7 @@ class UserViewTest(TestCase):
         """Users application UpdatePasswordView test
         Check UpdatePasswordView HttpResponse content data contain right data
         """
-        login = self.client.login(username="test@test.com", password="testtest")
+        login = self.client.login(username="email@test.com", password="testtest")
 
         self.assertTrue(login)
 
@@ -503,7 +514,7 @@ class UserViewTest(TestCase):
         """Users application UpdatePasswordView get_absolute_url test
         Check UpdatePasswordView's get_absolute_url equal user's get_absolute_url
         """
-        login = self.client.login(username="test@test.com", password="testtest")
+        login = self.client.login(username="email@test.com", password="testtest")
 
         self.assertTrue(login)
 
@@ -513,13 +524,16 @@ class UserViewTest(TestCase):
             "new_password2": "testdjangoapp@",
         }
 
-        response = self.client.post('/users/update-password', form_data)
+        response = self.client.post("/users/update-password", form_data)
 
-        user = User.objects.get(username="test@test.com")
+        user = User.objects.get(username="email@test.com")
+        self.assertRedirects(response, user.get_absolute_url())
 
-        self.assertRedirects(
-            response,
-            user.get_absolute_url(),
-            status_code=302,
-            target_status_code=200
-        )
+    def test_login_view_next_args(self):
+        """User application LoginView next_arg test
+        Redirect to next_arg received page
+        """
+        data = {"email": "test@test.com", "password": "testtest"}
+        response = self.client.post("/users/login?next=/users/update", data)
+        self.assertEqual(302, response.status_code)
+        self.assertEqual(reverse("users:update"), response.url)

@@ -242,4 +242,4 @@ class UserModelTest(TestCase):
         User object's get_absolute_url method return profile url
         """
         user = User.objects.get(pk=1)
-        self.assertEqual(user.get_absolute_url(), '/users/1')
+        self.assertEqual(user.get_absolute_url(), "/users/1")

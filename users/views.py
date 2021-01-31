@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.core.files.base import ContentFile
 from users.forms import LoginForm, SignUpForm
-from users.mixins import LoggedOutOnlyView
+from users.mixins import LoggedOutOnlyView, LoggedInOnlyView, EmailLoginOnlyView
 from users.models import User
 
 import os
@@ -28,7 +28,6 @@ class LoginView(LoggedOutOnlyView, FormView):
 
     template_name = "users/login.html"
     form_class = LoginForm
-    success_url = reverse_lazy("core:home")
 
     def form_valid(self, form):
         email = form.cleaned_data.get("email")
@@ -40,6 +39,12 @@ class LoginView(LoggedOutOnlyView, FormView):
             login(self.request, user)
 
         return super().form_valid(form)
+
+    def get_success_url(self):
+        next_arg = self.request.GET.get("next")
+        if next_arg:
+            return next_arg
+        return reverse("core:home")
 
 
 def log_out(request):
@@ -272,7 +277,7 @@ def kakao_callback(request):
         return redirect(reverse("users:login"))
 
 
-class UserProfileView(DetailView):
+class UserProfileView(LoggedInOnlyView, DetailView):
     """users application UserProfileView class
 
     Inherit       :  DetailView
@@ -283,12 +288,13 @@ class UserProfileView(DetailView):
     context_object_name = "user_obj"
 
 
-class UpdateProfileView(SuccessMessageMixin, UpdateView):
+class UpdateProfileView(LoggedInOnlyView, SuccessMessageMixin, UpdateView):
     """users application UpdateProfileView class
 
     Inherit       : SuccessMessageMixin, UpdateView
     template_name : "users/update_profile.html"
     """
+
     model = User
     template_name = "users/update_profile.html"
     fields = (
@@ -314,12 +320,15 @@ class UpdateProfileView(SuccessMessageMixin, UpdateView):
         return form
 
 
-class UpdatePasswordView(SuccessMessageMixin, PasswordChangeView):
+class UpdatePasswordView(
+    EmailLoginOnlyView, LoggedInOnlyView, SuccessMessageMixin, PasswordChangeView
+):
     """users application UpdatePasswordView class
 
     Inherit       : PasswordChangeView
     template_name : "users/update_password.html"
     """
+
     template_name = "users/update_password.html"
     success_message = "Password Updated"
 
