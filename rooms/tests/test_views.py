@@ -98,10 +98,6 @@ class RoomViewTest(TestCase):
         room = Room.objects.get(pk=1)
 
         self.assertIn(f"<title>{room.name} | Airbnb</title>", html)
-        self.assertIn(room.name, html)
-        self.assertIn(room.description, html)
-        self.assertIn(room.host.username, html)
-        self.assertIn(f"users/{room.host.pk}", html)
 
     def test_view_rooms_app_room_detail_is_superhost(self):
         """Rooms application RoomDetail test is success and host is superhost
@@ -112,11 +108,6 @@ class RoomViewTest(TestCase):
         room = Room.objects.get(pk=23)
 
         self.assertIn(f"<title>{room.name} | Airbnb</title>", html)
-        self.assertIn(room.name, html)
-        self.assertIn(room.description, html)
-        self.assertIn(room.host.username, html)
-        self.assertIn(f"users/{room.host.pk}", html)
-        self.assertIn("(superhost)", html)
 
     def test_view_rooms_app_room_detail_fail(self):
         """Rooms application RoomDetail test catch exception

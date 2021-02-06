@@ -3,37 +3,15 @@
 {% block page_name %}{{ room.name }}{% endblock page_name %}
 
 {% block content %}
-<div>
-    <h1>{{ room.name }}</h1>
-    <h3>{{ room.description }}</h3>
+
+<div class="-mt-5 container max-w-full h-75vh flex mb-20">
+    <div class="h-full w-1/2 bg-cover bg-center" style="background-image: url({{ room.first_photo }});">
+    </div>
+    <div class="h-full w-1/2 flex flex-wrap">
+        {% for photo in room.get_next_four_photos %}
+        <div style="background-image: url({{ photo.file.url }});" class="w-1/2 h-auto bg-cover bg-center bg-gray-700 border"></div>
+        {% endfor %}
+    </div>
 </div>
 
-<div>
-    <h2>By : <a href="{{ room.host.get_absolute_url }}">{{ room.host.username }}<a/>
-        {% if room.host.is_superhost %}
-        (superhost)
-        {% endif %}
-    </h2>
-
-    <h3>Amenities</h3>
-    <ul>
-        {% for amenity in room.amenities.all %}
-        <li>{{ amenity }}</li>
-        {% endfor %}
-    </ul>
-
-    <h3>Facilities</h3>
-    <ul>
-        {% for facility in room.facilities.all %}
-        <li>{{ facility }}</li>
-        {% endfor %}
-    </ul>
-
-    <h3>House Rules</h3>
-    <ul>
-        {% for house_rule in room.house_rules.all %}
-        <li>{{ house_rule }}</li>
-        {% endfor %}
-    </ul>
-</div>
 {% endblock content %}

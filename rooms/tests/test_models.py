@@ -383,8 +383,31 @@ class RoomModelTest(TestCase):
         Check Room model's first_photo return None
         """
         room = Room.objects.get(id=1)
-
+        print(room.photos.all())
         self.assertIsNone(room.first_photo())
+
+    def test_room_get_next_four_photos(self):
+        """Room get_next_four_photos method test
+        Check Room model's get_next_four_photos return four photo file
+        """
+        room = Room.objects.get(id=1)
+        for i in range(6):
+            temp_photo = tempfile.NamedTemporaryFile(suffix=".jpg").name
+            photo = Photo(caption=f"Test Caption {i + 1}", file=temp_photo, room=room)
+            photo.save()
+        photos = room.get_next_four_photos()
+        self.assertEqual(len(photos), 4)
+        for idx, photo in enumerate(photos):
+            self.assertEqual(f"Test Caption {idx + 2}", photo.caption)
+
+    def test_room_get_next_four_photos_is_empty(self):
+        """Room model get_next_four_photos method empty photo test
+        Check Room model's get_next_four_photos return None
+        """
+        room = Room.objects.get(id=1)
+        photos = room.get_next_four_photos()
+        self.assertEqual(len(photos), 0)
+        self.assertFalse(photos.exists())
 
 
 class RoomTypeModelTest(TestCase):
