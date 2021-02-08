@@ -408,21 +408,6 @@ class RoomModelTest(TestCase):
         self.assertEqual(len(photos), 0)
         self.assertFalse(photos.exists())
 
-    def test_room_get_beds_multiple_beds(self):
-        """Room model get_beds method multiple beds test
-        Check Room model's get_beds return formatted string
-        """
-        room = Room.objects.get(id=1)
-        self.assertEqual(room.get_beds(), "2 beds")
-
-    def test_room_get_beds_single_beds(self):
-        """Room model get_beds method single beds test
-        Check Room model's get_beds return 1 bed string
-        """
-        room = Room.objects.get(id=1)
-        room.beds = 1
-        room.save()
-        self.assertEqual(room.get_beds(), "1 bed")
 
 class RoomTypeModelTest(TestCase):
     @classmethod

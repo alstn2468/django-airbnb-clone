@@ -184,8 +184,3 @@ class Room(AbstractTimeStamp):
     def get_next_four_photos(self):
         photos = self.photos.all()[1:5]
         return photos
-
-    def get_beds(self):
-        if self.beds == 1:
-            return "1 bed"
-        return f"{self.beds} beds"

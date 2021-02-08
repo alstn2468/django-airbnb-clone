@@ -171,4 +171,8 @@ select {
   }
 }
 
+.border-section {
+  @apply border-b border-gray-400 pb-6 mt-6;
+}
+
 @tailwind utilities;
