@@ -37,6 +37,27 @@
         </p>
         <div class="border-section">
             <h4 class="font-medium text-lg mb-5">Amenities</h4>
+            {% for amenity in room.amenities.all %}
+                <li class="mb-2">{{ amenity }}</li>
+            {% endfor %}
+        </div>
+        <div class="border-section">
+            <h4 class="font-medium text-lg mb-5">Facilities</h4>
+            {% for facility in room.facilities.all %}
+                <li class="mb-2">{{ facility }}</li>
+            {% endfor %}
+        </div>
+        <div class="border-section">
+            <h4 class="font-medium text-lg mb-5">House Rules</h4>
+            {% for house_rule in room.house_rules.all %}
+                <li class="mb-2">{{ house_rule }}</li>
+            {% endfor %}
+        </div>
+        <div class="border-section">
+            <h4 class="font-medium text-2xl mb-5">Reviews</h4>
+            <div>
+                {{ room.total_rating }} {{ room.reviews.count }} review{{ room.reviews.count|pluralize }}
+            </div>
         </div>
     </div>
     <div class="w-1/3"></div>
