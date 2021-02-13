@@ -10,7 +10,7 @@ class RoomViewTest(TestCase):
         """Run only once when running RoomViewTest
         Create 23 rooms for RoomViewTest
         """
-        user = User.objects.create_user("test_user")
+        user = User.objects.create_user(username="test_user", password="testtest1")
 
         for i in range(4):
             RoomType.objects.create(name=f"Room Type {i + 1}")
@@ -90,7 +90,7 @@ class RoomViewTest(TestCase):
         self.assertRedirects(response, "/")
 
     def test_view_rooms_app_room_detail_success(self):
-        """Rooms application RoomDetail test is success
+        """Rooms application RoomDetailView test is success
         Check room_deatil HttpResponse contain right room instance data
         """
         response = self.client.get("/rooms/1")
@@ -100,7 +100,7 @@ class RoomViewTest(TestCase):
         self.assertIn(f"<title>{room.name} | Airbnb</title>", html)
 
     def test_view_rooms_app_room_detail_is_superhost(self):
-        """Rooms application RoomDetail test is success and host is superhost
+        """Rooms application RoomDetailView test is success and host is superhost
         Check room_deatil HttpResponse contain right room instance data
         """
         response = self.client.get("/rooms/23")
@@ -110,11 +110,22 @@ class RoomViewTest(TestCase):
         self.assertIn(f"<title>{room.name} | Airbnb</title>", html)
 
     def test_view_rooms_app_room_detail_fail(self):
-        """Rooms application RoomDetail test catch exception
+        """Rooms application RoomDetailView test catch exception
         Check room_deatil catch DoesNotExist exception then raise Http404
         """
-        response = self.client.get("/rooms/25")
+        response = self.client.get("/rooms/24")
         self.assertEqual(404, response.status_code)
+
+    def test_view_rooms_app_room_detail_edit_button(self):
+        """Rooms application RoomDetailView test edit button
+        Check room_deatil edit button show when user equal host
+        """
+        login = self.client.login(username="test_user", password="testtest1")
+        self.assertTrue(login)
+
+        response = self.client.get("/rooms/21")
+        html = response.content.decode("utf8")
+        self.assertIn("Edit Room", html)
 
     def test_view_rooms_search_default_city(self):
         """Room application search test with empty param
@@ -336,3 +347,24 @@ class RoomViewTest(TestCase):
 
         for room in rooms:
             self.assertIn(f"<h3>{room.name}</h3>", html)
+
+    def test_view_rooms_app_room_edit_get(self):
+        """Rooms application RoomEdit test is success
+        Check room_edit HttpResponse contain right room instance data
+        """
+        response = self.client.get("/rooms/1/edit/")
+        html = response.content.decode("utf8")
+        room = Room.objects.get(pk=1)
+
+        self.assertIn(f"<title>Update Room | Airbnb</title>", html)
+        self.assertIn(f'name="name" value="{room.name}"', html)
+        self.assertIn(room.description, html)
+        self.assertIn(f'name="city" value="{room.city}"', html)
+        self.assertIn(f'name="price" value="{room.price}"', html)
+        self.assertIn(f'name="address" value="{room.address}"', html)
+        self.assertIn(f'name="guests" value="{room.guests}"', html)
+        self.assertIn(f'name="beds" value="{room.beds}"', html)
+        self.assertIn(f'name="bedrooms" value="{room.bedrooms}"', html)
+        self.assertIn(f'name="baths" value="{room.baths}"', html)
+        self.assertIn(f'name="check_in" value="{room.check_in}"', html)
+        self.assertIn(f'name="check_out" value="{room.check_out}"', html)

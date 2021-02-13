@@ -1,6 +1,5 @@
-from django.views.generic import ListView, DetailView, View
+from django.views.generic import ListView, DetailView, UpdateView, View
 from django.shortcuts import render, redirect
-from django.core.paginator import Paginator
 from django.urls import reverse
 from django.http import Http404
 from rooms.models import Room
@@ -34,8 +33,8 @@ class HomeView(ListView):
             return redirect(reverse("core:home"))
 
 
-class RoomDetail(DetailView):
-    """rooms application RoomDetail Class
+class RoomDetailView(DetailView):
+    """rooms application RoomDetailView Class
     Display detail of room object
 
     Inherit             : DetailView
@@ -50,7 +49,7 @@ class SearchView(View):
     """rooms application SearchView Class
     Display list of rooms searched by city
 
-    Inherit : View
+    Inherit             : View
     Templates name      : rooms/search.html
     """
 
@@ -121,3 +120,34 @@ class SearchView(View):
             form = SearchForm()
 
         return render(request, "rooms/search.html", {"form": form})
+
+
+class RoomEditView(UpdateView):
+    """rooms application RoomEditView Class
+    Update room object fields data
+
+    Inherit             : UpdateView
+    Templates name      : rooms/room_edit.html
+    """
+
+    model = Room
+    template_name = "rooms/room_edit.html"
+    fields = (
+        "name",
+        "description",
+        "country",
+        "city",
+        "price",
+        "address",
+        "guests",
+        "beds",
+        "bedrooms",
+        "baths",
+        "check_in",
+        "check_out",
+        "instant_book",
+        "room_type",
+        "amenities",
+        "facilities",
+        "house_rules",
+    )

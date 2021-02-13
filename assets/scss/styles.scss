@@ -84,6 +84,11 @@ input {
   font-size: 16px;
 }
 
+input[type='checkbox'] {
+  display: block;
+  width: auto;
+}
+
 textarea {
   resize: none;
   height: 100px;
